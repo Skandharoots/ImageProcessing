@@ -6,7 +6,7 @@ class Engine {
 private:
     std::string command;
     std::string name;
-    std::string params;
+    int params;
 public:
     Engine();
     ~Engine();
@@ -14,7 +14,8 @@ public:
     std::string getCommand();
     void setName(std::string name);
     std::string getName();
-    void setParams(std::string params);
-    std::string getParams();
+    void setParams(int params);
+    int getParams();
+    void convertParameter(std::string var);
     void openImage();
 };
