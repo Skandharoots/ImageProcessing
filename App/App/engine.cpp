@@ -13,8 +13,11 @@
 
 using namespace cimg_library;
 
-Engine::Engine() {
-    
+Engine::Engine(std::string command, std::string value, std::string inputPath, std::string outputPath) {
+    this->command = command;
+    this->value = value;
+    this->inputPath = inputPath;
+    this->outputPath = outputPath;
 }
 
 Engine::~Engine() {
@@ -29,70 +32,89 @@ std::string Engine::getCommand() {
     return this->command;
 }
 
-void Engine::setName(std::string name) {
-    this->name = name;
+void Engine::setValue(std::string value) {
+    this->value = value;
 }
 
-std::string Engine::getName() {
-    return this->name;
+std::string Engine::getValue() {
+    return this->value;
 }
 
-void Engine::setParams(int params) {
-    this->params = params;
+void Engine::setInputPath(std::string path) {
+    this->inputPath = path;
 }
 
-int Engine::getParams() {
-    return this->params;
+std::string Engine::getInputPath() {
+    return this->inputPath;
 }
 
-void Engine::convertParameter(std::string var) {
+void Engine::setOutputPath(std::string path) {
+    this->outputPath = path;
+}
+
+std::string Engine::getOutputPath() {
+    return this->outputPath;
+}
+
+int Engine::convertValue(std::string var) {
     std::stringstream ss2(var);
     std::string del2;
-    int temp;
+    int temp = 0;
     std::vector<std::string> vec;
-    const std::regex parameter("[-][p]");
+    const std::regex parameter1("[0-9]+");
+    const std::regex parameter2("[-][0-9]+");
     while (getline(ss2, del2, '=')) {
         vec.push_back(del2);
     }
-    if (regex_match(vec[0], parameter) == 1) {
-        setParams(stoi(vec[1]));
+    if (regex_match(vec[1], parameter1) == 1) {
+        temp = stoi(vec[1]);
+    }
+    if (regex_match(vec[1], parameter2)) {
+        del2 = vec[1].substr(vec[1].find("-") + 1);
+        temp = stoi(del2) * -1;
     }
     else {
-        temp = stoi(vec[1]) * -1;
-        setParams(temp);
+        std::cout << "Cannot convert parameter value." << std::endl;
     }
-    
+    return temp;
+}
+
+
+
+std::string Engine::convertInputPath(std::string path) {
+    std::stringstream ss(path);
+    std::string del2;
+    std::vector<std::string> vec;
+    while (getline(ss, del2, '=')) {
+        vec.push_back(del2);
+    }
+    if (vec.size() > 1) {
+        del2 = vec[1];
+    }
+    else {
+        std::cout << "Cannot convert parameter value." << std::endl;
+    }
+    return del2;
+}
+
+std::string Engine::convertOutputPath(std::string path) {
+    std::stringstream ss(path);
+    std::string del2;
+    std::vector<std::string> vec;
+    while (getline(ss, del2, '=')) {
+        vec.push_back(del2);
+    }
+    if (vec.size() > 1) {
+        del2 = vec[1];
+    }
+    else {
+        std::cout << "Cannot convert parameter value." << std::endl;
+    }
+    return del2;
 }
 
  void Engine::openImage() {
-        std::string command;
-        std::string parameters;
-        std::vector<std::string> v;
-        const std::regex txt_regex("[a-z]+[ ][-][-][a-z]+[ ][-]([n|p])[=][0-9]+");
-        int i = 0;
-        int j = 0;
-        bool format = false;
-        while (format == false) {
-            std::cout << "Hello, please provide the parameters according to the format below : \n" << "name --command [-argument=value [...]] \n";
-            std::getline(std::cin, command);
-            if (std::regex_match(command, txt_regex) != 1) {
-                format = false;
-            }
-            else {
-                format = true;
-            }
-        }
-        std::istringstream ss(command);
-        std::string del;
-        std::string par;
-        while (getline(ss, del, ' ')) {
-            v.push_back(del);
-        }
-        setName(v[0]);
-        setCommand(v[1]);
-        convertParameter(v[2]);
-        std::cout << this->name << ", " << this->command << ", " << this->params << "\n";
-        CImg<unsigned char> image("../images/lenac.bmp"); // create the image from a file (must exist in the working dir)
+     CImg<unsigned char> image(convertInputPath(getInputPath()).c_str()); // create the image from a file (must exist in the working dir)
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height() / 2; y++) { // only upper half of the image gets processed
                 float valR = image(x, y, 0); // Read red value at coordinates (x, y)
@@ -104,7 +126,7 @@ void Engine::convertParameter(std::string var) {
                 image(x, y, 2) = avg;
             }
         }
-        image.save_bmp("../images/output/out.bmp"); // save the modified image to a file
+        image.save_bmp(convertOutputPath(getOutputPath()).c_str()); // save the modified image to a file
     }
 
 
