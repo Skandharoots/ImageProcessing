@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <memory>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -56,7 +57,7 @@ std::string Engine::getOutputPath() {
     return this->outputPath;
 }
 
-int Engine::convertValue(std::string var) {
+/*int Engine::convertValue(std::string var) {
     std::stringstream ss2(var);
     std::string del2;
     int temp = 0;
@@ -77,7 +78,7 @@ int Engine::convertValue(std::string var) {
         std::cout << "Cannot convert parameter value." << std::endl;
     }
     return temp;
-}
+}*/
 
 
 
@@ -97,7 +98,7 @@ std::string Engine::convertInputPath(std::string path) {
     return del2;
 }
 
-std::string Engine::convertOutputPath(std::string path) {
+/*std::string Engine::convertOutputPath(std::string path) {
     std::stringstream ss(path);
     std::string del2;
     std::vector<std::string> vec;
@@ -112,21 +113,22 @@ std::string Engine::convertOutputPath(std::string path) {
     }
     return del2;
 }
-
+*/
  void Engine::openImage() {
-     CImg<unsigned char> image(convertInputPath(getInputPath()).c_str()); // create the image from a file (must exist in the working dir)
-        for (int x = 0; x < image.width(); x++) {
-            for (int y = 0; y < image.height() / 2; y++) { // only upper half of the image gets processed
-                float valR = image(x, y, 0); // Read red value at coordinates (x, y)
-                float valG = image(x, y, 1); // Read green value at coordinates (x, y)
-                float valB = image(x, y, 2); // Read blue value at coordinates (x, y)
-                float avg = (valR + valG + valB) / 3; // Compute average pixel value (grey)
-                image(x, y, 0) = avg;
-                image(x, y, 1) = avg;
-                image(x, y, 2) = avg;
-            }
-        }
-        image.save_bmp(convertOutputPath(getOutputPath()).c_str()); // save the modified image to a file
-    }
+     if (command == "--brightness") {
+         brightness = std::make_shared<Brightness>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+         std::cout << brightness->getArguments() << std::endl;
+         std::cout << brightness->getInputPath() << std::endl;
+         std::cout << brightness->getOutputPath() << std::endl;
+         brightness->convertArguments();
+         std::cout << brightness->getValue() << std::endl;
+         brightness->changeBrightness();
+         std::cout << "Operation successful!" << std::endl;
+     }
+     else {
+         std::cout << "Operation failed." << std::endl;
+     }
+
+ }
 
 

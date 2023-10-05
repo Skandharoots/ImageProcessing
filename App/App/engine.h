@@ -1,9 +1,13 @@
 #pragma once
 
 #include <string>
+#include "brightness.h"
 
 class Engine {
 private:
+
+    std::shared_ptr<Brightness> brightness;
+
     std::string command;
     std::string value;
     std::string inputPath;
@@ -19,8 +23,8 @@ public:
     std::string getInputPath();
     void setOutputPath(std::string path);
     std::string getOutputPath();
-    int convertValue(std::string var);
+    //int convertValue(std::string var);
     std::string convertInputPath(std::string path);
-    std::string convertOutputPath(std::string path);
+    //std::string convertOutputPath(std::string path);
     void openImage();
 };
