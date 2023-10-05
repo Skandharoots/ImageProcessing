@@ -116,11 +116,10 @@ std::string Engine::convertInputPath(std::string path) {
 */
  void Engine::openImage() {
      if (command == "--brightness") {
-         brightness = std::make_shared<Brightness>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+         std::shared_ptr<Brightness> brightness = std::make_shared<Brightness>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
          std::cout << brightness->getArguments() << std::endl;
          std::cout << brightness->getInputPath() << std::endl;
          std::cout << brightness->getOutputPath() << std::endl;
-         brightness->convertArguments();
          std::cout << brightness->getValue() << std::endl;
          brightness->changeBrightness();
          std::cout << "Operation successful!" << std::endl;

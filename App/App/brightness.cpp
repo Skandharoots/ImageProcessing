@@ -12,6 +12,7 @@ Brightness::Brightness(std::string arguments, std::string input, std::string out
 	this->arguments = arguments;
 	this->input = input;
 	this->output = output;
+	convertArguments();
 }
 
 Brightness::~Brightness() {
@@ -83,7 +84,6 @@ void Brightness::convertArguments() {
 }
 
 void Brightness::changeBrightness() {
-	convertArguments();
 	CImg<unsigned char> image(getInputPath().c_str()); // create the image from a file (must exist in the working dir)
 	for (int x = 0; x < image.width(); x++) {
 		for (int y = 0; y < image.height(); y++) { // only upper half of the image gets processed
@@ -91,7 +91,7 @@ void Brightness::changeBrightness() {
 			float valG = image(x, y, 1); // Read green value at coordinates (x, y)
 			float valB = image(x, y, 2); // Read blue value at coordinates (x, y)
 			float avg = (valR + valG + valB) / 3; // Compute average pixel value (grey)
-			/*if (valR + getValue() > 255) {
+			if (valR + getValue() > 255) {
 				valR = 255;
 			}
 			else {
@@ -126,12 +126,13 @@ void Brightness::changeBrightness() {
 			}
 			else {
 				valB += getValue();
-			}*/
-			image(x, y, 0) = avg;//valR;
-			image(x, y, 1) = avg;//valG;
-			image(x, y, 2) = avg;//valB;
-			image.save_bmp(getOutputPath().c_str()); // save the modified image to a file
+			}
+			image(x, y, 0) = valR;
+			image(x, y, 1) = valG;
+			image(x, y, 2) = valB;
+			
 
 		}
 	}
+	image.save_bmp(getOutputPath().c_str()); // save the modified image to a file
 }

@@ -5,9 +5,6 @@
 
 class Engine {
 private:
-
-    std::shared_ptr<Brightness> brightness;
-
     std::string command;
     std::string value;
     std::string inputPath;
