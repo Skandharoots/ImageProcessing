@@ -87,38 +87,69 @@ void Contrast::changeContrast() {
 			float valG = image(x, y, 1); // Read green value at coordinates (x, y)
 			float valB = image(x, y, 2); // Read blue value at coordinates (x, y)
 			float avg = (valR + valG + valB) / 3; // Compute average pixel value (grey)
-			if (valR * getSlope() > 255) {
-				valR = 255;
+			if (valR > 128) {
+				float temp = valR - 128;
+				temp *= getSlope();
+				if (128 + temp > 255) {
+					valR = 255;
+				}
+				else {
+					valR = 128 + temp;
+				}
 			}
-			else if (valR * getSlope() < 0) {
-				valR = 0;
+			else if (valR < 128) {
+				float temp = 128 - valR;
+				temp *= getSlope();
+				if (128 - temp < 0) {
+					valR = 0;
+				}
+				else {
+					valR = 128 - temp;
+				}
 			}
-			else {
-				valR *= getSlope();
+			if (valG > 128) {
+				float temp = valG - 128;
+				temp *= getSlope();
+				if (128 + temp > 255) {
+					valG = 255;
+				}
+				else {
+					valG = 128 + temp;
+				}
 			}
-			if (valG * getSlope() > 255) {
-				valG = 255;
+			else if (valG < 128) {
+				float temp = 128 - valG;
+				temp *= getSlope();
+				if (128 - temp < 0) {
+					valG = 0;
+				}
+				else {
+					valG = 128 - temp;
+				}
 			}
-			else if (valG * getSlope() < 0) {
-				valG = 0;
+			if (valB > 128) {
+				float temp = valB - 128;
+				temp *= getSlope();
+				if (128 + temp > 255) {
+					valB = 255;
+				}
+				else {
+					valB = 128 + temp;
+				}
 			}
-			else {
-				valG *= getSlope();
-			}
-			if (valB * getSlope() > 255) {
-				valB = 255;
-			}
-			else if (valB * getSlope() < 0) {
-				valB = 0;
-			}
-			else {
-				valB *= getSlope();
+			else if (valB < 128) {
+				float temp = 128 - valB;
+				temp *= getSlope();
+				if (128 - temp < 0) {
+					valB = 0;
+				}
+				else {
+					valB = 128 - temp;
+				}
 			}
 			image(x, y, 0) = valR;
 			image(x, y, 1) = valG;
 			image(x, y, 2) = valB;
-
-
 		}
 	}
 	image.save_bmp(getOutputPath().c_str()); // save the modified image to a file
