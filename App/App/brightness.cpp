@@ -94,10 +94,7 @@ void Brightness::changeBrightness() {
 			if (valR + getValue() > 255) {
 				valR = 255;
 			}
-			else {
-				valR += getValue();
-			}
-			if (valR + getValue() < 0) {
+			else if (valR + getValue() < 0) {
 				valR = 0;
 			}
 			else {
@@ -106,10 +103,7 @@ void Brightness::changeBrightness() {
 			if (valG + getValue() > 255) {
 				valG = 255;
 			}
-			else {
-				valG += getValue();
-			}
-			if (valG + getValue() < 0) {
+			else if (valG + getValue() < 0) {
 				valG = 0;
 			}
 			else {
@@ -118,10 +112,7 @@ void Brightness::changeBrightness() {
 			if (valB + getValue() > 255) {
 				valB = 255;
 			}
-			else {
-				valB += getValue();
-			}
-			if (valB + getValue() < 0) {
+			else if (valB + getValue() < 0) {
 				valB = 0;
 			}
 			else {

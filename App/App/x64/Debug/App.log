@@ -1,17 +1,17 @@
-﻿  contrast.cpp
-C:\Users\filip\source\repos\ImageProcessingTrue\App\App\contrast.cpp(117,21): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+﻿  brightness.cpp
+C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\brightness.cpp(121,21): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=unsigned char
           ]
-C:\Users\filip\source\repos\ImageProcessingTrue\App\App\contrast.cpp(118,21): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\brightness.cpp(122,21): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=unsigned char
           ]
-C:\Users\filip\source\repos\ImageProcessingTrue\App\App\contrast.cpp(119,21): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\brightness.cpp(123,21): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=unsigned char
           ]
-  App.vcxproj -> C:\Users\filip\source\repos\ImageProcessingTrue\App\x64\Debug\App.exe
+  App.vcxproj -> C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\x64\Debug\App.exe
