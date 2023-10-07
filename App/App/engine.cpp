@@ -9,6 +9,7 @@
 #include <sstream>
 #include <regex>
 #include "engine.h"
+#include "contrast.h"
 #include "CImg.h"
 
 
@@ -122,6 +123,15 @@ std::string Engine::convertInputPath(std::string path) {
          std::cout << brightness->getOutputPath() << std::endl;
          std::cout << brightness->getValue() << std::endl;
          brightness->changeBrightness();
+         std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--contrast") {
+         std::shared_ptr<Contrast> contrast = std::make_shared<Contrast>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+         std::cout << contrast->getArguments() << std::endl;
+         std::cout << contrast->getInputPath() << std::endl;
+         std::cout << contrast->getOutputPath() << std::endl;
+         std::cout << contrast->getSlope() << std::endl;
+         contrast->changeContrast();
          std::cout << "Operation successful!" << std::endl;
      }
      else {

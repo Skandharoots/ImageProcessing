@@ -128,10 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="brightness.cpp" />
+    <ClCompile Include="contrast.cpp" />
     <ClCompile Include="engine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="brightness.h" />
     <ClInclude Include="CImg.h" />
+    <ClInclude Include="contrast.h" />
     <ClInclude Include="engine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
