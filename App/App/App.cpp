@@ -12,6 +12,7 @@ int main(int argc, char* argv[])
     //cout << operation << " " << val << " " << in << " " << out << endl;
     //cout << argc;
     std::shared_ptr<Engine> engine;
+    try {
         if (argc == 2) {
             string operation(argv[1]);
             if (operation == "--help") {
@@ -25,7 +26,7 @@ int main(int argc, char* argv[])
 
             }
             else {
-                cout << "Type --help to see possible commands." << endl;
+                throw std::exception("Type --help to see possible commands.");
             }
         }
         else if (argc == 7) {
@@ -42,7 +43,7 @@ int main(int argc, char* argv[])
                 out = argv[4];
             }
             else {
-                std::cout << "Wrong formula for command. Type --help to see the correct phrase.\n";
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             if (arg3 == "--output") {
                 out = argv[6];
@@ -51,7 +52,8 @@ int main(int argc, char* argv[])
                 in = argv[6];
             }
             else {
-                std::cout << "Wrong formula for command. Type --help to see the correct phrase.\n";
+               
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             //string in(argv[4]);
             //string out(argv[6]);
@@ -60,8 +62,12 @@ int main(int argc, char* argv[])
             engine->openImage();
         }
         else {
-            std::cout << "Type --help for information.\n";
+            throw std::exception("Type --help for information.\n");
         }
+    }
+    catch (std::exception& e) {
+        std::cout << "There was an error. " << e.what() << endl;
+    }
     return 0;
 }
 
