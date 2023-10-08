@@ -90,11 +90,11 @@ std::string Engine::convertInputPath(std::string path) {
     while (getline(ss, del2, '=')) {
         vec.push_back(del2);
     }
-    if (vec.size() > 1) {
+    if (vec.size() > 1 and vec[0]=="-path") {
         del2 = vec[1];
     }
     else {
-        std::cout << "Cannot convert parameter value." << std::endl;
+        throw std::exception("Cannot convert path value. Type --help for more information\n");
     }
     return del2;
 }
@@ -117,25 +117,32 @@ std::string Engine::convertInputPath(std::string path) {
 */
  void Engine::openImage() {
      if (command == "--brightness") {
-         std::shared_ptr<Brightness> brightness = std::make_shared<Brightness>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
-         std::cout << brightness->getArguments() << std::endl;
-         std::cout << brightness->getInputPath() << std::endl;
-         std::cout << brightness->getOutputPath() << std::endl;
-         std::cout << brightness->getValue() << std::endl;
-         brightness->changeBrightness();
-         std::cout << "Operation successful!" << std::endl;
+         try {
+             std::shared_ptr<Brightness> brightness = std::make_shared<Brightness>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+         
+         //std::cout << brightness->getArguments() << std::endl;
+         //std::cout << brightness->getInputPath() << std::endl;
+         //std::cout << brightness->getOutputPath() << std::endl;
+         //std::cout << brightness->getValue() << std::endl;
+             brightness->changeBrightness();
+             std::cout << "Operation successful!" << std::endl;
+         }
+         catch (std::exception& e) {
+             std::cout << "There was an error. " << e.what() << std::endl;
+         }
      }
      else if (command == "--contrast") {
-         std::shared_ptr<Contrast> contrast = std::make_shared<Contrast>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
-         std::cout << contrast->getArguments() << std::endl;
-         std::cout << contrast->getInputPath() << std::endl;
-         std::cout << contrast->getOutputPath() << std::endl;
-         std::cout << contrast->getSlope() << std::endl;
-         contrast->changeContrast();
-         std::cout << "Operation successful!" << std::endl;
+         try {
+             std::shared_ptr<Contrast> contrast = std::make_shared<Contrast>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+             contrast->changeContrast();
+             std::cout << "Operation successful!" << std::endl;
+         }
+         catch (std::exception& e) {
+             std::cout << "There was an error. " << e.what() << std::endl;
+         }
      }
      else {
-         std::cout << "Operation failed." << std::endl;
+         throw std::exception("Wrong operation specified. Type --help for more information\n");
      }
 
  }

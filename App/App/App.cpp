@@ -9,8 +9,6 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    //cout << operation << " " << val << " " << in << " " << out << endl;
-    //cout << argc;
     std::shared_ptr<Engine> engine;
     try {
         if (argc == 2) {
@@ -55,10 +53,7 @@ int main(int argc, char* argv[])
                
                 throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
-            //string in(argv[4]);
-            //string out(argv[6]);
             engine = make_shared<Engine>(operation, params, in, out);
-            //cout << engine->getCommand() << " " << engine->getValue() << endl << engine->getInputPath() << endl << engine->getOutputPath() << endl;
             engine->openImage();
         }
         else {
