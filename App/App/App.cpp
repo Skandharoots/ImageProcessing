@@ -4,6 +4,7 @@
 #include <iostream>
 #include "CImg.h"
 #include "engine.h"
+#include "help.h"
 
 using namespace std;
 
@@ -14,14 +15,8 @@ int main(int argc, char* argv[])
         if (argc == 2) {
             string operation(argv[1]);
             if (operation == "--help") {
-                cout << "Here are some useful tips for the operations of the program." << std::endl;
-                cout << "The syntax for the operations is as follows." << std::endl;
-                cout << "FileName --operation [-arg1='number' -arg2='number...] --input -path='path to the file' --output -path='path of the output'" << std::endl;
-                cout << "The available operations for the --operations except for the --help are:" << endl;
-                cout << "--brightness: This operation reduces or increases the brightness of the picture. -value='number' can be negative or positive." << endl;
-                cout << "--contrast: This operation increases the contrast of the picture. -value='number' can be positive or negative." << endl;
-                cout << endl;
-
+                std::shared_ptr<Help> help = make_shared<Help>();
+                help->printHelp();
             }
             else {
                 throw std::exception("Type --help to see possible commands.");

@@ -131,12 +131,14 @@
     <ClCompile Include="brightness.cpp" />
     <ClCompile Include="contrast.cpp" />
     <ClCompile Include="engine.cpp" />
+    <ClCompile Include="help.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="brightness.h" />
     <ClInclude Include="CImg.h" />
     <ClInclude Include="contrast.h" />
     <ClInclude Include="engine.h" />
+    <ClInclude Include="help.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
