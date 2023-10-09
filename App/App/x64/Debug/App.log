@@ -1,2 +1,17 @@
-﻿  engine.cpp
-  App.vcxproj -> C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\x64\Debug\App.exe
+﻿  contrast.cpp
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\contrast.cpp(151,22): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=unsigned char
+          ]
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\contrast.cpp(152,22): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=unsigned char
+          ]
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\contrast.cpp(153,22): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=unsigned char
+          ]
+  App.vcxproj -> C:\Users\skand\Documents\University\5sem\ImageProcessing\App\x64\Debug\App.exe

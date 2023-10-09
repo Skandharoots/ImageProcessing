@@ -13,7 +13,6 @@ Contrast::Contrast(std::string arguments, std::string input, std::string output)
 	this->arguments = arguments;
 	this->input = input;
 	this->output = output;
-	convertArguments();
 }
 
 Contrast::~Contrast() {
@@ -70,87 +69,97 @@ void Contrast::convertArguments() {
 			std::cout << getSlope() << "\n";
 		}
 		else {
-			std::cout << "Cannot convert parameter value." << std::endl;
+			throw std::exception("Cannot convert argument value.\n");
 		}
 	}
 	else {
-		std::cout << "Wrong arguments! See --help for more info." << std::endl;
+		throw std::exception("Wrong arguments! See --help for more info.");
 	}
 
 }
 
 void Contrast::changeContrast() {
-	CImg<unsigned char> image(getInputPath().c_str()); // create the image from a file (must exist in the working dir)
-	for (int x = 0; x < image.width(); x++) {
-		for (int y = 0; y < image.height(); y++) { // only upper half of the image gets processed
-			float valR = image(x, y, 0); // Read red value at coordinates (x, y)
-			float valG = image(x, y, 1); // Read green value at coordinates (x, y)
-			float valB = image(x, y, 2); // Read blue value at coordinates (x, y)
-			float avg = (valR + valG + valB) / 3; // Compute average pixel value (grey)
-			if (valR > 128) {
-				float temp = valR - 128;
-				temp *= getSlope();
-				if (128 + temp > 255) {
-					valR = 255;
+	try {
+		convertArguments();
+		CImg<unsigned char> image(getInputPath().c_str()); // create the image from a file (must exist in the working dir)
+		for (int x = 0; x < image.width(); x++) {
+			for (int y = 0; y < image.height(); y++) { // only upper half of the image gets processed
+				float valR = image(x, y, 0); // Read red value at coordinates (x, y)
+				float valG = image(x, y, 1); // Read green value at coordinates (x, y)
+				float valB = image(x, y, 2); // Read blue value at coordinates (x, y)
+				float avg = (valR + valG + valB) / 3; // Compute average pixel value (grey)
+				if (valR > 128) {
+					float temp = valR - 128;
+					temp *= getSlope();
+					if (128 + temp > 255) {
+						valR = 255;
+					}
+					else {
+						valR = 128 + temp;
+					}
 				}
-				else {
-					valR = 128 + temp;
+				else if (valR < 128) {
+					float temp = 128 - valR;
+					temp *= getSlope();
+					if (128 - temp < 0) {
+						valR = 0;
+					}
+					else {
+						valR = 128 - temp;
+					}
 				}
+				if (valG > 128) {
+					float temp = valG - 128;
+					temp *= getSlope();
+					if (128 + temp > 255) {
+						valG = 255;
+					}
+					else {
+						valG = 128 + temp;
+					}
+				}
+				else if (valG < 128) {
+					float temp = 128 - valG;
+					temp *= getSlope();
+					if (128 - temp < 0) {
+						valG = 0;
+					}
+					else {
+						valG = 128 - temp;
+					}
+				}
+				if (valB > 128) {
+					float temp = valB - 128;
+					temp *= getSlope();
+					if (128 + temp > 255) {
+						valB = 255;
+					}
+					else {
+						valB = 128 + temp;
+					}
+				}
+				else if (valB < 128) {
+					float temp = 128 - valB;
+					temp *= getSlope();
+					if (128 - temp < 0) {
+						valB = 0;
+					}
+					else {
+						valB = 128 - temp;
+					}
+				}
+				image(x, y, 0) = valR;
+				image(x, y, 1) = valG;
+				image(x, y, 2) = valB;
 			}
-			else if (valR < 128) {
-				float temp = 128 - valR;
-				temp *= getSlope();
-				if (128 - temp < 0) {
-					valR = 0;
-				}
-				else {
-					valR = 128 - temp;
-				}
-			}
-			if (valG > 128) {
-				float temp = valG - 128;
-				temp *= getSlope();
-				if (128 + temp > 255) {
-					valG = 255;
-				}
-				else {
-					valG = 128 + temp;
-				}
-			}
-			else if (valG < 128) {
-				float temp = 128 - valG;
-				temp *= getSlope();
-				if (128 - temp < 0) {
-					valG = 0;
-				}
-				else {
-					valG = 128 - temp;
-				}
-			}
-			if (valB > 128) {
-				float temp = valB - 128;
-				temp *= getSlope();
-				if (128 + temp > 255) {
-					valB = 255;
-				}
-				else {
-					valB = 128 + temp;
-				}
-			}
-			else if (valB < 128) {
-				float temp = 128 - valB;
-				temp *= getSlope();
-				if (128 - temp < 0) {
-					valB = 0;
-				}
-				else {
-					valB = 128 - temp;
-				}
-			}
-			image(x, y, 0) = valR;
-			image(x, y, 1) = valG;
-			image(x, y, 2) = valB;
 		}
+		image.save_bmp(getOutputPath().c_str()); // save the modified image to a file
 	}
-	image.save_bmp(getOutputPath().c_str()); // save the modified image to a file
+	catch (CImgIOException e) {
+		throw std::exception("Cannot load or save from the path. Path invalid.\n");
+	}
+	catch (std::exception& e) {
+		throw std::exception(e.what());
+	}
+	
 }
