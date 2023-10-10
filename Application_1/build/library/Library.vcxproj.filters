@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\src\brightness.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\src\contrast.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\src\engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\src\help.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\src\fliphorizontal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\src\flipvertical.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\include\brightness.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\include\CImg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\include\contrast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\include\engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\include\help.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\include\fliphorizontal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\include\flipvertical.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\skand\Documents\University\5sem\ImageProcessing\Application_1\library\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{A983E45B-B3C0-3319-9D91-DFEF9BC8339C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{B99C88E1-462B-3C5C-923F-5A2EF8BCAC4F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

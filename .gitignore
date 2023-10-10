@@ -2,3 +2,6 @@
 /App/x64
 ./App/.vs
 ./App/App/x64
+/.vscode
+/.idea
+/build
