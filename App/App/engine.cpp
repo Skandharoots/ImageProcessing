@@ -11,6 +11,7 @@
 #include "engine.h"
 #include "contrast.h"
 #include "flipvertical.h"
+#include "fliporizontal.h"
 #include "CImg.h"
 
 
@@ -146,6 +147,16 @@ std::string Engine::convertInputPath(std::string path) {
          try {
              std::shared_ptr<FlipVertical> vflip = std::make_shared<FlipVertical>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
              vflip->flip();
+             std::cout << "Operation successful!" << std::endl;
+         }
+         catch (std::exception& e) {
+             std::cout << "There was an error. " << e.what() << std::endl;
+         }
+     }
+     else if (command == "--hflip") {
+         try {
+             std::shared_ptr<FlipHorizontal> hflip = std::make_shared<FlipHorizontal>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+             hflip->flip();
              std::cout << "Operation successful!" << std::endl;
          }
          catch (std::exception& e) {
