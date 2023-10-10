@@ -1,9 +1,0 @@
-C:/Users/skand/Documents/University/5sem/ImageProcessing/Application_1/build/CMakeFiles/RUN_TESTS.dir
-C:/Users/skand/Documents/University/5sem/ImageProcessing/Application_1/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/skand/Documents/University/5sem/ImageProcessing/Application_1/build/CMakeFiles/ZERO_CHECK.dir
-C:/Users/skand/Documents/University/5sem/ImageProcessing/Application_1/build/library/CMakeFiles/Library.dir
-C:/Users/skand/Documents/University/5sem/ImageProcessing/Application_1/build/library/CMakeFiles/RUN_TESTS.dir
-C:/Users/skand/Documents/University/5sem/ImageProcessing/Application_1/build/library/CMakeFiles/ALL_BUILD.dir
-C:/Users/skand/Documents/University/5sem/ImageProcessing/Application_1/build/program/CMakeFiles/Program.dir
-C:/Users/skand/Documents/University/5sem/ImageProcessing/Application_1/build/program/CMakeFiles/RUN_TESTS.dir
-C:/Users/skand/Documents/University/5sem/ImageProcessing/Application_1/build/program/CMakeFiles/ALL_BUILD.dir
