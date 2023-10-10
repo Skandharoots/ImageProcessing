@@ -100,16 +100,16 @@ void Brightness::changeBrightness() {
 	cimg::exception_mode(0);
 	try {
 		convertArguments();
-		CImg<unsigned char> image(getInputPath().c_str()); // create the image from a file (must exist in the working dir)
+		CImg<unsigned char> image(getInputPath().c_str());
 		std::cout << "Spectrum: " << image.spectrum();
 		for (int x = 0; x < image.width(); x++) {
-			for (int y = 0; y < image.height(); y++) { // only upper half of the image gets processed
+			for (int y = 0; y < image.height(); y++) {
 				for (int i = 0; i < image.spectrum(); i++) {
 					image(x, y, i) = detectSpectrum(image(x, y, i));
 				}
 			}
 		}
-		image.save_bmp(getOutputPath().c_str()); // save the modified image to a file
+		image.save_bmp(getOutputPath().c_str());
 	} catch (CImgIOException e) {
 		throw std::exception("Cannot open or save file from path provided. Path is invalid.\n");
 	} catch (std::exception& e) {
