@@ -78,79 +78,40 @@ void Contrast::convertArguments() {
 
 }
 
+float Contrast::detectSpectrum(float value) {
+	if (value > 128) {
+		float temp = value - 128;
+		temp *= getSlope();
+		if (128 + temp > 255) {
+			value = 255;
+		}
+		else {
+			value = 128 + temp;
+		}
+	}
+	else if (value < 128) {
+		float temp = 128 - value;
+		temp *= getSlope();
+		if (128 - temp < 0) {
+			value = 0;
+		}
+		else {
+			value = 128 - temp;
+		}
+	}
+	return value;
+}
+
 void Contrast::changeContrast() {
+	cimg::exception_mode(0);
 	try {
 		convertArguments();
 		CImg<unsigned char> image(getInputPath().c_str()); // create the image from a file (must exist in the working dir)
 		for (int x = 0; x < image.width(); x++) {
 			for (int y = 0; y < image.height(); y++) { // only upper half of the image gets processed
-				float valR = image(x, y, 0); // Read red value at coordinates (x, y)
-				float valG = image(x, y, 1); // Read green value at coordinates (x, y)
-				float valB = image(x, y, 2); // Read blue value at coordinates (x, y)
-				float avg = (valR + valG + valB) / 3; // Compute average pixel value (grey)
-				if (valR > 128) {
-					float temp = valR - 128;
-					temp *= getSlope();
-					if (128 + temp > 255) {
-						valR = 255;
-					}
-					else {
-						valR = 128 + temp;
-					}
+				for (int i = 0; i < image.spectrum(); i++) {
+					image(x, y, i) = detectSpectrum(image(x, y, i));
 				}
-				else if (valR < 128) {
-					float temp = 128 - valR;
-					temp *= getSlope();
-					if (128 - temp < 0) {
-						valR = 0;
-					}
-					else {
-						valR = 128 - temp;
-					}
-				}
-				if (valG > 128) {
-					float temp = valG - 128;
-					temp *= getSlope();
-					if (128 + temp > 255) {
-						valG = 255;
-					}
-					else {
-						valG = 128 + temp;
-					}
-				}
-				else if (valG < 128) {
-					float temp = 128 - valG;
-					temp *= getSlope();
-					if (128 - temp < 0) {
-						valG = 0;
-					}
-					else {
-						valG = 128 - temp;
-					}
-				}
-				if (valB > 128) {
-					float temp = valB - 128;
-					temp *= getSlope();
-					if (128 + temp > 255) {
-						valB = 255;
-					}
-					else {
-						valB = 128 + temp;
-					}
-				}
-				else if (valB < 128) {
-					float temp = 128 - valB;
-					temp *= getSlope();
-					if (128 - temp < 0) {
-						valB = 0;
-					}
-					else {
-						valB = 128 - temp;
-					}
-				}
-				image(x, y, 0) = valR;
-				image(x, y, 1) = valG;
-				image(x, y, 2) = valB;
 			}
 		}
 		image.save_bmp(getOutputPath().c_str()); // save the modified image to a file

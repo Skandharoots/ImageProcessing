@@ -22,5 +22,6 @@ public:
 	void setSlope(float slope);
 	float getSlope();
 	void convertArguments();
+	float detectSpectrum(float value);
 	void changeContrast();
 };

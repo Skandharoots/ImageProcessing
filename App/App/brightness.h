@@ -22,5 +22,6 @@ public:
 	void setValue(int value);
 	int getValue();
 	void convertArguments();
+	float detectSpectrum(float value);
 	void changeBrightness();
 };

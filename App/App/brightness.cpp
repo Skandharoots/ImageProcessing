@@ -83,46 +83,30 @@ void Brightness::convertArguments() {
 
 }
 
+float Brightness::detectSpectrum(float value) {
+	if (value + getValue() > 255) {
+		value = 255;
+	}
+	else if (value + getValue() < 0) {
+		value = 0;
+	}
+	else {
+		value += getValue();
+	}
+	return value;
+}
+
 void Brightness::changeBrightness() {
+	cimg::exception_mode(0);
 	try {
 		convertArguments();
 		CImg<unsigned char> image(getInputPath().c_str()); // create the image from a file (must exist in the working dir)
+		std::cout << "Spectrum: " << image.spectrum();
 		for (int x = 0; x < image.width(); x++) {
 			for (int y = 0; y < image.height(); y++) { // only upper half of the image gets processed
-				float valR = image(x, y, 0); // Read red value at coordinates (x, y)
-				float valG = image(x, y, 1); // Read green value at coordinates (x, y)
-				float valB = image(x, y, 2); // Read blue value at coordinates (x, y)
-				float avg = (valR + valG + valB) / 3; // Compute average pixel value (grey)
-				if (valR + getValue() > 255) {
-					valR = 255;
+				for (int i = 0; i < image.spectrum(); i++) {
+					image(x, y, i) = detectSpectrum(image(x, y, i));
 				}
-				else if (valR + getValue() < 0) {
-					valR = 0;
-				}
-				else {
-					valR += getValue();
-				}
-				if (valG + getValue() > 255) {
-					valG = 255;
-				}
-				else if (valG + getValue() < 0) {
-					valG = 0;
-				}
-				else {
-					valG += getValue();
-				}
-				if (valB + getValue() > 255) {
-					valB = 255;
-				}
-				else if (valB + getValue() < 0) {
-					valB = 0;
-				}
-				else {
-					valB += getValue();
-				}
-				image(x, y, 0) = valR;
-				image(x, y, 1) = valG;
-				image(x, y, 2) = valB;
 			}
 		}
 		image.save_bmp(getOutputPath().c_str()); // save the modified image to a file
