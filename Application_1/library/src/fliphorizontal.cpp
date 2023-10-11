@@ -46,7 +46,7 @@ void FlipHorizontal::flip() {
 				}
 			}
 		}
-		if (image.spectrum() == 3) {
+		else if (image.spectrum() == 3) {
 			for (int x = 0; x < image.width(); x++) {
 				for (int y = 0; y < image.height() / 2; y++) {
 					temp0 = image(x, y, 0);

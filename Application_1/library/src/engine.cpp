@@ -10,6 +10,7 @@
 #include <regex>
 #include "engine.h"
 #include "contrast.h"
+#include "GeometricMeanFilter.h"
 #include "CImg.h"
 
 
@@ -140,6 +141,16 @@ std::string Engine::convertInputPath(std::string path) {
          catch (std::exception& e) {
              std::cout << "There was an error. " << e.what() << std::endl;
          }
+     }
+     else if (command == "--gmean") {
+        try {
+            std::shared_ptr<GeometricMeanFilter> gmean = std::make_shared<GeometricMeanFilter>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+            gmean->filter();
+            std::cout << "Operation successful!" << std::endl;
+        }
+        catch (std::exception& e) {
+            std::cout << "There was an error. " << e.what() << std::endl;
+        }
      }
      else {
          throw std::exception("Wrong operation specified. Type --help for more information\n");

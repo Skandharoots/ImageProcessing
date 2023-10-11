@@ -11,12 +11,14 @@ set(SOURCE_FILES
         include/help.h
         include/fliphorizontal.h
         include/flipvertical.h
+        include/GeometricMeanFilter.h
             src/brightness.cpp
             src/contrast.cpp
             src/engine.cpp
             src/help.cpp
             src/fliphorizontal.cpp
             src/flipvertical.cpp
+            src/GeometricMeanFilter.cpp
         )
 
 add_library(Library ${SOURCE_FILES})
