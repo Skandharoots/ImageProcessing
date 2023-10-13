@@ -64,7 +64,8 @@ void AlphaTrimmedMeanFilter::filter() {
 			for (int x = 1; x < copy.width() - 1; x++) {
 					for (int y = 1; y < copy.height() - 1; y++) {
 						if (((copy(x, y, 0) == 0) && (copy(x, y, 1) == 0) && (copy(x, y, 2) == 0)) || 
-							((copy(x, y, 0) == 255) && (copy(x, y, 1) == 255) && (copy(x, y, 2) == 255))) {
+							((copy(x, y, 0) == 255) && (copy(x, y, 1) == 255) && (copy(x, y, 2) == 255)) ||
+							(!(0 < copy(x, y, 0) < 255)) || !(0 < (copy(x, y, 1) < 255)) || !(0 < copy(x, y, 2) < 255)) {
 								for (int i = x - 1; i < x + 2; i++) {
 									for (int j = y - 1; j < y + 2; j++) {
 										box0[k] = copy(i, j, 0);
