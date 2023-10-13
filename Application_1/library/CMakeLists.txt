@@ -12,6 +12,7 @@ set(SOURCE_FILES
         include/fliphorizontal.h
         include/flipvertical.h
         include/GeometricMeanFilter.h
+        include/AlphaTrimmedMeanFilter.h
             src/brightness.cpp
             src/contrast.cpp
             src/engine.cpp
@@ -19,6 +20,7 @@ set(SOURCE_FILES
             src/fliphorizontal.cpp
             src/flipvertical.cpp
             src/GeometricMeanFilter.cpp
+            src//AlphaTrimmedMeanFilter.cpp
         )
 
 add_library(Library ${SOURCE_FILES})

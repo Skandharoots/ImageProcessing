@@ -29,6 +29,7 @@ int main(int argc, char* argv[])
             string arg3(argv[5]);
             string in;
             string out;
+            cout << "Arguments: " << params << endl;
             if (arg2 == "--input") {
                 in = argv[4];
             }
