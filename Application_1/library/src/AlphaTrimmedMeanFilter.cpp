@@ -44,7 +44,7 @@ float AlphaTrimmedMeanFilter::sort(float box[], int n, int d) {
 		}
 		box[j + 1] = temp;
 	}
-	for (int k = d; k <= sizeof(box) - d; k++) {
+	for (int k = d; k < sizeof(box) - d; k++) {
 		sum += box[k];
 	}
 	result = sum / (sizeof(box) - (2*d));
@@ -66,21 +66,18 @@ void AlphaTrimmedMeanFilter::filter() {
 		if (image.spectrum() == 3) {
 			for (int x = 1; x < copy.width() - 1; x++) {
 					for (int y = 1; y < copy.height() - 1; y++) {
-						if (((copy(x, y, 0) == 0) && (copy(x, y, 1) == 0) && (copy(x, y, 2) == 0)) || 
-							((copy(x, y, 0) == 255) && (copy(x, y, 1) == 255) && (copy(x, y, 2) == 255))) {
-								for (int i = x - 1; i < x + 2; i++) {
-									for (int j = y - 1; j < y + 2; j++) {
-										box0[k] = copy(i, j, 0);
-										box1[k] = copy(i, j, 1);
-										box2[k] = copy(i, j, 2);
-										k++;
-									}
-								}
-							k = 0;
-							image(x, y, 0) = sort(box0, 9, 1);
-							image(x, y, 1) = sort(box1, 9, 1);
-							image(x, y, 2) = sort(box2, 9, 1);
+						for (int i = x - 1; i < x + 2; i++) {
+							for (int j = y - 1; j < y + 2; j++) {
+								box0[k] = copy(i, j, 0);
+								box1[k] = copy(i, j, 1);
+								box2[k] = copy(i, j, 2);
+								k++;
 							}
+						}
+						k = 0;
+						image(x, y, 0) = sort(box0, 9, 1);
+						image(x, y, 1) = sort(box1, 9, 1);
+						image(x, y, 2) = sort(box2, 9, 1);		
 					}
 			}
 		}
