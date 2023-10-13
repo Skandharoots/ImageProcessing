@@ -12,6 +12,7 @@
 #include "contrast.h"
 #include "GeometricMeanFilter.h"
 #include "AlphaTrimmedMeanFilter.h"
+#include "MeanSquareError.h"
 #include "CImg.h"
 
 
@@ -60,31 +61,6 @@ std::string Engine::getOutputPath() {
     return this->outputPath;
 }
 
-/*int Engine::convertValue(std::string var) {
-    std::stringstream ss2(var);
-    std::string del2;
-    int temp = 0;
-    std::vector<std::string> vec;
-    const std::regex parameter1("[0-9]+");
-    const std::regex parameter2("[-][0-9]+");
-    while (getline(ss2, del2, '=')) {
-        vec.push_back(del2);
-    }
-    if (regex_match(vec[1], parameter1) == 1) {
-        temp = stoi(vec[1]);
-    }
-    if (regex_match(vec[1], parameter2)) {
-        del2 = vec[1].substr(vec[1].find("-") + 1);
-        temp = stoi(del2) * -1;
-    }
-    else {
-        std::cout << "Cannot convert parameter value." << std::endl;
-    }
-    return temp;
-}*/
-
-
-
 std::string Engine::convertInputPath(std::string path) {
     std::stringstream ss(path);
     std::string del2;
@@ -101,22 +77,6 @@ std::string Engine::convertInputPath(std::string path) {
     return del2;
 }
 
-/*std::string Engine::convertOutputPath(std::string path) {
-    std::stringstream ss(path);
-    std::string del2;
-    std::vector<std::string> vec;
-    while (getline(ss, del2, '=')) {
-        vec.push_back(del2);
-    }
-    if (vec.size() > 1) {
-        del2 = vec[1];
-    }
-    else {
-        std::cout << "Cannot convert parameter value." << std::endl;
-    }
-    return del2;
-}
-*/
  void Engine::openImage() {
      if (command == "--brightness") {
          try {
@@ -156,6 +116,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--alpha") {
         std::shared_ptr<AlphaTrimmedMeanFilter> alpha = std::make_shared<AlphaTrimmedMeanFilter>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         alpha->filter();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--mse") {
+        std::shared_ptr<MeanSquareError> mse = std::make_shared<MeanSquareError>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        mse->calculate();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
