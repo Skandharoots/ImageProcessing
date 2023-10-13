@@ -60,12 +60,25 @@ void AlphaTrimmedMeanFilter::filter() {
 		float box0[9];
 		float box1[9];
 		float box2[9];
+		float mean0 = 0;
+        float mean1 = 0;
+        float mean2 = 0;
+		for (int x = 0; x < image.width(); x++) {
+            for (int y = 1; y < image.height(); y++) {
+                mean0 += image(x, y, 0);
+                mean1 += image(x, y, 1);
+                mean2 += image(x, y, 2);
+            }
+        }
+		mean0 = mean0 / (image.width() * image.height());
+        mean1 = mean1 / (image.width() * image.height());
+        mean2 = mean2 / (image.width() * image.height());
 		if (image.spectrum() == 3) {
 			for (int x = 1; x < copy.width() - 1; x++) {
 					for (int y = 1; y < copy.height() - 1; y++) {
 						if (((copy(x, y, 0) == 0) && (copy(x, y, 1) == 0) && (copy(x, y, 2) == 0)) || 
 							((copy(x, y, 0) == 255) && (copy(x, y, 1) == 255) && (copy(x, y, 2) == 255)) ||
-							(!(0 < copy(x, y, 0) < 255)) || !(0 < (copy(x, y, 1) < 255)) || !(0 < copy(x, y, 2) < 255)) {
+							((mean0 - copy(x, y, 0) > 20) || (mean1 - copy(x, y, 1) > 20) || (mean2 - copy(x, y, 2) > 20))) {
 								for (int i = x - 1; i < x + 2; i++) {
 									for (int j = y - 1; j < y + 2; j++) {
 										box0[k] = copy(i, j, 0);
