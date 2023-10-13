@@ -46,9 +46,7 @@ float AlphaTrimmedMeanFilter::sort(float box[], int n, int d) {
 	}
 	for (int k = d; k <= sizeof(box) - d; k++) {
 		sum += box[k];
-		std::cout << "Box[" << k << "] = " << box[k];
 	}
-	std::cout << std::endl;
 	result = sum / (sizeof(box) - (2*d));
 	return result;
 }

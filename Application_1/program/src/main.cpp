@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <iomanip>
 #include "CImg.h"
 #include "engine.h"
 #include "help.h"
@@ -10,6 +11,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+    time_t start, end;
+    time(&start);
     std::shared_ptr<Engine> engine;
     try {
         if (argc == 2) {
@@ -29,7 +32,6 @@ int main(int argc, char* argv[])
             string arg3(argv[5]);
             string in;
             string out;
-            cout << "Arguments: " << params << endl;
             if (arg2 == "--input") {
                 in = argv[4];
             }
@@ -46,15 +48,19 @@ int main(int argc, char* argv[])
                 in = argv[6];
             }
             else {
-               
                 throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             engine = make_shared<Engine>(operation, params, in, out);
             engine->openImage();
+            
         }
         else {
             throw std::exception("Type --help for information.\n");
         }
+        time(&end);
+        float taken_time = float(end - start);
+        std::cout << "Execution time = " << fixed << taken_time << std::setprecision(10);
+        std::cout << " sec" << std::endl;
     }
     catch (std::exception& e) {
         std::cout << "There was an error. " << e.what() << endl;
