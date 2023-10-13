@@ -7,7 +7,7 @@ class AlphaTrimmedMeanFilter {
         std::string inputPath;
         std::string outputPath;
     public:
-        AlphaTrimmedMeanFilter();
+        AlphaTrimmedMeanFilter(std::string inputPath, std::string outputPath);
         ~AlphaTrimmedMeanFilter();
         std::string getInputPath();
 	    void setInputPath(std::string path);
