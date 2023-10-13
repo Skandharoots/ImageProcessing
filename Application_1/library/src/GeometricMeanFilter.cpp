@@ -35,9 +35,7 @@ void GeometricMeanFilter::filter() {
     cimg::exception_mode(0);
 	try {
         CImg<unsigned char> image(getInputPath().c_str());
-        std::cout << "Spectrum: " << image.spectrum(); // create the image from a file (must exist in the working dir)
         CImg<unsigned char> copy(getInputPath().c_str());
-        std::cout << "Spectrum: " << copy.spectrum();
         float sum0 = 1;
         float sum1 = 1;
         float sum2 = 1;

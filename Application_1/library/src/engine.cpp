@@ -11,6 +11,7 @@
 #include "engine.h"
 #include "contrast.h"
 #include "GeometricMeanFilter.h"
+#include "AlphaTrimmedMeanFilter.h"
 #include "CImg.h"
 
 
@@ -151,6 +152,11 @@ std::string Engine::convertInputPath(std::string path) {
         catch (std::exception& e) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
+     }
+     else if (command == "--alpha") {
+        std::shared_ptr<AlphaTrimmedMeanFilter> alpha = std::make_shared<AlphaTrimmedMeanFilter>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        alpha->filter();
+        std::cout << "Operation successful!" << std::endl;
      }
      else {
          throw std::exception("Wrong operation specified. Type --help for more information\n");
