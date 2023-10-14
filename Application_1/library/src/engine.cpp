@@ -10,6 +10,8 @@
 #include <regex>
 #include "engine.h"
 #include "contrast.h"
+#include "Negative.h"
+#include "FlipDiagonal.h"
 #include "GeometricMeanFilter.h"
 #include "AlphaTrimmedMeanFilter.h"
 #include "MeanSquareError.h"
@@ -106,6 +108,26 @@ std::string Engine::convertInputPath(std::string path) {
          catch (std::exception& e) {
              std::cout << "There was an error. " << e.what() << std::endl;
          }
+     }
+     else if (command == "--negative") {
+        try {
+            std::shared_ptr<Negative> negative = std::make_shared<Negative>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+            negative->negate();
+            std::cout << "Operation successful!" << std::endl;
+        }
+        catch (std::exception& e) {
+            std::cout << "There was an error. " << e.what() << std::endl;
+        }
+     }
+     else if (command == "--flipdiagonal") {
+        try {
+            std::shared_ptr<FlipDiagonal> flipDiagonal = std::make_shared<FlipDiagonal>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+            flipDiagonal->flip();
+            std::cout << "Operation successful!" << std::endl;
+        }
+        catch (std::exception& e) {
+            std::cout << "There was an error. " << e.what() << std::endl;
+        }
      }
      else if (command == "--gmean") {
         try {

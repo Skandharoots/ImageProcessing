@@ -7,10 +7,12 @@ set(SOURCE_FILES
         include/Brightness.h
         include/CImg.h
         include/Contrast.h
+        include/Negative.h
         include/Engine.h
         include/Help.h
         include/FlipHorizontal.h
         include/FlipVertical.h
+        include/FlipDiagonal.h
         include/GeometricMeanFilter.h
         include/AlphaTrimmedMeanFilter.h
         include/MeanSquareError.h
@@ -20,10 +22,12 @@ set(SOURCE_FILES
         include/MaximumDifference.h
             src/Brightness.cpp
             src/Contrast.cpp
+            src/Negative.cpp
             src/Engine.cpp
             src/Help.cpp
             src/FlipHorizontal.cpp
             src/FlipVertical.cpp
+            src/FlipDiagonal.cpp
             src/GeometricMeanFilter.cpp
             src//AlphaTrimmedMeanFilter.cpp
             src/MeanSquareError.cpp
