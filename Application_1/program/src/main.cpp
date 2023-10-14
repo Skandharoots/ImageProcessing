@@ -25,6 +25,34 @@ int main(int argc, char* argv[])
                 throw std::exception("Type --help to see possible commands.");
             }
         }
+        else if (argc == 6) {
+            string operation(argv[1]);
+            string arg2(argv[2]);
+            string arg3(argv[4]);
+            string in;
+            string out;
+            if (arg2 == "--input") {
+                in = argv[3];
+            }
+            else if (arg2 == "--output") {
+                out = argv[3];
+            }
+            else {
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+            }
+            if (arg3 == "--output") {
+                out = argv[5];
+            }
+            else if (arg3 == "--input") {
+                in = argv[5];
+            }
+            else {
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+            }
+            engine = make_shared<Engine>(operation, "", in, out);
+            engine->openImage();
+            
+        }
         else if (argc == 7) {
             string operation(argv[1]);
             string params(argv[2]);
