@@ -17,6 +17,7 @@ set(SOURCE_FILES
         include/PeakMeanSquareError.h
         include/SignalToNoiseRatio.h
         include/PeakSignalToNoiseRatio.h
+        include/MaximumDifference.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Engine.cpp
@@ -29,6 +30,7 @@ set(SOURCE_FILES
             src/PeakMeanSquareError.cpp
             src/SignalToNoiseRatio.cpp
             src/PeakSignalToNoiseRatio.cpp
+            src/MaximumDifference.cpp
         )
 
 add_library(Library ${SOURCE_FILES})
