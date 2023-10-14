@@ -61,6 +61,7 @@ void PeakMeanSquareError::calculate() {
                     oryginalSumMax = 0;
                 }
         }
+        max = max / 3;
         mse = sum_sq / ((oryginal.height() * oryginal.width()) * (max * max));
         std::cout << "Peak Mean square error is: " << std::fixed << mse << std::setprecision(2) << std::endl;
     } catch (CImgIOException e) {
