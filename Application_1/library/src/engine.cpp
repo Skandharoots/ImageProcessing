@@ -13,6 +13,7 @@
 #include "GeometricMeanFilter.h"
 #include "AlphaTrimmedMeanFilter.h"
 #include "MeanSquareError.h"
+#include "PeakMeanSquareError.h"
 #include "CImg.h"
 
 
@@ -121,6 +122,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--mse") {
         std::shared_ptr<MeanSquareError> mse = std::make_shared<MeanSquareError>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         mse->calculate();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--pmse") {
+        std::shared_ptr<PeakMeanSquareError> pmse = std::make_shared<PeakMeanSquareError>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        pmse->calculate();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
