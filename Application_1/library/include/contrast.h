@@ -20,5 +20,6 @@ public:
 	void setSlope(float slope);
 	float getSlope();
 	void convertArguments();
+	float calculate(float val);
 	void changeContrast();
 };
