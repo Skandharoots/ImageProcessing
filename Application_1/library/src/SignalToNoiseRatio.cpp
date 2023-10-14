@@ -38,7 +38,6 @@ void SignalToNoiseRatio::calculate() {
     try {
         CImg<unsigned char> oryginal(getOryginalFile().c_str());
         CImg<unsigned char> processed(getProcessedFile().c_str());
-        float error = 0;
         float snr = 0;
         float sumOr = 0;
         float sumOrPro = 0;
