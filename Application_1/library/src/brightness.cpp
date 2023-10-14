@@ -83,6 +83,19 @@ void Brightness::convertArguments() {
 
 }
 
+float Brightness::calculate(float val) {
+	if (val + getValue() > 255) {
+		val = 255;
+	}
+	else if (val + getValue() < 0) {
+		val = 0;
+	}
+	else {
+		val += getValue();
+	}
+	return val;
+}
+
 void Brightness::changeBrightness() {
 	try {
 		convertArguments();
@@ -92,37 +105,9 @@ void Brightness::changeBrightness() {
 				float valR = image(x, y, 0); // Read red value at coordinates (x, y)
 				float valG = image(x, y, 1); // Read green value at coordinates (x, y)
 				float valB = image(x, y, 2); // Read blue value at coordinates (x, y)
-				float avg = (valR + valG + valB) / 3; // Compute average pixel value (grey)
-				if (valR + getValue() > 255) {
-					valR = 255;
-				}
-				else if (valR + getValue() < 0) {
-					valR = 0;
-				}
-				else {
-					valR += getValue();
-				}
-				if (valG + getValue() > 255) {
-					valG = 255;
-				}
-				else if (valG + getValue() < 0) {
-					valG = 0;
-				}
-				else {
-					valG += getValue();
-				}
-				if (valB + getValue() > 255) {
-					valB = 255;
-				}
-				else if (valB + getValue() < 0) {
-					valB = 0;
-				}
-				else {
-					valB += getValue();
-				}
-				image(x, y, 0) = valR;
-				image(x, y, 1) = valG;
-				image(x, y, 2) = valB;
+				image(x, y, 0) = calculate(valR);
+				image(x, y, 1) = calculate(valG);
+				image(x, y, 2) = calculate(valB);
 			}
 		}
 		image.save_bmp(getOutputPath().c_str()); // save the modified image to a file

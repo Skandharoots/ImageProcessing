@@ -4,22 +4,22 @@ project(Library)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
-        include/brightness.h
+        include/Brightness.h
         include/CImg.h
-        include/contrast.h
-        include/engine.h
-        include/help.h
-        include/fliphorizontal.h
-        include/flipvertical.h
+        include/Contrast.h
+        include/Engine.h
+        include/Help.h
+        include/FlipHorizontal.h
+        include/FlipVertical.h
         include/GeometricMeanFilter.h
         include/AlphaTrimmedMeanFilter.h
         include/MeanSquareError.h
-            src/brightness.cpp
-            src/contrast.cpp
-            src/engine.cpp
-            src/help.cpp
-            src/fliphorizontal.cpp
-            src/flipvertical.cpp
+            src/Brightness.cpp
+            src/Contrast.cpp
+            src/Engine.cpp
+            src/Help.cpp
+            src/FlipHorizontal.cpp
+            src/FlipVertical.cpp
             src/GeometricMeanFilter.cpp
             src//AlphaTrimmedMeanFilter.cpp
             src/MeanSquareError.cpp

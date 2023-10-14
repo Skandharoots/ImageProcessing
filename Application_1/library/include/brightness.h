@@ -20,5 +20,6 @@ public:
 	void setValue(int value);
 	int getValue();
 	void convertArguments();
+	float calculate(float val);
 	void changeBrightness();
 };
