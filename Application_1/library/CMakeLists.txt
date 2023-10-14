@@ -15,6 +15,7 @@ set(SOURCE_FILES
         include/AlphaTrimmedMeanFilter.h
         include/MeanSquareError.h
         include/PeakMeanSquareError.h
+        include/SignalToNoiseRatio.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Engine.cpp
@@ -25,6 +26,7 @@ set(SOURCE_FILES
             src//AlphaTrimmedMeanFilter.cpp
             src/MeanSquareError.cpp
             src/PeakMeanSquareError.cpp
+            src/SignalToNoiseRatio.cpp
         )
 
 add_library(Library ${SOURCE_FILES})

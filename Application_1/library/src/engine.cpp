@@ -14,6 +14,7 @@
 #include "AlphaTrimmedMeanFilter.h"
 #include "MeanSquareError.h"
 #include "PeakMeanSquareError.h"
+#include "SignalToNoiseRatio.h"
 #include "CImg.h"
 
 
@@ -127,6 +128,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--pmse") {
         std::shared_ptr<PeakMeanSquareError> pmse = std::make_shared<PeakMeanSquareError>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         pmse->calculate();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--snr") {
+        std::shared_ptr<SignalToNoiseRatio> snr = std::make_shared<SignalToNoiseRatio>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        snr->calculate();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
