@@ -54,7 +54,7 @@ void SignalToNoiseRatio::calculate() {
                 }
         }
         snr = 10 * log10((sumOr * sumOr) / (sumOrPro * sumOrPro));
-        std::cout << "Signal to noise ratio is: " << std::fixed << snr << std::setprecision(5) << std::endl;
+        std::cout << "Signal to noise ratio is: " << std::fixed << snr << std::setprecision(5) << " [dB]" << std::endl;
     } catch (CImgIOException e) {
         throw std::exception("Input paths are invalid.\n");
     }

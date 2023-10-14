@@ -15,6 +15,7 @@
 #include "MeanSquareError.h"
 #include "PeakMeanSquareError.h"
 #include "SignalToNoiseRatio.h"
+#include "PeakSignalToNoiseRatio.h"
 #include "CImg.h"
 
 
@@ -133,6 +134,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--snr") {
         std::shared_ptr<SignalToNoiseRatio> snr = std::make_shared<SignalToNoiseRatio>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         snr->calculate();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--psnr") {
+        std::shared_ptr<PeakSignalToNoiseRatio> psnr = std::make_shared<PeakSignalToNoiseRatio>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        psnr->calculate();
         std::cout << "Operation successful!" << std::endl;
      }
      else {

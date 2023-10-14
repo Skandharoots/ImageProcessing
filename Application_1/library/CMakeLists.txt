@@ -16,6 +16,7 @@ set(SOURCE_FILES
         include/MeanSquareError.h
         include/PeakMeanSquareError.h
         include/SignalToNoiseRatio.h
+        include/PeakSignalToNoiseRatio.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Engine.cpp
@@ -27,6 +28,7 @@ set(SOURCE_FILES
             src/MeanSquareError.cpp
             src/PeakMeanSquareError.cpp
             src/SignalToNoiseRatio.cpp
+            src/PeakSignalToNoiseRatio.cpp
         )
 
 add_library(Library ${SOURCE_FILES})
