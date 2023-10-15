@@ -8,6 +8,8 @@ set(SOURCE_FILES
         include/CImg.h
         include/Contrast.h
         include/Negative.h
+        include/Enlarge.h
+        include/Shrink.h
         include/Engine.h
         include/Help.h
         include/FlipHorizontal.h
@@ -23,6 +25,8 @@ set(SOURCE_FILES
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
+            src/Enlarge.cpp
+            src/Shrink.cpp
             src/Engine.cpp
             src/Help.cpp
             src/FlipHorizontal.cpp

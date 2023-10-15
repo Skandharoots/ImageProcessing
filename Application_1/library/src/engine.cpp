@@ -11,6 +11,8 @@
 #include "engine.h"
 #include "contrast.h"
 #include "Negative.h"
+#include "Enlarge.h"
+#include "Shrink.h"
 #include "FlipDiagonal.h"
 #include "GeometricMeanFilter.h"
 #include "AlphaTrimmedMeanFilter.h"
@@ -123,6 +125,26 @@ std::string Engine::convertInputPath(std::string path) {
         try {
             std::shared_ptr<FlipDiagonal> flipDiagonal = std::make_shared<FlipDiagonal>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
             flipDiagonal->flip();
+            std::cout << "Operation successful!" << std::endl;
+        }
+        catch (std::exception& e) {
+            std::cout << "There was an error. " << e.what() << std::endl;
+        }
+     }
+     else if (command == "--enlarge") {
+        try {
+            std::shared_ptr<Enlarge> enlarge = std::make_shared<Enlarge>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+            enlarge->enlarge();
+            std::cout << "Operation successful!" << std::endl;
+        }
+        catch (std::exception& e) {
+            std::cout << "There was an error. " << e.what() << std::endl;
+        }
+     }
+     else if (command == "--shrink") {
+        try {
+            std::shared_ptr<Shrink> shrink = std::make_shared<Shrink>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+            shrink->shrink();
             std::cout << "Operation successful!" << std::endl;
         }
         catch (std::exception& e) {
