@@ -1,5 +1,7 @@
-C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\App.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\x64\Debug\App.obj
-C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\brightness.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\x64\Debug\brightness.obj
-C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\contrast.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\x64\Debug\contrast.obj
-C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\engine.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\x64\Debug\engine.obj
-C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\help.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\ImageProcessing\App\App\x64\Debug\help.obj
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\App.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\x64\Debug\App.obj
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\brightness.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\x64\Debug\brightness.obj
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\contrast.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\x64\Debug\contrast.obj
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\engine.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\x64\Debug\engine.obj
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\fliphorizontal.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\x64\Debug\fliphorizontal.obj
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\flipvertical.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\x64\Debug\flipvertical.obj
+C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\help.cpp;C:\Users\skand\Documents\University\5sem\ImageProcessing\App\App\x64\Debug\help.obj

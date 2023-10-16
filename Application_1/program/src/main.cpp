@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <chrono>
 #include "CImg.h"
 #include "engine.h"
 #include "help.h"
@@ -11,8 +12,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    time_t start, end;
-    time(&start);
+    
+    auto startTime = std::chrono::steady_clock::now();
     std::shared_ptr<Engine> engine;
     try {
         if (argc == 2) {
@@ -85,10 +86,11 @@ int main(int argc, char* argv[])
         else {
             throw std::exception("Type --help for information.\n");
         }
-        time(&end);
-        float taken_time = float(end - start);
-        std::cout << "Execution time = " << fixed << taken_time << std::setprecision(10);
-        std::cout << " sec" << std::endl;
+        const auto endTimepoint = std::chrono::steady_clock::now();
+        const auto elapsedTime = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint)
+        .time_since_epoch() - std::chrono::time_point_cast<std::chrono::microseconds>(startTime).time_since_epoch();
+        std::cout << "Execution time = " << fixed << elapsedTime.count() / 1000 << std::setprecision(20);
+        std::cout << " ms" << std::endl;
     }
     catch (std::exception& e) {
         std::cout << "There was an error. " << e.what() << endl;

@@ -30,6 +30,12 @@
     <ClCompile Include="help.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="flipvertical.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fliphorizontal.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CImg.h">
@@ -45,6 +51,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="help.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="flipvertical.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fliporizontal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
