@@ -84,17 +84,17 @@ void Shrink::shrink() {
 		CImg<unsigned char> image(getInputPath().c_str()); // create the image from a file (must exist in the working dir)
 		int imWidth = static_cast<int>(image.width() / getScale());
         int imHeight = static_cast<int>(image.height() / getScale());
-        CImg<unsigned char> enlargedImage(imWidth, imHeight, 1, image.spectrum());
+        CImg<unsigned char> shrinkedImage(imWidth, imHeight, 1, image.spectrum());
         for (int x = 0; x < imWidth; x++) {
             for (int y = 0; y < imHeight; y++) {
             int imX = static_cast<int>(x * getScale());
             int imY = static_cast<int>(y * getScale());
             for (int z = 0; z < image.spectrum(); z++) {
-                enlargedImage(x, y, z) = image(imX, imY, z);
+                shrinkedImage(x, y, z) = image(imX, imY, z);
             }
         }
     }
-		enlargedImage.save_bmp(getOutputPath().c_str()); // save the modified image to a file
+		shrinkedImage.save_bmp(getOutputPath().c_str()); // save the modified image to a file
 	} catch (CImgIOException e) {
 		throw std::exception("Cannot open or save file from path provided. Path is invalid.\n");
 	} catch (std::exception& e) {
