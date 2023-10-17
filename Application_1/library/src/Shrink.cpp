@@ -79,6 +79,7 @@ void Shrink::convertArguments() {
 }
 
 void Shrink::shrink() {
+	cimg::exception_mode(0);
 	try {
 		convertArguments();
 		CImg<unsigned char> image(getInputPath().c_str()); // create the image from a file (must exist in the working dir)

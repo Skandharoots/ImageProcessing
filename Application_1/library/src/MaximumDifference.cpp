@@ -35,6 +35,7 @@ void MaximumDifference::setProcessedFile(std::string path) {
 
 
 void MaximumDifference::calculate() {
+    cimg::exception_mode(0);
     try {
         CImg<unsigned char> oryginal(getOryginalFile().c_str());
         CImg<unsigned char> processed(getProcessedFile().c_str());
