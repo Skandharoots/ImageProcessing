@@ -8,12 +8,14 @@
 #include <iostream>
 #include <sstream>
 #include <regex>
-#include "engine.h"
-#include "contrast.h"
+#include "Engine.h"
+#include "Contrast.h"
 #include "Negative.h"
 #include "Enlarge.h"
 #include "Shrink.h"
 #include "FlipDiagonal.h"
+#include "FlipHorizontal.h"
+#include "FlipVertical.h"
 #include "GeometricMeanFilter.h"
 #include "AlphaTrimmedMeanFilter.h"
 #include "MeanSquareError.h"
@@ -121,7 +123,27 @@ std::string Engine::convertInputPath(std::string path) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
      }
-     else if (command == "--flipdiagonal") {
+     else if (command == "--vflip") {
+        try {
+            std::shared_ptr<FlipVertical> vflip = std::make_shared<FlipVertical>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+            vflip->flip();
+            std::cout << "Operation successful!" << std::endl;
+        }
+        catch (std::exception& e) {
+            std::cout << "There was an error. " << e.what() << std::endl;
+        }
+     }
+     else if (command == "--vflip") {
+        try {
+            std::shared_ptr<FlipHorizontal> hflip = std::make_shared<FlipHorizontal>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+            hflip->flip();
+            std::cout << "Operation successful!" << std::endl;
+        }
+        catch (std::exception& e) {
+            std::cout << "There was an error. " << e.what() << std::endl;
+        }
+     }
+     else if (command == "--dflip") {
         try {
             std::shared_ptr<FlipDiagonal> flipDiagonal = std::make_shared<FlipDiagonal>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
             flipDiagonal->flip();
