@@ -44,10 +44,10 @@ float AlphaTrimmedMeanFilter::sort(float box[], int n, int d) {
 		}
 		box[j + 1] = temp;
 	}
-	for (int k = d; k < sizeof(box) - d; k++) {
+	for (int k = d; k < sizeof(box) + 1 - d; k++) {
 		sum += box[k];
 	}
-	result = sum / (sizeof(box) - (2*d));
+	result = sum / (sizeof(box) + 1 - (2*d));
 	return result;
 }
 
@@ -75,9 +75,9 @@ void AlphaTrimmedMeanFilter::filter() {
 							}
 						}
 						k = 0;
-						image(x, y, 0) = sort(box0, 9, 1);
-						image(x, y, 1) = sort(box1, 9, 1);
-						image(x, y, 2) = sort(box2, 9, 1);		
+						image(x, y, 0) = sort(box0, 9, 4);
+						image(x, y, 1) = sort(box1, 9, 4);
+						image(x, y, 2) = sort(box2, 9, 4);		
 					}
 			}
 		}

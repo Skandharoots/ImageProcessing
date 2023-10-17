@@ -133,7 +133,7 @@ std::string Engine::convertInputPath(std::string path) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
      }
-     else if (command == "--vflip") {
+     else if (command == "--hflip") {
         try {
             std::shared_ptr<FlipHorizontal> hflip = std::make_shared<FlipHorizontal>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
             hflip->flip();
