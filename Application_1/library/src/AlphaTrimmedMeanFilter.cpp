@@ -108,9 +108,6 @@ void AlphaTrimmedMeanFilter::filter() {
 		float box0[n];
 		float box1[n];
 		float box2[n];
-		float mean0 = 0;
-        float mean1 = 0;
-        float mean2 = 0;
 		if (image.spectrum() == 3) {
 			for (int x = 1; x < copy.width() - 1; x++) {
 					for (int y = 1; y < copy.height() - 1; y++) {

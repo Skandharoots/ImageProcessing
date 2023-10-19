@@ -41,28 +41,22 @@ void PeakMeanSquareError::calculate() {
         CImg<unsigned char> processed(getProcessedFile().c_str());
         float sum_sq = 0;
         float mse = 0;
-        float oryginalSumMax = 0;
         float max = 0;
         for (int x = 0; x < oryginal.width(); x++) {
                 for (int y = 0; y < oryginal.height(); y++) {
                     float oryginalSum = oryginal(x, y, 0);
                     oryginalSum += oryginal(x, y, 1);
                     oryginalSum += oryginal(x, y, 2);
-                    oryginalSumMax += oryginal(x, y, 0);
-                    oryginalSumMax += oryginal(x, y, 1);
-                    oryginalSumMax += oryginal(x, y, 2);
-                    if ((oryginalSumMax) > max) {
-                        max = oryginalSumMax;
+                    if ((oryginalSum / 3) > max) {
+                        max = oryginalSum / 3;
                     }
                     float processedSum = processed(x, y, 0);
                     processedSum += processed(x, y, 1);
                     processedSum += processed(x, y, 2);
                     float err = (oryginalSum / 3) - (processedSum / 3);
                     sum_sq += (err * err);
-                    oryginalSumMax = 0;
                 }
         }
-        max = max / 3;
         mse = sum_sq / ((oryginal.height() * oryginal.width()) * (max * max));
         std::cout << "Peak Mean square error is: " << std::fixed << mse << std::setprecision(2) << std::endl;
     } catch (CImgIOException e) {

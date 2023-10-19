@@ -41,28 +41,22 @@ void PeakSignalToNoiseRatio::calculate() {
         CImg<unsigned char> processed(getProcessedFile().c_str());
         float snr = 0;
         float sum = 0;
-        float oryginalSumMax = 0;
         float max = 0;
         for (int x = 0; x < oryginal.width(); x++) {
                 for (int y = 0; y < oryginal.height(); y++) {
                     float oryginalSum = oryginal(x, y, 0);
                     oryginalSum += oryginal(x, y, 1);
                     oryginalSum += oryginal(x, y, 2);
-                    oryginalSumMax += oryginal(x, y, 0);
-                    oryginalSumMax += oryginal(x, y, 1);
-                    oryginalSumMax += oryginal(x, y, 2);
-                    if ((oryginalSumMax) > max) {
-                        max = oryginalSumMax;
+                    if ((oryginalSum / 3) > max) {
+                        max = oryginalSum / 3;
                     }
                     float processedSum = processed(x, y, 0);
                     processedSum += processed(x, y, 1);
                     processedSum += processed(x, y, 2);
                     sum += ((oryginalSum / 3) - (processedSum / 3));
-                    oryginalSumMax = 0; 
                 }
         }
-        max = (max / 3) * oryginal.width() * oryginal.height();
-        snr = 10 * log10((max * max)/(sum * sum));
+        snr = 10 * log10(((max * max)*(oryginal.width() * oryginal.height())) / (sum * sum));
         std::cout << "Peak signal to noise ratio is: " << std::fixed << snr << std::setprecision(5) << " [dB]" << std::endl;
     } catch (CImgIOException e) {
         throw std::exception("Input paths are invalid.\n");
