@@ -76,7 +76,7 @@ void AlphaTrimmedMeanFilter::parseValues() {
 
 }
 
-float AlphaTrimmedMeanFilter::sort(float box[], int n, int d) {
+float AlphaTrimmedMeanFilter::sortAndTrim(float box[], int n, int d) {
 	int i, j, temp;
 	float sum = 0;
 	float result = 0;
@@ -123,9 +123,9 @@ void AlphaTrimmedMeanFilter::filter() {
 							}
 						}
 						k = 0;
-						image(x, y, 0) = sort(box0, n, d);
-						image(x, y, 1) = sort(box1, n, d);
-						image(x, y, 2) = sort(box2, n, d);		
+						image(x, y, 0) = sortAndTrim(box0, n, d);
+						image(x, y, 1) = sortAndTrim(box1, n, d);
+						image(x, y, 2) = sortAndTrim(box2, n, d);		
 					}
 			}
 		}

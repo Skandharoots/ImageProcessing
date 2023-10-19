@@ -21,6 +21,6 @@ class AlphaTrimmedMeanFilter {
         int getD();
         void setD(int d);
         void parseValues();
-        float sort(float box[], int n, int d);
+        float sortAndTrim(float box[], int n, int d);
         void filter();
 };
