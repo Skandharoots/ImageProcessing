@@ -1,13 +1,17 @@
 #include <string>
 #include <iostream>
+#include <iostream>
+#include <sstream>
+#include <regex>
 #include "AlphaTrimmedMeanFilter.h"
 #include "CImg.h"
 
 using namespace cimg_library;
 
 
-AlphaTrimmedMeanFilter::AlphaTrimmedMeanFilter(std::string inputPath, std::string outputPath) {
-    this->inputPath = inputPath;
+AlphaTrimmedMeanFilter::AlphaTrimmedMeanFilter(std::string values, std::string inputPath, std::string outputPath) {
+    this->values = values;
+	this->inputPath = inputPath;
     this->outputPath = outputPath;
 }
 
@@ -29,6 +33,47 @@ std::string AlphaTrimmedMeanFilter::getOutputPath() {
 
 void AlphaTrimmedMeanFilter::setOutputPath(std::string path) {
 	this->outputPath = path;
+}
+
+std::string AlphaTrimmedMeanFilter::getValues() {
+	return this->values;
+}
+
+void AlphaTrimmedMeanFilter::setValues(std::string values) {
+	this->values = values;
+}
+
+int AlphaTrimmedMeanFilter::getD() {
+	return this->d;
+}
+
+void AlphaTrimmedMeanFilter::setD(int d) {
+	this->d = d;
+}
+
+void AlphaTrimmedMeanFilter::parseValues() {
+	std::stringstream ss(getValues());
+	std::string del;
+	std::vector<std::string> v;
+	int temp = 0;
+	const std::regex parameter1("[-](d)");
+	const std::regex parameter2("[1-4]{1}");
+	while (getline(ss, del, '=')) {
+		v.push_back(del);
+	}
+	if (regex_match(v[0], parameter1) == 1) {
+		if (regex_match(v[1], parameter2) == 1) {
+			temp = stoi(v[1]);
+			setD(temp);
+		}
+		else {
+			throw std::exception("Cannot convert argument value.\n");
+		}
+	}
+	else {
+		throw std::exception("Wrong arguments! See --help for more info.");
+	}
+
 }
 
 float AlphaTrimmedMeanFilter::sort(float box[], int n, int d) {
@@ -54,12 +99,15 @@ float AlphaTrimmedMeanFilter::sort(float box[], int n, int d) {
 void AlphaTrimmedMeanFilter::filter() {
 	cimg::exception_mode(0);
 	try {
+		parseValues();
 		CImg<unsigned char> image(getInputPath().c_str());
 		CImg<unsigned char> copy(getInputPath().c_str());
 		int k = 0;
-		float box0[9];
-		float box1[9];
-		float box2[9];
+		const int n = 9;
+		int d = getD();
+		float box0[n];
+		float box1[n];
+		float box2[n];
 		float mean0 = 0;
         float mean1 = 0;
         float mean2 = 0;
@@ -75,9 +123,9 @@ void AlphaTrimmedMeanFilter::filter() {
 							}
 						}
 						k = 0;
-						image(x, y, 0) = sort(box0, 9, 4);
-						image(x, y, 1) = sort(box1, 9, 4);
-						image(x, y, 2) = sort(box2, 9, 4);		
+						image(x, y, 0) = sort(box0, n, d);
+						image(x, y, 1) = sort(box1, n, d);
+						image(x, y, 2) = sort(box2, n, d);		
 					}
 			}
 		}
@@ -85,6 +133,8 @@ void AlphaTrimmedMeanFilter::filter() {
 
 	} catch (CImgIOException e) {
 		throw std::exception("There was a problem with opening or saving a file. Path not valid.");
+	} catch (std::exception &e) {
+		throw std::exception(e.what());
 	}
 
 }

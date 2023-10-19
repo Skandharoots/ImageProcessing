@@ -184,7 +184,7 @@ std::string Engine::convertInputPath(std::string path) {
         }
      }
      else if (command == "--alpha") {
-        std::shared_ptr<AlphaTrimmedMeanFilter> alpha = std::make_shared<AlphaTrimmedMeanFilter>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        std::shared_ptr<AlphaTrimmedMeanFilter> alpha = std::make_shared<AlphaTrimmedMeanFilter>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         alpha->filter();
         std::cout << "Operation successful!" << std::endl;
      }
