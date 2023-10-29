@@ -23,6 +23,7 @@
 #include "SignalToNoiseRatio.h"
 #include "PeakSignalToNoiseRatio.h"
 #include "MaximumDifference.h"
+#include "Histogram.h"
 #include "CImg.h"
 
 
@@ -211,6 +212,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--md") {
         std::shared_ptr<MaximumDifference> md = std::make_shared<MaximumDifference>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         md->calculate();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--histogram") {
+        std::shared_ptr<Histogram> hist = std::make_shared<Histogram>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        hist->computeHistogram();
         std::cout << "Operation successful!" << std::endl;
      }
      else {

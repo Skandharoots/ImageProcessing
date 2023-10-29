@@ -1,5 +1,9 @@
 // App.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
+//This project is designed by students of Politechnika Łódzka from the faculty IFE Information Technology
+//The authors are 
+//Marek Kopania 234760
+//Filip Krylecki 242220
 
 #include <iostream>
 #include <iomanip>
