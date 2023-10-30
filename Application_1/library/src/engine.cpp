@@ -229,7 +229,7 @@ std::string Engine::convertInputPath(std::string path) {
         hist->computeHistogram();
         std::cout << "Operation successful!" << std::endl;
      }
-     else if (command == "--efpdf") {
+     else if (command == "--hexponent") {
         std::shared_ptr<EFPDF> efpdf = std::make_shared<EFPDF>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()), convertInputPath(getInputPath2()));
         efpdf->efpdfCalculate();
         std::cout << "Operation successful!" << std::endl;
