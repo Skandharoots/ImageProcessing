@@ -119,26 +119,41 @@ void EFPDF::efpdfCalculate() {
 	try {
 		parseArguments();
 		CImg<unsigned char> image(getInput().c_str());
+        CImg<unsigned char> copy(getInput().c_str());
         CImg<unsigned char> histogram(getHistogram().c_str());
         int arr[256];
         int count = 0;
+        int channel;
         for (int i = 0; i < 256; i++) {
             arr[i] = 0;
         }
         for (int i = 0; i < histogram.width(); i++) {
             for (int j = histogram.height() - 1; j >= 0; j--) {
-                if((histogram(i, j, 0) == 255 && histogram(i, j, 1) == 0 && histogram(i, j, 2) == 0) ||
-                (histogram(i, j, 0) == 0 && histogram(i, j, 1) == 255 && histogram(i, j, 2) == 0) ||
-                (histogram(i, j, 0) == 0 && histogram(i, j, 1) == 0 && histogram(i, j, 2) == 255)) {
+                if((histogram(i, j, 0) == 255 && histogram(i, j, 1) == 0 && histogram(i, j, 2) == 0)) {
+                    channel = 0;
                     count++;
+                }
+                else if((histogram(i, j, 0) == 0 && histogram(i, j, 1) == 255 && histogram(i, j, 2) == 0)) {
+                    channel = 1;
+                    count++;
+                }
+                else if ((histogram(i, j, 0) == 0 && histogram(i, j, 1) == 0 && histogram(i, j, 2) == 255)) {
+                    channel = 2;
+                    count++;
+                }
+                else {
+                    channel = channel;
                 }
             }
             arr[i] = count;
             count = 0;
         }
-        for (int i = 0; i < 256; i++) {
-            std::cout << "Arr[" << i << "] = " << arr[i] << std::endl;
-        }
+        std::cout << "Channel = " << channel << std::endl;
+        // for (int i = 0; i < image.width(); i++) {
+        //     for (int j = 0; j < image.height(); j++) {
+                
+        //     }
+        // }
 
     } catch (CImgIOException e) {
 		throw std::exception("There was a problem with opening or saving a file. Path not valid.");
