@@ -23,6 +23,7 @@ set(SOURCE_FILES
         include/PeakSignalToNoiseRatio.h
         include/MaximumDifference.h
         include/Histogram.h
+        include/EFPDF.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -41,6 +42,7 @@ set(SOURCE_FILES
             src/PeakSignalToNoiseRatio.cpp
             src/MaximumDifference.cpp
             src/Histogram.cpp
+            src/EFPDF.cpp
         )
 
 add_library(Library ${SOURCE_FILES})

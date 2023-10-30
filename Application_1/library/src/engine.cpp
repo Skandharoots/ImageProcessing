@@ -24,16 +24,18 @@
 #include "PeakSignalToNoiseRatio.h"
 #include "MaximumDifference.h"
 #include "Histogram.h"
+#include "EFPDF.h"
 #include "CImg.h"
 
 
 using namespace cimg_library;
 
-Engine::Engine(std::string command, std::string value, std::string inputPath, std::string outputPath) {
+Engine::Engine(std::string command, std::string value, std::string inputPath, std::string outputPath, std::string inputPath2) {
     this->command = command;
     this->value = value;
     this->inputPath = inputPath;
     this->outputPath = outputPath;
+    this->inputPath2 = inputPath2;
 }
 
 Engine::~Engine() {
@@ -62,6 +64,14 @@ void Engine::setInputPath(std::string path) {
 
 std::string Engine::getInputPath() {
     return this->inputPath;
+}
+
+void Engine::setInputPath2(std::string path) {
+    this->inputPath2 = path;
+}
+
+std::string Engine::getInputPath2() {
+    return this->inputPath2;
 }
 
 void Engine::setOutputPath(std::string path) {
@@ -217,6 +227,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--histogram") {
         std::shared_ptr<Histogram> hist = std::make_shared<Histogram>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         hist->computeHistogram();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--efpdf") {
+        std::shared_ptr<EFPDF> efpdf = std::make_shared<EFPDF>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()), convertInputPath(getInputPath2()));
+        efpdf->efpdfCalculate();
         std::cout << "Operation successful!" << std::endl;
      }
      else {

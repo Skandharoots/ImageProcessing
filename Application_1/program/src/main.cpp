@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
             else {
                 throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
-            engine = make_shared<Engine>(operation, "", in, out);
+            engine = make_shared<Engine>(operation, "", in, out, "");
             engine->openImage();
             
         }
@@ -83,9 +83,45 @@ int main(int argc, char* argv[])
             else {
                 throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
-            engine = make_shared<Engine>(operation, params, in, out);
+            engine = make_shared<Engine>(operation, params, in, out, "");
             engine->openImage();
             
+        }
+        else if (argc == 9) {
+            string operation(argv[1]);
+            string params(argv[2]);
+            string arg2(argv[3]);
+            string arg3(argv[5]);
+            string arg4(argv[7]);
+            string in;
+            string out;
+            string in2;
+            if (arg2 == "--input") {
+                in = argv[4];
+            }
+            else if (arg2 == "--output") {
+                out = argv[4];
+            }
+            else {
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+            }
+            if (arg3 == "--output") {
+                out = argv[6];
+            }
+            else if (arg3 == "--input") {
+                in = argv[6];
+            }
+            else {
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+            }
+            if (arg4 == "--hist") {
+                in2 = argv[8];
+            }
+            else {
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+            }
+            engine = make_shared<Engine>(operation, params, in, out, in2);
+            engine->openImage();
         }
         else {
             throw std::exception("Type --help for information.\n");
