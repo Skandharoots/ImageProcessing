@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <regex>
+#include <iomanip>
 #include "CImg.h"
 #include "EFPDF.h"
 
@@ -59,11 +60,11 @@ void EFPDF::setGMIN(double gmin) {
     this->gmin = gmin;
 }
 
-int EFPDF::getAlpha() {
+double EFPDF::getAlpha() {
     return this->alpha;
 }
 
-void EFPDF::setAlpha(int alpha) {
+void EFPDF::setAlpha(double alpha) {
     this->alpha = alpha;
 }
 
@@ -125,6 +126,7 @@ void EFPDF::efpdfCalculate() {
         int count = 0;
         int channel = -1;
         int intensity = 0;
+        double al = 1 / getAlpha();
         double sum = 0;
         for (int i = 0; i < 256; i++) {
             arr[i] = 0;
@@ -157,8 +159,8 @@ void EFPDF::efpdfCalculate() {
                     sum += arr[i] * 20;
                 }
                 
-                double newval = getGMIN() - ((1 / getAlpha()) *  log(1 - (sum / (image.width()*image.height()))));
-                // std::cout << "g(f) = " << newval << std::endl;
+                double newval = getGMIN() - (al *  log(1 - (sum / (image.width()*image.height()))));
+                // std::cout << "g(f) = " << std::fixed << newval << std::setprecision(5) << std::endl;
                 if (image(x, y, channel) + newval > 255) {
                     image(x, y, channel) = 255;    
                 }

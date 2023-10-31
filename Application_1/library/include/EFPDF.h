@@ -22,8 +22,8 @@ public:
     void setArguments(std::string arguments);
     double getGMIN();
     void setGMIN(double gmin);
-    int getAlpha();
-    void setAlpha(int alpha);
+    double getAlpha();
+    void setAlpha(double alpha);
     void parseArguments();
     void efpdfCalculate();
 
