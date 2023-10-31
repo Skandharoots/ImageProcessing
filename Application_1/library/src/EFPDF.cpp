@@ -1,5 +1,5 @@
 #include <string>
-#include <math.h>
+#include <cmath>
 #include <iostream>
 #include <sstream>
 #include <regex>
@@ -51,11 +51,11 @@ void EFPDF::setArguments(std::string arguments) {
     this->arguments = arguments;
 }
 
-int EFPDF::getGMIN() {
+double EFPDF::getGMIN() {
     return this->gmin;
 }
 
-void EFPDF::setGMIN(int gmin) {
+void EFPDF::setGMIN(double gmin) {
     this->gmin = gmin;
 }
 
@@ -125,7 +125,7 @@ void EFPDF::efpdfCalculate() {
         int count = 0;
         int channel = -1;
         int intensity = 0;
-        int sum = 0;
+        double sum = 0;
         for (int i = 0; i < 256; i++) {
             arr[i] = 0;
         }
@@ -156,7 +156,9 @@ void EFPDF::efpdfCalculate() {
                 for (int i = 0; i <= image(x, y, channel); i++) {
                     sum += arr[i] * 20;
                 }
-                float newval = gmin - ((1/alpha)*log(1 - (sum/(image.width()*image.height()))));
+                
+                double newval = getGMIN() - ((1 / getAlpha()) *  log(1 - (sum / (image.width()*image.height()))));
+                // std::cout << "g(f) = " << newval << std::endl;
                 if (image(x, y, channel) + newval > 255) {
                     image(x, y, channel) = 255;    
                 }
