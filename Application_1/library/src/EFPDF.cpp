@@ -59,11 +59,11 @@ void EFPDF::setGMIN(int gmin) {
     this->gmin = gmin;
 }
 
-float EFPDF::getAlpha() {
+int EFPDF::getAlpha() {
     return this->alpha;
 }
 
-void EFPDF::setAlpha(float alpha) {
+void EFPDF::setAlpha(int alpha) {
     this->alpha = alpha;
 }
 
@@ -77,7 +77,7 @@ void EFPDF::parseArguments() {
 	const std::regex parameter1("[-](alpha)");
     const std::regex parameter2("[-](gmin)");
 	const std::regex parameter3("[1-4]{1}");
-    const std::regex parameter4("[0-9]{3}");
+    const std::regex parameter4("[0-9]{1,3}");
 	while (getline(ss, del, ' ')) {
 		v.push_back(del);
 	}
@@ -92,7 +92,7 @@ void EFPDF::parseArguments() {
 			setAlpha(temp);
 		}
 		else {
-			throw std::exception("Cannot convert argument value.\n");
+			throw std::exception("Cannot convert alpha argument value.\n");
 		}
 	}
     while(getline(ss2, del, '=')) {
@@ -104,7 +104,7 @@ void EFPDF::parseArguments() {
 			setGMIN(temp);
 		}
 		else {
-			throw std::exception("Cannot convert argument value.\n");
+			throw std::exception("Cannot convert gmin argument value.\n");
 		}
 	}
 	else {
@@ -119,11 +119,13 @@ void EFPDF::efpdfCalculate() {
 	try {
 		parseArguments();
 		CImg<unsigned char> image(getInput().c_str());
-        CImg<unsigned char> copy(getInput().c_str());
+        // CImg<unsigned char> copy(getInput().c_str());
         CImg<unsigned char> histogram(getHistogram().c_str());
         int arr[256];
         int count = 0;
-        int channel;
+        int channel = -1;
+        int intensity = 0;
+        int sum = 0;
         for (int i = 0; i < 256; i++) {
             arr[i] = 0;
         }
@@ -148,13 +150,26 @@ void EFPDF::efpdfCalculate() {
             arr[i] = count;
             count = 0;
         }
-        std::cout << "Channel = " << channel << std::endl;
-        // for (int i = 0; i < image.width(); i++) {
-        //     for (int j = 0; j < image.height(); j++) {
-                
-        //     }
-        // }
-
+        //Below needs improvement but works, just not the way it's supposed to
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.width(); y++) {
+                for (int i = 0; i <= image(x, y, channel); i++) {
+                    sum += arr[i] * 20;
+                }
+                float newval = gmin - ((1/alpha)*log(1 - (sum/(image.width()*image.height()))));
+                if (image(x, y, channel) + newval > 255) {
+                    image(x, y, channel) = 255;    
+                }
+                if (image(x, y, channel) + newval < 0) {
+                    image(x, y, channel) = 0;
+                }
+                else {
+                    image(x, y, channel) += newval;
+                }
+                sum = 0;
+            }
+        }
+        image.save_bmp(getOutput().c_str());
     } catch (CImgIOException e) {
 		throw std::exception("There was a problem with opening or saving a file. Path not valid.");
 	} catch (std::exception &e) {
