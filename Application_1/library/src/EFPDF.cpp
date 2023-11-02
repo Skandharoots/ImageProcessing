@@ -74,10 +74,10 @@ void EFPDF::parseArguments() {
 	std::string del;
 	std::vector<std::string> v;
     std::vector<std::string> v1;
-	int temp = 0;
+	double temp = 0;
 	const std::regex parameter1("[-](alpha)");
     const std::regex parameter2("[-](gmin)");
-	const std::regex parameter3("[1-4]{1}");
+	const std::regex parameter3("[0](.)[0-9]+");
     const std::regex parameter4("[0-9]{1,3}");
 	while (getline(ss, del, ' ')) {
 		v.push_back(del);
@@ -89,7 +89,7 @@ void EFPDF::parseArguments() {
     }
 	if (regex_match(v1[0], parameter1) == 1) {
 		if (regex_match(v1[1], parameter3) == 1) {
-			temp = stoi(v1[1]);
+			temp = stod(v1[1]);
 			setAlpha(temp);
 		}
 		else {
@@ -101,7 +101,7 @@ void EFPDF::parseArguments() {
     }
 	if (regex_match(v1[2], parameter2) == 1) {
 		if (regex_match(v1[3], parameter4) == 1) {
-			temp = stoi(v1[3]);
+			temp = stod(v1[3]);
 			setGMIN(temp);
 		}
 		else {
@@ -126,7 +126,6 @@ void EFPDF::efpdfCalculate() {
         int count = 0;
         int channel = -1;
         int intensity = 0;
-        double al = 1 / getAlpha();
         double sum = 0;
         for (int i = 0; i < 256; i++) {
             arr[i] = 0;
@@ -159,16 +158,16 @@ void EFPDF::efpdfCalculate() {
                     sum += arr[i] * 20;
                 }
                 
-                double newval = getGMIN() - (al *  log(1 - (sum / (image.width()*image.height()))));
-                // std::cout << "g(f) = " << std::fixed << newval << std::setprecision(5) << std::endl;
-                if (image(x, y, channel) + newval > 255) {
+                double newval = getGMIN() - ((1.0 / getAlpha()) *  log(1 - (sum / (image.width()*image.height()))));
+                //std::cout << "g(f) = " << std::fixed << newval << std::setprecision(5) << std::endl;
+                if (newval > 255) {
                     image(x, y, channel) = 255;    
                 }
-                if (image(x, y, channel) + newval < 0) {
+                if (newval < 0) {
                     image(x, y, channel) = 0;
                 }
                 else {
-                    image(x, y, channel) += newval;
+                    image(x, y, channel) = newval;
                 }
                 sum = 0;
             }

@@ -8,7 +8,7 @@ private:
     std::string histogramPath;
     std::string arguments;
     double gmin;
-    int alpha;
+    double alpha;
 public:
     EFPDF(std::string arguments, std::string inputPath, std::string outputPath, std::string histogramPath);
     ~EFPDF();
