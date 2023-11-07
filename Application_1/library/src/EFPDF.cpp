@@ -14,6 +14,7 @@ EFPDF::EFPDF(std::string arguments, std::string inputPath, std::string outputPat
     this->inputPath = inputPath;
     this->outputPath = outputPath;
     this->histogramPath = histogramPath;
+    this->alpha = 0.04;
 }
 
 EFPDF::~EFPDF() {
@@ -73,35 +74,15 @@ void EFPDF::parseArguments() {
     std::stringstream ss(getArguments());
 	std::string del;
 	std::vector<std::string> v;
-    std::vector<std::string> v1;
 	double temp = 0;
-	const std::regex parameter1("[-](alpha)");
-    const std::regex parameter2("[-](gmin)");
-	const std::regex parameter3("[0](.)[0-9]+");
-    const std::regex parameter4("[0-9]{1,3}");
-	while (getline(ss, del, ' ')) {
+    const std::regex parameter1("[-](gmin)");
+    const std::regex parameter2("[0-9]{1,3}");
+	while (getline(ss, del, '=')) {
 		v.push_back(del);
 	}
-    std::stringstream ss1(v[0]);
-    std::stringstream ss2(v[1]);
-    while(getline(ss1, del, '=')) {
-        v1.push_back(del);
-    }
-	if (regex_match(v1[0], parameter1) == 1) {
-		if (regex_match(v1[1], parameter3) == 1) {
-			temp = stod(v1[1]);
-			setAlpha(temp);
-		}
-		else {
-			throw std::exception("Cannot convert alpha argument value.\n");
-		}
-	}
-    while(getline(ss2, del, '=')) {
-        v1.push_back(del);
-    }
-	if (regex_match(v1[2], parameter2) == 1) {
-		if (regex_match(v1[3], parameter4) == 1) {
-			temp = stod(v1[3]);
+	if (regex_match(v[0], parameter1) == 1) {
+		if (regex_match(v[1], parameter2) == 1) {
+			temp = stod(v[1]);
 			setGMIN(temp);
 		}
 		else {
