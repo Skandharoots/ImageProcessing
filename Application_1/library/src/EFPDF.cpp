@@ -157,8 +157,11 @@ void EFPDF::efpdfCalculate() {
                 for (int i = 0; i <= image(x, y, channel); i++) {
                     sum += arr[i] * 20;
                 }
-                
-                double newval = getGMIN() - ((1.0 / getAlpha()) *  log(1 - (sum / (image.width()*image.height()))));
+                double sumlog = sum / (image.width()*image.height());
+                if (sumlog == 1) {
+                    sumlog = 0.9999999999999999999;
+                }
+                double newval = getGMIN() - ((1.0 / getAlpha()) *  log(1 - sumlog));
                 //std::cout << "g(f) = " << std::fixed << newval << std::setprecision(5) << std::endl;
                 if (newval > 255) {
                     image(x, y, channel) = 255;    
