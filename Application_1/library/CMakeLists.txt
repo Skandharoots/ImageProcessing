@@ -26,6 +26,8 @@ set(SOURCE_FILES
         include/EFPDF.h
         include/Mean.h
         include/StandardDeviation.h
+        include/Variance.h
+        include/VariationCoefficient.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -47,6 +49,8 @@ set(SOURCE_FILES
             src/EFPDF.cpp
             src/Mean.cpp
             src/StandardDeviation.cpp
+            src/Variance.cpp
+            src/VariationCoefficient.cpp
         )
 
 add_library(Library ${SOURCE_FILES})

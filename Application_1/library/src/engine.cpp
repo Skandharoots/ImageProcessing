@@ -27,6 +27,8 @@
 #include "EFPDF.h"
 #include "Mean.h"
 #include "StandardDeviation.h"
+#include "Variance.h"
+#include "VariationCoefficient.h"
 #include "CImg.h"
 
 
@@ -244,6 +246,16 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--cstdev") {
         std::shared_ptr<StandardDeviation> cstdev = std::make_shared<StandardDeviation>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         cstdev->calculateStandardDeviation();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cvariance") {
+        std::shared_ptr<Variance> cvariance = std::make_shared<Variance>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cvariance->calculateVariance();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cvarcoi") {
+        std::shared_ptr<VariationCoefficient> cvarcoi = std::make_shared<VariationCoefficient>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cvarcoi->calculateVariationCoefficient();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
