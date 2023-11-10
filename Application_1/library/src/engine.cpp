@@ -30,6 +30,7 @@
 #include "Variance.h"
 #include "VariationCoefficient.h"
 #include "AssymetryCoefficient.h"
+#include "FlatteningCoefficient.h"
 #include "CImg.h"
 
 
@@ -262,6 +263,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--casyco") {
         std::shared_ptr<AssymetryCoefficient> casyco = std::make_shared<AssymetryCoefficient>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         casyco->calculateAssymetryCoefficient();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cflaco") {
+        std::shared_ptr<FlatteningCoefficient> cflaco = std::make_shared<FlatteningCoefficient>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cflaco->calculateFlatteningCoefficient();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
