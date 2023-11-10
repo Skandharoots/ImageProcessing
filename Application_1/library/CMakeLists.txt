@@ -24,6 +24,7 @@ set(SOURCE_FILES
         include/MaximumDifference.h
         include/Histogram.h
         include/EFPDF.h
+        include/Mean.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -43,6 +44,7 @@ set(SOURCE_FILES
             src/MaximumDifference.cpp
             src/Histogram.cpp
             src/EFPDF.cpp
+            src/Mean.cpp
         )
 
 add_library(Library ${SOURCE_FILES})

@@ -25,6 +25,7 @@
 #include "MaximumDifference.h"
 #include "Histogram.h"
 #include "EFPDF.h"
+#include "Mean.h"
 #include "CImg.h"
 
 
@@ -232,6 +233,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--hexponent") {
         std::shared_ptr<EFPDF> efpdf = std::make_shared<EFPDF>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()), convertInputPath(getInputPath2()));
         efpdf->efpdfCalculate();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cmean") {
+        std::shared_ptr<Mean> cmean = std::make_shared<Mean>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cmean->calculateMean();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
