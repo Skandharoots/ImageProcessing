@@ -26,6 +26,7 @@
 #include "Histogram.h"
 #include "EFPDF.h"
 #include "Mean.h"
+#include "StandardDeviation.h"
 #include "CImg.h"
 
 
@@ -238,6 +239,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--cmean") {
         std::shared_ptr<Mean> cmean = std::make_shared<Mean>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         cmean->calculateMean();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cstdev") {
+        std::shared_ptr<StandardDeviation> cstdev = std::make_shared<StandardDeviation>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cstdev->calculateStandardDeviation();
         std::cout << "Operation successful!" << std::endl;
      }
      else {

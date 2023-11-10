@@ -1,40 +1,40 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include <string>
+#include <cmath>
 #include "CImg.h"
-#include "Mean.h"
+#include "StandardDeviation.h"
 
 using namespace cimg_library;
 
-Mean::Mean(std::string input, std::string histogram) {
+StandardDeviation::StandardDeviation(std::string input, std::string histogram) {
 
     this->input = input;
     this->histogram = histogram;
 
 }
 
-Mean::~Mean() {
+StandardDeviation::~StandardDeviation() {
 
 }
 
-std::string Mean::getInput() {
+std::string StandardDeviation::getInput() {
     return this->input;
 }
 
-void Mean::setInput(std::string input) {
+void StandardDeviation::setInput(std::string input) {
     this->input = input;
 }
 
-std::string Mean::getHistogram() {
+std::string StandardDeviation::getHistogram() {
     return this->histogram;
 }
 
-void Mean::setHistogram(std::string histogram) {
+void StandardDeviation::setHistogram(std::string histogram) {
     this->histogram = histogram;
 }
 
-void Mean::calculateMean() {
+void StandardDeviation::calculateStandardDeviation() {
 
     cimg::exception_mode(0);
 	try {
@@ -44,6 +44,7 @@ void Mean::calculateMean() {
         int channel = -1;
         int count = 0;
         double sum = 0;
+        double sum2 = 0;
         double mean = 0;
         std::string channelS;
 
@@ -71,25 +72,27 @@ void Mean::calculateMean() {
             }
             arr[i] = count;
             count = 0;
-        }
-
-        for (int i = 0; i <= 255; i++) {
-            sum += i * arr[i] * 20;
-        }
-
-        if (channel == 0) {
+            }
+            if (channel == 0) {
             channelS = "Red";
-        } else if (channel == 1) {
+            } else if (channel == 1) {
             channelS = "Grenn";
-        } else if (channel == 2) {
+            } else if (channel == 2) {
             channelS = "Blue";
-        }
-        else {
-            channelS = "No channel selected";
-        }
-        //std::cout << "Sum = " << std::fixed << sum << std::setprecision(10) << std::endl;
-        mean = sum / ((image.height() * image.width()));
-        std::cout << "Mean for channel (" << channelS << ") = " << std::fixed << mean << std::setprecision(10) << std::endl;
+            }
+            else {
+                channelS = "No channel selected";
+            }
+
+            for (int i = 0; i <= 255; i++) {
+                sum += i * (arr[i] * 20);
+            }
+            mean = sum / ((image.height() * image.width()));
+            for (int i = 0; i <= 255; i++) {
+                sum2 += pow((i - mean), 2) * (arr[i] * 20);
+            }
+            double std = sqrt(sum2 / (image.width() * image.height()));
+            std::cout << "Standard deviation for channel(" << channelS << ") = " << std::fixed << std << std::setprecision(10) << std::endl;
 
     } catch (CImgIOException e) {
 		throw std::exception("There was a problem with opening or saving a file. Path not valid.");

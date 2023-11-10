@@ -25,6 +25,7 @@ set(SOURCE_FILES
         include/Histogram.h
         include/EFPDF.h
         include/Mean.h
+        include/StandardDeviation.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -45,6 +46,7 @@ set(SOURCE_FILES
             src/Histogram.cpp
             src/EFPDF.cpp
             src/Mean.cpp
+            src/StandardDeviation.cpp
         )
 
 add_library(Library ${SOURCE_FILES})
