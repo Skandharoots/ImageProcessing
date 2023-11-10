@@ -28,6 +28,7 @@ set(SOURCE_FILES
         include/StandardDeviation.h
         include/Variance.h
         include/VariationCoefficient.h
+        include/AssymetryCoefficient.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -51,6 +52,7 @@ set(SOURCE_FILES
             src/StandardDeviation.cpp
             src/Variance.cpp
             src/VariationCoefficient.cpp
+            src/AssymetryCoefficient.cpp
         )
 
 add_library(Library ${SOURCE_FILES})

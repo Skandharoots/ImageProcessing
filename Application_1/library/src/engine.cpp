@@ -29,6 +29,7 @@
 #include "StandardDeviation.h"
 #include "Variance.h"
 #include "VariationCoefficient.h"
+#include "AssymetryCoefficient.h"
 #include "CImg.h"
 
 
@@ -256,6 +257,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--cvarcoi") {
         std::shared_ptr<VariationCoefficient> cvarcoi = std::make_shared<VariationCoefficient>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         cvarcoi->calculateVariationCoefficient();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--casyco") {
+        std::shared_ptr<AssymetryCoefficient> casyco = std::make_shared<AssymetryCoefficient>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        casyco->calculateAssymetryCoefficient();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
