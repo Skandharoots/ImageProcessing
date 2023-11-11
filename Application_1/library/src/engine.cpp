@@ -25,6 +25,14 @@
 #include "MaximumDifference.h"
 #include "Histogram.h"
 #include "EFPDF.h"
+#include "Mean.h"
+#include "StandardDeviation.h"
+#include "Variance.h"
+#include "VariationCoefficient.h"
+#include "VariationCoefficient2.h"
+#include "AssymetryCoefficient.h"
+#include "FlatteningCoefficient.h"
+#include "InformationSourceEntropy.h"
 #include "CImg.h"
 
 
@@ -232,6 +240,46 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--hexponent") {
         std::shared_ptr<EFPDF> efpdf = std::make_shared<EFPDF>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()), convertInputPath(getInputPath2()));
         efpdf->efpdfCalculate();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cmean") {
+        std::shared_ptr<Mean> cmean = std::make_shared<Mean>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cmean->calculateMean();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cstdev") {
+        std::shared_ptr<StandardDeviation> cstdev = std::make_shared<StandardDeviation>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cstdev->calculateStandardDeviation();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cvariance") {
+        std::shared_ptr<Variance> cvariance = std::make_shared<Variance>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cvariance->calculateVariance();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cvarcoi") {
+        std::shared_ptr<VariationCoefficient> cvarcoi = std::make_shared<VariationCoefficient>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cvarcoi->calculateVariationCoefficient();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--casyco") {
+        std::shared_ptr<AssymetryCoefficient> casyco = std::make_shared<AssymetryCoefficient>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        casyco->calculateAssymetryCoefficient();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cflaco") {
+        std::shared_ptr<FlatteningCoefficient> cflaco = std::make_shared<FlatteningCoefficient>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cflaco->calculateFlatteningCoefficient();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cvarcoi2") {
+        std::shared_ptr<VariationCoefficient2> cvarcoi2 = std::make_shared<VariationCoefficient2>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cvarcoi2->calculateVariationCoefficient2();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--cise") {
+        std::shared_ptr<InfSourceEntropy> ise = std::make_shared<InfSourceEntropy>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        ise->calculateInfSourceEntropy();
         std::cout << "Operation successful!" << std::endl;
      }
      else {

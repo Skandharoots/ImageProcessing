@@ -24,6 +24,14 @@ set(SOURCE_FILES
         include/MaximumDifference.h
         include/Histogram.h
         include/EFPDF.h
+        include/Mean.h
+        include/StandardDeviation.h
+        include/Variance.h
+        include/VariationCoefficient.h
+        include/VariationCoefficient2.h
+        include/AssymetryCoefficient.h
+        include/FlatteningCoefficient.h
+        include/InformationSourceEntropy.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -43,6 +51,14 @@ set(SOURCE_FILES
             src/MaximumDifference.cpp
             src/Histogram.cpp
             src/EFPDF.cpp
+            src/Mean.cpp
+            src/StandardDeviation.cpp
+            src/Variance.cpp
+            src/VariationCoefficient.cpp
+            src/VariationCoefficient2.cpp
+            src/AssymetryCoefficient.cpp
+            src/FlatteningCoefficient.cpp
+            src/InformationSourceEntropy.cpp
         )
 
 add_library(Library ${SOURCE_FILES})

@@ -36,20 +36,13 @@ int main(int argc, char* argv[])
             string arg3(argv[4]);
             string in;
             string out;
-            if (arg2 == "--input") {
+            if ((arg2 == "--input") && (arg3 == "--output")) {
                 in = argv[3];
-            }
-            else if (arg2 == "--output") {
-                out = argv[3];
-            }
-            else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
-            }
-            if (arg3 == "--output") {
                 out = argv[5];
             }
-            else if (arg3 == "--input") {
-                in = argv[5];
+            else if ((arg2 == "--input") && (arg3 == "--histogram")) {
+                in = argv[3];
+                out = argv[5];
             }
             else {
                 throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
