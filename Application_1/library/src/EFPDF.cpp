@@ -153,7 +153,7 @@ void EFPDF::efpdfCalculate() {
         }
         //Below needs improvement but works, just not the way it's supposed to
         for (int x = 0; x < image.width(); x++) {
-            for (int y = 0; y < image.width(); y++) {
+            for (int y = 0; y < image.height(); y++) {
                 for (int i = 0; i <= image(x, y, channel); i++) {
                     sum += arr[i] * 20;
                 }
