@@ -33,6 +33,7 @@ set(SOURCE_FILES
         include/FlatteningCoefficient.h
         include/InformationSourceEntropy.h
         include/LinearFilter.h
+        include/LinearFilterOptimized.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -61,6 +62,7 @@ set(SOURCE_FILES
             src/FlatteningCoefficient.cpp
             src/InformationSourceEntropy.cpp
             src/LinearFilter.cpp
+            src/LinearFilterOptimized.cpp
         )
 
 add_library(Library ${SOURCE_FILES})
