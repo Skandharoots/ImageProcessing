@@ -55,8 +55,6 @@ void LinearFilterOptimized::linearFilter() {
         float sum0 = 0;
         float sum1 = 0;
         float sum2 = 0;
-        const int width = (image.width() / 3);
-        int height = image.height() / 3;
         int k = 0;
         int mask[9];
         int saved1[3][3];
@@ -99,27 +97,22 @@ void LinearFilterOptimized::linearFilter() {
                 sum1 = 0;
                 sum2 = 0;
                 if (x == x1_offset + 1) {
-                    x1_offset += 2;   
+                    x1_offset += 2;
+                    for (int k = 0; k < 3; k++) {
+                        saved1[k][0] = copy(x1_offset, y_offset, k);
+                        saved1[k][1] = copy(x1_offset, y_offset + 1, k);
+                        saved1[k][2] = -copy(x1_offset, y_offset + 2, k);
+                    }   
                 }
-                if (x == x2_offset + 1) {
+                else if (x == x2_offset + 1) {
                     x2_offset += 2;
-                }
-                if (x % 2 == 0) {
                     for (int k = 0; k < 3; k++) {
                         saved2[k][0] = copy(x2_offset, y_offset, k);
                         saved2[k][1] = copy(x2_offset, y_offset + 1, k);
                         saved2[k][2] = -copy(x2_offset, y_offset + 2, k);
                     }   
                 }
-                else {
-                    for (int k = 0; k < 3; k++) {
-                        saved1[k][0] = copy(x1_offset, y_offset, k);
-                        saved1[k][1] = copy(x1_offset, y_offset + 1, k);
-                        saved1[k][2] = -copy(x1_offset, y_offset + 2, k);
-                    }
-                }
             }
-            
             y_offset += 1;
             x1_offset = 2;
             x2_offset = 3;
