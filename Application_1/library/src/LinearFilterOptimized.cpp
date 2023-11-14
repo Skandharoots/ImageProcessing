@@ -52,9 +52,7 @@ void LinearFilterOptimized::linearFilter() {
         
         CImg<unsigned char> image(getInputPath().c_str());
         CImg<unsigned char> copy(getInputPath().c_str());
-        float sum0 = 0;
-        float sum1 = 0;
-        float sum2 = 0;
+        
         int k = 0;
         int mask[9];
         int saved1[3][3];
@@ -67,6 +65,9 @@ void LinearFilterOptimized::linearFilter() {
         
         for (int y = 1; y < image.height() - 1; y++) {
             for (int x = 1; x < image.width() - 1; x++) {
+                float sum0 = 0;
+                float sum1 = 0;
+                float sum2 = 0;
                 for (int i = y - 1; i < y + 2; i++) {
                     for (int j = x - 1; j < x + 2; j++) {
                         if ((j == x1_offset) && (x > x1_offset)) {
@@ -80,9 +81,15 @@ void LinearFilterOptimized::linearFilter() {
                             sum2 += saved2[2][yo];
                         }
                          else {
-                            sum0 += mask[k] * copy(j, i, 0);
-                            sum1 += mask[k] * copy(j, i, 1);
-                            sum2 += mask[k] * copy(j, i, 2);
+                            if (mask[k] == 1) {
+                            sum0 += copy(j, i, 0);
+                            sum1 += copy(j, i, 1);
+                            sum2 += copy(j, i, 2);
+                            } else {
+                                sum0 += mask[k] * copy(j, i, 0);
+                                sum1 += mask[k] * copy(j, i, 1);
+                                sum2 += mask[k] * copy(j, i, 2);
+                            }
                         }
                         k++;
                     }
@@ -93,9 +100,6 @@ void LinearFilterOptimized::linearFilter() {
                 image(x, y, 2) = sum2; 
                 k = 0;
                 yo = 0;
-                sum0 = 0;
-                sum1 = 0;
-                sum2 = 0;
                 if (x == x1_offset + 1) {
                     x1_offset += 2;
                     for (int k = 0; k < 3; k++) {
