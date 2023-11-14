@@ -32,6 +32,7 @@ set(SOURCE_FILES
         include/AssymetryCoefficient.h
         include/FlatteningCoefficient.h
         include/InformationSourceEntropy.h
+        include/LinearFilter.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -59,6 +60,7 @@ set(SOURCE_FILES
             src/AssymetryCoefficient.cpp
             src/FlatteningCoefficient.cpp
             src/InformationSourceEntropy.cpp
+            src/LinearFilter.cpp
         )
 
 add_library(Library ${SOURCE_FILES})

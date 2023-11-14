@@ -33,6 +33,7 @@
 #include "AssymetryCoefficient.h"
 #include "FlatteningCoefficient.h"
 #include "InformationSourceEntropy.h"
+#include "LinearFilter.h"
 #include "CImg.h"
 
 
@@ -280,6 +281,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--cise") {
         std::shared_ptr<InfSourceEntropy> ise = std::make_shared<InfSourceEntropy>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         ise->calculateInfSourceEntropy();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--sexdeti") {
+        std::shared_ptr<LinearFilter> sexdeti = std::make_shared<LinearFilter>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        sexdeti->linearFilter();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
