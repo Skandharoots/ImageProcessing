@@ -35,6 +35,7 @@
 #include "InformationSourceEntropy.h"
 #include "LinearFilter.h"
 #include "LinearFilterOptimized.h"
+#include "RobertsOperator2.h"
 #include "CImg.h"
 
 
@@ -292,6 +293,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--sexdetiopt") {
         std::shared_ptr<LinearFilterOptimized> sexdetiopt = std::make_shared<LinearFilterOptimized>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         sexdetiopt->linearFilter();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--orobertsii") {
+        std::shared_ptr<RobertsOperator2> orobertsii = std::make_shared<RobertsOperator2>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        orobertsii->filter();
         std::cout << "Operation successful!" << std::endl;
      }
      else {

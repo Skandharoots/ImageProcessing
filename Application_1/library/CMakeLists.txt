@@ -34,6 +34,7 @@ set(SOURCE_FILES
         include/InformationSourceEntropy.h
         include/LinearFilter.h
         include/LinearFilterOptimized.h
+        include/RobertsOperator2.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -63,6 +64,7 @@ set(SOURCE_FILES
             src/InformationSourceEntropy.cpp
             src/LinearFilter.cpp
             src/LinearFilterOptimized.cpp
+            src/RobertsOperator2.cpp
         )
 
 add_library(Library ${SOURCE_FILES})
