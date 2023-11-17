@@ -279,12 +279,12 @@ std::string Engine::convertInputPath(std::string path) {
         ise->calculateInfSourceEntropy();
         std::cout << "Operation successful!" << std::endl;
      }
-     else if (command == "--sexdeti") {
+     else if (command == "--sedgesharp") {
         std::shared_ptr<LinearFilter> sexdeti = std::make_shared<LinearFilter>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         sexdeti->linearFilter();
         std::cout << "Operation successful!" << std::endl;
      }
-     else if (command == "--sexdetiopt") {
+     else if (command == "--sedgesharpopt") {
         std::shared_ptr<LinearFilterOptimized> sexdetiopt = std::make_shared<LinearFilterOptimized>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         sexdetiopt->linearFilter();
         std::cout << "Operation successful!" << std::endl;
