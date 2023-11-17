@@ -41,45 +41,35 @@ void LinearFilter::setArguments(std::string path) {
 }
 
 void LinearFilter::setMask(int mask[]) {
-    if (getArguments() == "-N") {
-            mask[0] = 1;
-            mask[1] = 1;
-            mask[2] = 1;
-            mask[3] = 1;
-            mask[4] = -2;
-            mask[5] = 1;
+    if (getArguments() == "-e1") {
+            mask[0] = 0;
+            mask[1] = -1;
+            mask[2] = 0;
+            mask[3] = -1;
+            mask[4] = 5;
+            mask[5] = -1;
+            mask[6] = -0;
+            mask[7] = -1;
+            mask[8] = 0;
+        } else if (getArguments() == "-e2") {
+            mask[0] = -1;
+            mask[1] = -1;
+            mask[2] = -1;
+            mask[3] = -1;
+            mask[4] = 9;
+            mask[5] = -1;
             mask[6] = -1;
             mask[7] = -1;
             mask[8] = -1;
-        } else if (getArguments() == "-NE") {
-            mask[0] = -1;
-            mask[1] = 1;
-            mask[2] = 1;
-            mask[3] = -1;
-            mask[4] = -2;
-            mask[5] = 1;
-            mask[6] = -1;
-            mask[7] = 1;
-            mask[8] = 1;
-        } else if (getArguments() == "-E") {
+        } else if (getArguments() == "-e3") {
             mask[0] = 1;
-            mask[1] = 1;
+            mask[1] = -2;
             mask[2] = 1;
-            mask[3] = -1;
-            mask[4] = -2;
-            mask[5] = 1;
-            mask[6] = -1;
-            mask[7] = -1;
-            mask[8] = 1;
-        } else if (getArguments() == "-SE") {
-            mask[0] = -1;
-            mask[1] = -1;
-            mask[2] = 1;
-            mask[3] = -1;
-            mask[4] = -2;
-            mask[5] = 1;
+            mask[3] = -2;
+            mask[4] = 5;
+            mask[5] = -2;
             mask[6] = 1;
-            mask[7] = 1;
+            mask[7] = -2;
             mask[8] = 1;
         } else {
             throw std::exception("Wrong arguments. Type --help for options");
