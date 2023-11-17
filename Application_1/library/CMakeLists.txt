@@ -28,7 +28,6 @@ set(SOURCE_FILES
         include/StandardDeviation.h
         include/Variance.h
         include/VariationCoefficient.h
-        include/VariationCoefficient2.h
         include/AssymetryCoefficient.h
         include/FlatteningCoefficient.h
         include/InformationSourceEntropy.h
@@ -58,7 +57,6 @@ set(SOURCE_FILES
             src/StandardDeviation.cpp
             src/Variance.cpp
             src/VariationCoefficient.cpp
-            src/VariationCoefficient2.cpp
             src/AssymetryCoefficient.cpp
             src/FlatteningCoefficient.cpp
             src/InformationSourceEntropy.cpp
