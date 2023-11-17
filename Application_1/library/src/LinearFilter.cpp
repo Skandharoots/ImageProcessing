@@ -99,9 +99,30 @@ void LinearFilter::linearFilter() {
                         k++;
                     }
                 }
-                image(x, y, 0) = sum0;
-                image(x, y, 1) = sum1;
-                image(x, y, 2) = sum2; 
+                if (sum0 > 255) {
+                    image(x, y, 0) = 255;
+                } else if (sum0 < 0) {
+                    image(x, y, 0) = 0;                    
+                } else {
+                    image(x, y, 0) = sum0;
+                }
+                if (sum1 > 255) {
+                    image(x, y, 1) = 255;
+                } else if (sum1 < 0) {
+                    image(x, y, 1) = 0;                    
+                } else {
+                    image(x, y, 1) = sum1;
+                }
+                if (sum2 > 255) {
+                    image(x, y, 2) = 255;
+                } else if (sum2 < 0) {
+                    image(x, y, 2) = 0;                    
+                } else {
+                    image(x, y, 2) = sum2;
+                }
+                //image(x, y, 1) = sum1;
+                //image(x, y, 2) = sum2;
+
                 k = 0;
                 sum0 = 0;
                 sum1 = 0;
