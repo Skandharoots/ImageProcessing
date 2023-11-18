@@ -47,6 +47,7 @@ void FlatteningCoefficient::calculateFlatteningCoefficient() {
         double sum2 = 0;
         double sum3 = 0;
         double mean = 0;
+        double sigma = 50;
         std::string channelS;
 
         for (int i = 0; i < 256; i++) {
@@ -89,16 +90,11 @@ void FlatteningCoefficient::calculateFlatteningCoefficient() {
                 sum += i * (arr[i] * 20);
             }
             mean = sum / ((image.height() * image.width()));
-            //Standard deviation
-            for (int i = 0; i <= 255; i++) {
-                sum2 += pow((i - mean), 2) * (arr[i] * 20);
-            }
-            double std = sqrt(sum2 / (image.width() * image.height()));
             //Assymetry coefficient
             for (int i = 0; i <= 255; i++) {
                 sum3 += (pow((i-mean), 4) * (arr[i] * 20));
             }
-            double bk = ((1 / pow(std, 4)) * sum3) / (image.width() * image.height()) - 3; 
+            double bk = ((1 / pow(sigma, 4)) * sum3) / (image.width() * image.height()) - 3; 
             std::cout << "Flattening coefficient` for channel(" << channelS << ") = " << std::fixed << bk << std::setprecision(10) << std::endl;
 
     } catch (CImgIOException e) {

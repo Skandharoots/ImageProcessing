@@ -47,6 +47,7 @@ void AssymetryCoefficient::calculateAssymetryCoefficient() {
         double sum2 = 0;
         double sum3 = 0;
         double mean = 0;
+        double sigma = 50;
         std::string channelS;
 
         for (int i = 0; i < 256; i++) {
@@ -89,16 +90,11 @@ void AssymetryCoefficient::calculateAssymetryCoefficient() {
                 sum += i * (arr[i] * 20);
             }
             mean = sum / ((image.height() * image.width()));
-            //Standard deviation
-            for (int i = 0; i <= 255; i++) {
-                sum2 += pow((i - mean), 2) * (arr[i] * 20);
-            }
-            double std = sqrt(sum2 / (image.width() * image.height()));
             //Assymetry coefficient
             for (int i = 0; i <= 255; i++) {
                 sum3 += (pow((i-mean), 3) * (arr[i] * 20));
             }
-            double bs = ((1 / pow(std, 3)) * sum3) / (image.width() * image.height()); 
+            double bs = ((1 / pow(sigma, 3)) * sum3) / (image.width() * image.height()); 
             std::cout << "Assymetry coefficient` for channel(" << channelS << ") = " << std::fixed << bs << std::setprecision(10) << std::endl;
 
     } catch (CImgIOException e) {
