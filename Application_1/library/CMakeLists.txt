@@ -35,6 +35,10 @@ set(SOURCE_FILES
         include/LinearFilter.h
         include/LinearFilterOptimized.h
         include/RobertsOperator2.h
+        include/Dilation.h
+        include/Erosion.h
+        include/Opening.h
+        include/Closing.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -65,6 +69,10 @@ set(SOURCE_FILES
             src/LinearFilter.cpp
             src/LinearFilterOptimized.cpp
             src/RobertsOperator2.cpp
+            src/Dilation.cpp
+            src/Erosion.cpp
+            src/Opening.cpp
+            src/Closing.cpp
         )
 
 add_library(Library ${SOURCE_FILES})

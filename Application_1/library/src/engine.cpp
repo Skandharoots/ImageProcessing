@@ -36,6 +36,10 @@
 #include "LinearFilter.h"
 #include "LinearFilterOptimized.h"
 #include "RobertsOperator2.h"
+#include "Dilation.h"
+#include "Erosion.h"
+#include "Closing.h"
+#include "Opening.h"
 #include "CImg.h"
 
 
@@ -298,6 +302,26 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--orobertsii") {
         std::shared_ptr<RobertsOperator2> orobertsii = std::make_shared<RobertsOperator2>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         orobertsii->filter();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--dilation") {
+        std::shared_ptr<Dilation> dilation = std::make_shared<Dilation>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        dilation->dilation();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--erosion") {
+        std::shared_ptr<Erosion> erosion = std::make_shared<Erosion>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        erosion->erosion();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--opening") {
+        std::shared_ptr<Opening> opening = std::make_shared<Opening>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        opening->opening();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--closing") {
+        std::shared_ptr<Closing> closing = std::make_shared<Closing>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        closing->closing();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
