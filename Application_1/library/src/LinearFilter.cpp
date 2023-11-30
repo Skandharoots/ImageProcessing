@@ -41,45 +41,35 @@ void LinearFilter::setArguments(std::string path) {
 }
 
 void LinearFilter::setMask(int mask[]) {
-    if (getArguments() == "-N") {
-            mask[0] = 1;
-            mask[1] = 1;
-            mask[2] = 1;
-            mask[3] = 1;
-            mask[4] = -2;
-            mask[5] = 1;
+    if (getArguments() == "-e1") {
+            mask[0] = 0;
+            mask[1] = -1;
+            mask[2] = 0;
+            mask[3] = -1;
+            mask[4] = 5;
+            mask[5] = -1;
+            mask[6] = -0;
+            mask[7] = -1;
+            mask[8] = 0;
+        } else if (getArguments() == "-e2") {
+            mask[0] = -1;
+            mask[1] = -1;
+            mask[2] = -1;
+            mask[3] = -1;
+            mask[4] = 9;
+            mask[5] = -1;
             mask[6] = -1;
             mask[7] = -1;
             mask[8] = -1;
-        } else if (getArguments() == "-NE") {
-            mask[0] = -1;
-            mask[1] = 1;
-            mask[2] = 1;
-            mask[3] = -1;
-            mask[4] = -2;
-            mask[5] = 1;
-            mask[6] = -1;
-            mask[7] = 1;
-            mask[8] = 1;
-        } else if (getArguments() == "-E") {
+        } else if (getArguments() == "-e3") {
             mask[0] = 1;
-            mask[1] = 1;
+            mask[1] = -2;
             mask[2] = 1;
-            mask[3] = -1;
-            mask[4] = -2;
-            mask[5] = 1;
-            mask[6] = -1;
-            mask[7] = -1;
-            mask[8] = 1;
-        } else if (getArguments() == "-SE") {
-            mask[0] = -1;
-            mask[1] = -1;
-            mask[2] = 1;
-            mask[3] = -1;
-            mask[4] = -2;
-            mask[5] = 1;
+            mask[3] = -2;
+            mask[4] = 5;
+            mask[5] = -2;
             mask[6] = 1;
-            mask[7] = 1;
+            mask[7] = -2;
             mask[8] = 1;
         } else {
             throw std::exception("Wrong arguments. Type --help for options");
@@ -109,9 +99,30 @@ void LinearFilter::linearFilter() {
                         k++;
                     }
                 }
-                image(x, y, 0) = sum0;
-                image(x, y, 1) = sum1;
-                image(x, y, 2) = sum2; 
+                if (sum0 > 255) {
+                    image(x, y, 0) = 255;
+                } else if (sum0 < 0) {
+                    image(x, y, 0) = 0;                    
+                } else {
+                    image(x, y, 0) = sum0;
+                }
+                if (sum1 > 255) {
+                    image(x, y, 1) = 255;
+                } else if (sum1 < 0) {
+                    image(x, y, 1) = 0;                    
+                } else {
+                    image(x, y, 1) = sum1;
+                }
+                if (sum2 > 255) {
+                    image(x, y, 2) = 255;
+                } else if (sum2 < 0) {
+                    image(x, y, 2) = 0;                    
+                } else {
+                    image(x, y, 2) = sum2;
+                }
+                //image(x, y, 1) = sum1;
+                //image(x, y, 2) = sum2;
+
                 k = 0;
                 sum0 = 0;
                 sum1 = 0;

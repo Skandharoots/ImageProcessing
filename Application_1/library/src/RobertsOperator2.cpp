@@ -37,7 +37,14 @@ void RobertsOperator2::filter() {
         for (int x = 1; x < image.width() - 1; x++) {
             for (int y = 1; y < image.height() - 1; y++) {
                 for (int k = 0; k <= 2; k++) {
-                    image(x, y, k) = abs(copy(x, y, k) - copy(x + 1, y + 1, k)) + abs(copy(x, y + 1, k) - copy(x + 1, y, k));
+                    float sum = abs(copy(x, y, k) - copy(x + 1, y + 1, k)) + abs(copy(x, y + 1, k) - copy(x + 1, y, k));
+					if (sum > 255) {
+						image(x, y, k) = 255;
+					} else if (sum < 0) {
+						image(x, y, k) = 0;
+					} else {
+						image(x, y, k) = sum;
+					}
                 }
             }
         }

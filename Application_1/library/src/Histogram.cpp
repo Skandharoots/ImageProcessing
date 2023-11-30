@@ -83,7 +83,6 @@ cimg::exception_mode(0);
         parseChannel();
         CImg<unsigned char> image(getInput().c_str());
         int chan = getChannelVal();
-        
         int channelArr[256];
         int max = 0;
         for (int i = 0; i < 256; i++) {

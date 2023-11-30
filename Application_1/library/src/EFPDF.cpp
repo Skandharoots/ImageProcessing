@@ -14,7 +14,7 @@ EFPDF::EFPDF(std::string arguments, std::string inputPath, std::string outputPat
     this->inputPath = inputPath;
     this->outputPath = outputPath;
     this->histogramPath = histogramPath;
-    this->alpha = 0.04;
+    this->alpha = 0.004;
 }
 
 EFPDF::~EFPDF() {

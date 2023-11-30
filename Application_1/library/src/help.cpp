@@ -38,5 +38,18 @@ void Help::printHelp() {
     cout << "--pmse: This operation calculates a peak mean square error between an original and processed image"<< endl << endl;
     cout << "--snr: This operation calculates a signal to noise ratio between an original and processed image"<< endl << endl;
     cout << "--psnr: This operation calculates a peak signal to noise ratio between an original and processed image"<< endl << endl;
-    cout << "--md: This operation calculates a maximum difference between an original and processed image"<< endl << endl;
+    cout << "--histogram: This operation makes a histogram out of input image"<< endl << endl;
+    cout << "--hexponent: This operation performs an exponential final probability density function, a quality improvement method"<< endl;
+    cout << "\"-hist=path\": Where path is a path to a histogram of an image"<< endl << endl;
+    cout << "--cmean: This operation calculates a mean of an image"<< endl << endl;
+    cout << "--cstdev: This operation calculates a standard deviation of an image"<< endl << endl;
+    cout << "--cvariance: This operation calculates a variance of an image"<< endl << endl;
+    cout << "--cvarcoi: This operation calculates a variation coefficient I of an image"<< endl << endl;
+    cout << "--cvarcoii: This operation calculates a variation coefficient II of an image"<< endl << endl;
+    cout << "--casyco: This operation calculates an assymetry coefficient of an image"<< endl << endl;
+    cout << "--cflaco: This operation calculates a flattening coefficient of an image"<< endl << endl;
+    cout << "--cise: This operation calculates an information source entropy of an image"<< endl << endl;
+    cout << "--sedgesharp: This operation performs an edge sharpening of an image, a linear image filtration algorithm in spatial domain basing on convolution"<< endl << endl;
+    cout << "--sedgesharpopt: This operation performs an edge sharpening filter on an image, but it is an optimalised version of original edge sharpening code"<< endl << endl;
+    cout << "--orobertsii: This operation performs a Roberts Operator II on an image, a non-linear image filtration algorithm in spatial domain"<< endl << endl;
 }

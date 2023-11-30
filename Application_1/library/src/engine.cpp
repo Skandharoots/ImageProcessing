@@ -269,6 +269,11 @@ std::string Engine::convertInputPath(std::string path) {
         cvarcoi->calculateVariationCoefficient();
         std::cout << "Operation successful!" << std::endl;
      }
+     else if (command == "--cvarcoii") {
+        std::shared_ptr<VariationCoefficient2> cvarcoii = std::make_shared<VariationCoefficient2>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        cvarcoii->calculateVariationCoefficient2();
+        std::cout << "Operation successful!" << std::endl;
+     }
      else if (command == "--casyco") {
         std::shared_ptr<AssymetryCoefficient> casyco = std::make_shared<AssymetryCoefficient>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         casyco->calculateAssymetryCoefficient();
@@ -279,22 +284,17 @@ std::string Engine::convertInputPath(std::string path) {
         cflaco->calculateFlatteningCoefficient();
         std::cout << "Operation successful!" << std::endl;
      }
-     else if (command == "--cvarcoi2") {
-        std::shared_ptr<VariationCoefficient2> cvarcoi2 = std::make_shared<VariationCoefficient2>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
-        cvarcoi2->calculateVariationCoefficient2();
-        std::cout << "Operation successful!" << std::endl;
-     }
      else if (command == "--cise") {
         std::shared_ptr<InfSourceEntropy> ise = std::make_shared<InfSourceEntropy>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         ise->calculateInfSourceEntropy();
         std::cout << "Operation successful!" << std::endl;
      }
-     else if (command == "--sexdeti") {
+     else if (command == "--sedgesharp") {
         std::shared_ptr<LinearFilter> sexdeti = std::make_shared<LinearFilter>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         sexdeti->linearFilter();
         std::cout << "Operation successful!" << std::endl;
      }
-     else if (command == "--sexdetiopt") {
+     else if (command == "--sedgesharpopt") {
         std::shared_ptr<LinearFilterOptimized> sexdetiopt = std::make_shared<LinearFilterOptimized>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         sexdetiopt->linearFilter();
         std::cout << "Operation successful!" << std::endl;
