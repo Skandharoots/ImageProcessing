@@ -50,8 +50,8 @@ void Dilation::setMatrix(int matrix[]) {
             matrix[1] = -1;
             matrix[2] = -1;
             matrix[3] = -1;
-            matrix[4] = 0;
-            matrix[5] = 0;
+            matrix[4] = 1;
+            matrix[5] = 1;
             matrix[6] = -1;
             matrix[7] = -1;
             matrix[8] = -1;
@@ -60,30 +60,30 @@ void Dilation::setMatrix(int matrix[]) {
             matrix[1] = -1;
             matrix[2] = -1;
             matrix[3] = -1;
-            matrix[4] = 0;
+            matrix[4] = 1;
             matrix[5] = -1;
             matrix[6] = -1;
-            matrix[7] = 0;
+            matrix[7] = 1;
             matrix[8] = -1;
         } else if (getArguments() == "3") {
-            matrix[0] = 0;
-            matrix[1] = 0;
-            matrix[2] = 0;
-            matrix[3] = 0;
-            matrix[4] = 0;
-            matrix[5] = 0;
-            matrix[6] = 0;
-            matrix[7] = 0;
-            matrix[8] = 0;
+            matrix[0] = 1;
+            matrix[1] = 1;
+            matrix[2] = 1;
+            matrix[3] = 1;
+            matrix[4] = 1;
+            matrix[5] = 1;
+            matrix[6] = 1;
+            matrix[7] = 1;
+            matrix[8] = 1;
         } else if (getArguments() == "4") {
             matrix[0] = -1;
-            matrix[1] = 0;
+            matrix[1] = 1;
             matrix[2] = -1;
-            matrix[3] = 0;
-            matrix[4] = 0;
-            matrix[5] = 0;
+            matrix[3] = 1;
+            matrix[4] = 1;
+            matrix[5] = 1;
             matrix[6] = -1;
-            matrix[7] = 0;
+            matrix[7] = 1;
             matrix[8] = -1;
         } else {
             throw std::exception("Wrong arguments. Type --help for options");
@@ -101,10 +101,10 @@ void Dilation::dilation() {
                 short int k = 0;
                 for (int i = y - 1; i < y + 2; i++) { 
                     for (int j = x - 1; j < x + 2; j++) { 
-                        if (image(j, i) == 0 && matrix[k] == 0) {
-                            copy(x, y, 0) = 0;
-                            copy(x, y, 1) = 0;
-                            copy(x, y, 2) = 0;
+                        if (image(j, i) == 255 && matrix[k] == 1) {
+                            copy(x, y, 0) = 255;
+                            copy(x, y, 1) = 255;
+                            copy(x, y, 2) = 255;
                         }
                         k++;
                     }
