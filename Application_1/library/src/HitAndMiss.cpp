@@ -85,6 +85,46 @@ void HitAndMiss::setMatrix(int matrix[]) {
             matrix[6] = 1;
             matrix[7] = -1;
             matrix[8] = -1;
+        } else if (getArguments() == "12a") {
+            matrix[0] = 0;
+            matrix[1] = 0;
+            matrix[2] = 0;
+            matrix[3] = -1;
+            matrix[4] = 1;
+            matrix[5] = -1;
+            matrix[6] = 1;
+            matrix[7] = 1;
+            matrix[8] = 1;
+        } else if (getArguments() == "12b") {
+            matrix[0] = -1;
+            matrix[1] = 0;
+            matrix[2] = 0;
+            matrix[3] = 1;
+            matrix[4] = 1;
+            matrix[5] = 0;
+            matrix[6] = 1;
+            matrix[7] = 1;
+            matrix[8] = -1;
+        } else if (getArguments() == "12c") {
+            matrix[0] = 1;
+            matrix[1] = -1;
+            matrix[2] = 0;
+            matrix[3] = 1;
+            matrix[4] = 1;
+            matrix[5] = 0;
+            matrix[6] = 1;
+            matrix[7] = -1;
+            matrix[8] = 0;
+        } else if (getArguments() == "12d") {
+            matrix[0] = 1;
+            matrix[1] = 1;
+            matrix[2] = -1;
+            matrix[3] = 1;
+            matrix[4] = 1;
+            matrix[5] = 0;
+            matrix[6] = -1;
+            matrix[7] = 0;
+            matrix[8] = 0;
         } else {
             throw std::exception("Wrong arguments. Type --help for options");
         }
