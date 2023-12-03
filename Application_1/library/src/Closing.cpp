@@ -115,6 +115,13 @@ void Closing::closing() {
                 }
 			}
 		}
+        for (int x = 0; x < dilation.width(); x++) {
+            for (int y = 0; y < dilation.height(); y++) {
+                copy(x, y, 0) = dilation(x, y, 0);
+                copy(x, y, 1) = dilation(x, y, 1);
+                copy(x, y, 2) = dilation(x, y, 2);
+            }
+        }
         //Erosion on processed image
 		for (int x = 1; x < image.width() - 1; x++) {
 			for (int y = 1; y < image.height() - 1; y++) {

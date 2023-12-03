@@ -124,6 +124,13 @@ void Opening::opening() {
                 }
 			}
 		}
+        for (int x = 0; x < erosion.width(); x++) {
+            for (int y = 0; y < erosion.height(); y++) {
+                copy(x, y, 0) = erosion(x, y, 0);
+                copy(x, y, 1) = erosion(x, y, 1);
+                copy(x, y, 2) = erosion(x, y, 2);
+            }
+        }
         //Dilation on processed image
         for (int x = 1; x < image.width() - 1; x++) {
 			for (int y = 1; y < image.height() - 1; y++) {
