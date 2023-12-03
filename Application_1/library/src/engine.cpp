@@ -40,6 +40,7 @@
 #include "Erosion.h"
 #include "Closing.h"
 #include "Opening.h"
+#include "HitAndMiss.h"
 #include "CImg.h"
 
 
@@ -322,6 +323,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--closing") {
         std::shared_ptr<Closing> closing = std::make_shared<Closing>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         closing->closing();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--htnms") {
+        std::shared_ptr<HitAndMiss> htnms = std::make_shared<HitAndMiss>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        htnms->ham();
         std::cout << "Operation successful!" << std::endl;
      }
      else {

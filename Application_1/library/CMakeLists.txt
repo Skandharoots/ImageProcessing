@@ -39,6 +39,7 @@ set(SOURCE_FILES
         include/Erosion.h
         include/Opening.h
         include/Closing.h
+        include/HitAndMiss.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -73,6 +74,7 @@ set(SOURCE_FILES
             src/Erosion.cpp
             src/Opening.cpp
             src/Closing.cpp
+            src/HitAndMiss.cpp
         )
 
 add_library(Library ${SOURCE_FILES})
