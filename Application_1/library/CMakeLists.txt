@@ -40,6 +40,7 @@ set(SOURCE_FILES
         include/Opening.h
         include/Closing.h
         include/HitAndMiss.h
+        include/M2.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -75,6 +76,7 @@ set(SOURCE_FILES
             src/Opening.cpp
             src/Closing.cpp
             src/HitAndMiss.cpp
+            src/M2.cpp
         )
 
 add_library(Library ${SOURCE_FILES})
