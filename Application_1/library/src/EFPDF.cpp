@@ -143,13 +143,19 @@ void EFPDF::efpdfCalculate() {
                 }
                 double newval = getGMIN() - ((1.0 / getAlpha()) *  log(1 - sumlog));
                 if (newval > 255) {
-                    image(x, y, channel) = 255;    
+                    image(x, y, 0) = 255;
+                    image(x, y, 1) = 255;    
+                    image(x, y, 2) = 255;        
                 }
                 if (newval < 0) {
-                    image(x, y, channel) = 0;
+                    image(x, y, 0) = 0;
+                    image(x, y, 1) = 0;
+                    image(x, y, 2) = 0;
                 }
                 else {
-                    image(x, y, channel) = newval;
+                    image(x, y, 0) = newval;
+                    image(x, y, 1) = newval;
+                    image(x, y, 2) = newval;
                 }
                 sum = 0;
             }

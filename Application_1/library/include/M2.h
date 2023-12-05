@@ -17,5 +17,6 @@ public:
 	std::string getOutputPath();
 	void setOutputPath(std::string path);
 	void setMatrix(int matrix[]);
+	bool checkInput(int max, std::string input);
 	void operate();
 };

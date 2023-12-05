@@ -56,43 +56,101 @@ void M2::setMatrix(int matrix[]) {
             matrix[8] = -1;
 }
 
+bool M2::checkInput(int max, std::string input) {
+    const std::regex parameter("[0-9]+");
+    if (regex_match(input, parameter)) {
+        if (stoi(input) <= max && stoi(input) > 0) {
+            return true;
+        } else {
+            return false;
+        }   
+    }
+}
+
 void M2::operate() {
 	try {
         int matrix[9];
-        int myx;
-        int myy;
+        std::string myx;
+        std::string myy;
+        int mx;
+        int my;
+        bool check = false;
         setMatrix(matrix);
 		CImg<unsigned char> image(getInputPath().c_str());
+        CImg<unsigned char> complement(getInputPath().c_str());
         CImg<unsigned char> copy(getInputPath().c_str());
-        CImg<unsigned char> copy(getInputPath().c_str());
-        std::cout << "Please give x coordinate between 0 and " << image.width() << std::endl;
-        std::cin >> myx;
-        std::cout << "Please give y coordinate between 0 and " << image.height() << std::endl;
-        std::cin >> myy;
-		
-        short int k = 0;
-            for (int i = myy - 1; i < myy + 2; i++) { 
-                for (int j = myx - 1; j < myx + 2; j++) { 
-                    if (image(j, i) == 255 && matrix[k] == 1) {
-                        copy(myx, myy, 0) = 255;
-                        copy(myx, myy, 1) = 255;
-                        copy(myx, myy, 2) = 255;
-                    }
-                    k++;
+        CImg<unsigned char> result(image.width(), image.height(), 1, 3);
+        CImgDisplay main_disp(image,"Click a point");
+        while (!main_disp.is_closed()) {
+            main_disp.wait();
+            if (main_disp.button() && main_disp.mouse_y()>=0) {
+                const int y = main_disp.mouse_y();
+                const int x = main_disp.mouse_x();
+                mx = x;
+                my = y;
+                if (mx != 0 && my != 0) {
+                    main_disp.close();
                 }
             }
-            for (int i = myy - 1; i < myy + 2; i++) { 
-                for (int j = myx - 1; j < myx + 2; j++) { 
-                    if (image(j, i) == 255 && copy(j, i) == 0) {
-                        copy(j, i) = 0;
+        }
+        //Complement of original
+        for (int x = 1; x < image.width() - 1; x++) {
+			for (int y = 1; y < image.height() - 1; y++) {
+                if (image(x, y) == 0) {
+                    complement(x, y) = 255;
+                } else {
+                    complement(x, y) = 0;
+                }
+			}
+		}
+        //Dialation from point
+        for (int x = mx; x < image.width() - 1; x++) {
+            for (int y = my; y < image.height() - 1; y++) {
+                short int k = 0;
+                for (int i = y - 1; i < y + 2; i++) { 
+                    for (int j = x - 1; j < x + 2; j++) { 
+                        if (image(j, i) == 255 && matrix[k] == 1) {
+                            copy(x, y, 0) = 255;
+                            copy(x, y, 1) = 255;
+                            copy(x, y, 2) = 255;
+                        }
+                        k++;
                     }
                 }
             }
-
-		copy.save_bmp(getOutputPath().c_str());
+        }
+        for (int x = mx; x > 0; --x) {
+            for (int y = my; y > 0; --y) {
+                short int k = 0;
+                for (int i = y - 1; i < y + 2; i++) { 
+                    for (int j = x - 1; j < x + 2; j++) { 
+                        if (image(j, i) == 255 && matrix[k] == 1) {
+                            copy(x, y, 0) = 255;
+                            copy(x, y, 1) = 255;
+                            copy(x, y, 2) = 255;
+                        }
+                        k++;
+                    }
+                }
+            }
+        }
+        //Intersection of dialated image with composition of original
+        for (int x = 0; x < image.width(); x++) {
+			for (int y = 0; y < image.height(); y++) {
+                if ((copy(x, y) == 255 && complement(x, y) == 255) || 
+                        (copy(x, y) == 0 && complement(x, y) == 0)) {
+                    result(x, y, 0) = 255;
+                    result(x, y, 1) = 255;
+                    result(x, y, 2) = 255;
+                } else {
+                    result(x, y, 0) = 0;
+                    result(x, y, 1) = 0;
+                    result(x, y, 2) = 0;
+                }
+            }
+        }
+		result.save_bmp(getOutputPath().c_str());
 	} catch (CImgIOException e) {
 		throw std::exception("Cannot open or save file from path provided. Path is invalid.\n");
-	} catch (std::exception& e) {
-		throw std::exception(e.what());
 	}
 }
