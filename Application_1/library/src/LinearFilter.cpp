@@ -84,8 +84,8 @@ void LinearFilter::linearFilter() {
         CImg<unsigned char> image(getInputPath().c_str());
         CImg<unsigned char> copy(getInputPath().c_str());
         float sum0 = 0;
-        // float sum1 = 0;
-        // float sum2 = 0;
+        float sum1 = 0;
+        float sum2 = 0;
         int k = 0;
         int mask[9];
         setMask(mask);
@@ -94,52 +94,49 @@ void LinearFilter::linearFilter() {
                 for (int i = y - 1; i < y + 2; i++) {
                     for (int j = x - 1; j < x + 2; j++) {
                         sum0 += mask[k] * copy(j, i, 0);
-                        // sum1 += mask[k] * copy(j, i, 1);
-                        // sum2 += mask[k] * copy(j, i, 2);
+                        sum1 += mask[k] * copy(j, i, 1);
+                        sum2 += mask[k] * copy(j, i, 2);
                         k++;
                     }
                 }
-                if (sum0 > 255) {
-                    image(x, y, 0) = 255;
-                    image(x, y, 1) = 255;
-                    image(x, y, 2) = 255;
-                } else if (sum0 < 0) {
-                    image(x, y, 0) = 0;
-                    image(x, y, 1) = 0;
-                    image(x, y, 2) = 0;                   
-                } else {
-                    image(x, y, 0) = sum0;
-                    image(x, y, 1) = sum0;
-                    image(x, y, 2) = sum0;
-                }
                 // if (sum0 > 255) {
                 //     image(x, y, 0) = 255;
+                //     image(x, y, 1) = 255;
+                //     image(x, y, 2) = 255;
                 // } else if (sum0 < 0) {
-                //     image(x, y, 0) = 0;                    
+                //     image(x, y, 0) = 0;
+                //     image(x, y, 1) = 0;
+                //     image(x, y, 2) = 0;                   
                 // } else {
                 //     image(x, y, 0) = sum0;
+                //     image(x, y, 1) = sum0;
+                //     image(x, y, 2) = sum0;
                 // }
-                // if (sum1 > 255) {
-                //     image(x, y, 1) = 255;
-                // } else if (sum1 < 0) {
-                //     image(x, y, 1) = 0;                    
-                // } else {
-                //     image(x, y, 1) = sum1;
-                // }
-                // if (sum2 > 255) {
-                //     image(x, y, 2) = 255;
-                // } else if (sum2 < 0) {
-                //     image(x, y, 2) = 0;                    
-                // } else {
-                //     image(x, y, 2) = sum2;
-                // }
-                // //image(x, y, 1) = sum1;
-                // //image(x, y, 2) = sum2;
-
+                if (sum0 > 255) {
+                    image(x, y, 0) = 255;
+                } else if (sum0 < 0) {
+                    image(x, y, 0) = 0;                    
+                } else {
+                    image(x, y, 0) = sum0;
+                }
+                if (sum1 > 255) {
+                    image(x, y, 1) = 255;
+                } else if (sum1 < 0) {
+                    image(x, y, 1) = 0;                    
+                } else {
+                    image(x, y, 1) = sum1;
+                }
+                if (sum2 > 255) {
+                    image(x, y, 2) = 255;
+                } else if (sum2 < 0) {
+                    image(x, y, 2) = 0;                    
+                } else {
+                    image(x, y, 2) = sum2;
+                }
                 k = 0;
                 sum0 = 0;
-                // sum1 = 0;
-                // sum2 = 0;
+                sum1 = 0;
+                sum2 = 0;
             }
         }
         image.save_bmp(getOutputPath().c_str());
