@@ -118,9 +118,35 @@ void M2::operate() {
                     }
                 }
             }
+            for (int y = my; y > 0; y--) {
+                short int k = 0;
+                for (int i = y - 1; i < y + 2; i++) { 
+                    for (int j = x - 1; j < x + 2; j++) { 
+                        if (image(j, i) == 255 && matrix[k] == 1) {
+                            copy(x, y, 0) = 255;
+                            copy(x, y, 1) = 255;
+                            copy(x, y, 2) = 255;
+                        }
+                        k++;
+                    }
+                }
+            }
         }
         for (int x = mx; x > 0; --x) {
             for (int y = my; y > 0; --y) {
+                short int k = 0;
+                for (int i = y - 1; i < y + 2; i++) { 
+                    for (int j = x - 1; j < x + 2; j++) { 
+                        if (image(j, i) == 255 && matrix[k] == 1) {
+                            copy(x, y, 0) = 255;
+                            copy(x, y, 1) = 255;
+                            copy(x, y, 2) = 255;
+                        }
+                        k++;
+                    }
+                }
+            }
+            for (int y = my; y < image.height() - 1; y++) {
                 short int k = 0;
                 for (int i = y - 1; i < y + 2; i++) { 
                     for (int j = x - 1; j < x + 2; j++) { 
