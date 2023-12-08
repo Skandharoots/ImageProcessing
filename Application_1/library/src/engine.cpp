@@ -42,6 +42,7 @@
 #include "Opening.h"
 #include "HitAndMiss.h"
 #include "M2.h"
+#include "RegionGrowing.h"
 #include "CImg.h"
 
 
@@ -333,6 +334,11 @@ std::string Engine::convertInputPath(std::string path) {
      } else if (command == "--m2") {
         std::shared_ptr<M2> m2 = std::make_shared<M2>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         m2->operate(); 
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--rg") {
+        std::shared_ptr<RG> rg = std::make_shared<RG>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        rg->regionGrowing(); 
         std::cout << "Operation successful!" << std::endl;
      }
      else {
