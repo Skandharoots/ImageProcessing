@@ -52,4 +52,13 @@ void Help::printHelp() {
     cout << "--sedgesharp: This operation performs an edge sharpening of an image, a linear image filtration algorithm in spatial domain basing on convolution"<< endl << endl;
     cout << "--sedgesharpopt: This operation performs an edge sharpening filter on an image, but it is an optimalised version of original edge sharpening code"<< endl << endl;
     cout << "--orobertsii: This operation performs a Roberts Operator II on an image, a non-linear image filtration algorithm in spatial domain"<< endl << endl;
+    cout << "--dilation: This operation performs a dilation on an input image, according to the chosen matrix"<< endl << endl;
+    cout << "--erosion: This operation performs an erosion on an input image, according to the chosen matrix"<< endl << endl;
+    cout << "--opening: This operation performs opening on an input image, according to the chosen matrix"<< endl << endl;
+    cout << "--closing: This operation performs closing on an input image, according to the chosen matrix"<< endl << endl;
+    cout << "\"1\" or \"2\" or \"3\" or \"4\": For matrix choice for dilation, erosion, opening, closing operations"<< endl << endl;
+    cout << "--htnms: This operation performs hit or miss operasion on an input image, according to the chosen matrix"<< endl;
+    cout << "\"11a\" or \"11b\" or \"11c\" or \"11d\" or \"12a\" or \"12b\" or \"12c\" or \"12d\": For matrix choice for dilation, erosion, opening, closing operations"<< endl << endl;
+    cout << "--M2: This operation performs M2 operation on an input image"<< endl << endl;
+    cout << "--rg: This operation performs region growing on an input image"<< endl << endl;
 }
