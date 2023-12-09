@@ -77,7 +77,6 @@ void M2::operate() {
         bool check = false;
         setMatrix(matrix);
 		CImg<unsigned char> image(getInputPath().c_str());
-        CImg<unsigned char> complement(getInputPath().c_str());
         CImg<unsigned char> copy(getInputPath().c_str());
         CImg<unsigned char> result(image.width(), image.height(), 1, 3);
         CImgDisplay main_disp(image,"Click a point");
@@ -93,16 +92,7 @@ void M2::operate() {
                 }
             }
         }
-        //Complement of original
-        for (int x = 1; x < image.width() - 1; x++) {
-			for (int y = 1; y < image.height() - 1; y++) {
-                if (image(x, y) == 0) {
-                    complement(x, y) = 255;
-                } else {
-                    complement(x, y) = 0;
-                }
-			}
-		}
+        
         //Dialation from point
         for (int x = mx; x < image.width() - 1; x++) {
             for (int y = my; y < image.height() - 1; y++) {
@@ -118,53 +108,13 @@ void M2::operate() {
                     }
                 }
             }
-            // for (int y = my; y > 0; y--) {
-            //     short int k = 0;
-            //     for (int i = y - 1; i < y + 2; i++) { 
-            //         for (int j = x - 1; j < x + 2; j++) { 
-            //             if (image(j, i) == 255 && matrix[k] == 1) {
-            //                 copy(x, y, 0) = 255;
-            //                 copy(x, y, 1) = 255;
-            //                 copy(x, y, 2) = 255;
-            //             }
-            //             k++;
-            //         }
-            //     }
-            // }
         }
-        // for (int x = mx; x > 0; --x) {
-        //     for (int y = my; y > 0; --y) {
-        //         short int k = 0;
-        //         for (int i = y - 1; i < y + 2; i++) { 
-        //             for (int j = x - 1; j < x + 2; j++) { 
-        //                 if (image(j, i) == 255 && matrix[k] == 1) {
-        //                     copy(x, y, 0) = 255;
-        //                     copy(x, y, 1) = 255;
-        //                     copy(x, y, 2) = 255;
-        //                 }
-        //                 k++;
-        //             }
-        //         }
-        //     }
-        //     for (int y = my; y < image.height() - 1; y++) {
-        //         short int k = 0;
-        //         for (int i = y - 1; i < y + 2; i++) { 
-        //             for (int j = x - 1; j < x + 2; j++) { 
-        //                 if (image(j, i) == 255 && matrix[k] == 1) {
-        //                     copy(x, y, 0) = 255;
-        //                     copy(x, y, 1) = 255;
-        //                     copy(x, y, 2) = 255;
-        //                 }
-        //                 k++;
-        //             }
-        //         }
-        //     }
-        // }
+
         //Intersection of dialated image with composition of original
         for (int x = 0; x < image.width(); x++) {
 			for (int y = 0; y < image.height(); y++) {
-                if ((copy(x, y) == 255 && complement(x, y) == 255) || 
-                        (copy(x, y) == 0 && complement(x, y) == 0)) {
+                if ((copy(x, y) == 255 && image(x, y) == 0) || 
+                        (copy(x, y) == 0 && image(x, y) == 255)) {
                     result(x, y, 0) = 255;
                     result(x, y, 1) = 255;
                     result(x, y, 2) = 255;
