@@ -4,6 +4,7 @@
 #include <sstream>
 #include <regex>
 #include <vector>
+#include <stack>
 #include "CImg.h"
 #include "M2.h"
 
@@ -76,10 +77,12 @@ void M2::operate() {
         int my;
         bool check = false;
         setMatrix(matrix);
-		CImg<unsigned char> image(getInputPath().c_str());
+		CImg<unsigned char> A(getInputPath().c_str());
         CImg<unsigned char> copy(getInputPath().c_str());
-        CImg<unsigned char> result(image.width(), image.height(), 1, 3);
-        CImgDisplay main_disp(image,"Click a point");
+        CImg<unsigned char> complement(getInputPath().c_str());
+        CImg<unsigned char> X(getInputPath().c_str());
+        CImg<unsigned char> Y(A.width(), A.height(), 1, 3);
+        CImgDisplay main_disp(A,"Click a point");
         while (!main_disp.is_closed()) {
             main_disp.wait();
             if (main_disp.button() && main_disp.mouse_y()>=0) {
@@ -92,41 +95,121 @@ void M2::operate() {
                 }
             }
         }
-        
-        //Dialation from point
-        for (int x = mx; x < image.width() - 1; x++) {
-            for (int y = my; y < image.height() - 1; y++) {
-                short int k = 0;
-                for (int i = y - 1; i < y + 2; i++) { 
-                    for (int j = x - 1; j < x + 2; j++) { 
-                        if (image(j, i) == 255 && matrix[k] == 1) {
-                            copy(x, y, 0) = 255;
-                            copy(x, y, 1) = 255;
-                            copy(x, y, 2) = 255;
-                        }
-                        k++;
-                    }
-                }
+
+        for (int x = 0; x < X.width(); x++) {
+            for (int y = 0; y < X.height(); y++) {
+                X(x, y, 0) = 255;
+                X(x, y, 1) = 255;
+                X(x, y, 2) = 255;
+                copy(x, y, 0) = 255;
+                copy(x, y, 1) = 255;
+                copy(x, y, 2) = 255;
             }
         }
 
-        //Intersection of dialated image with composition of original
-        for (int x = 0; x < image.width(); x++) {
-			for (int y = 0; y < image.height(); y++) {
-                if ((copy(x, y) == 255 && image(x, y) == 0) || 
-                        (copy(x, y) == 0 && image(x, y) == 255)) {
-                    result(x, y, 0) = 255;
-                    result(x, y, 1) = 255;
-                    result(x, y, 2) = 255;
-                } else {
-                    result(x, y, 0) = 0;
-                    result(x, y, 1) = 0;
-                    result(x, y, 2) = 0;
-                }
+        X(mx, my, 0) = 0;
+        X(mx, my, 1) = 0;
+        X(mx, my, 2) = 0;
+        copy(mx, my, 0) = 0;
+        copy(mx, my, 1) = 0;
+        copy(mx, my, 2) = 0;
+
+        for (int x = 0; x < A.width(); x++) {
+            for (int y = 0; y < A.height(); y++) {
+                    if (A(x, y, 0) == 0) {
+                        complement(x, y, 0) = 255;
+                        complement(x, y, 1) = 255;
+                        complement(x, y, 2) = 255;
+                    }
+                    else {
+                        complement(x, y, 0) = 0;
+                        complement(x, y, 1) = 0;
+                        complement(x, y, 2) = 0;
+                    }
             }
         }
-		result.save_bmp(getOutputPath().c_str());
-	} catch (CImgIOException e) {
+        
+        //Dilation from point
+        while(check==false) {
+            int a = 0;
+            int b = 0;
+            for (int x = 1; x < A.width() - 1; x++) {
+                for (int y = 1; y < A.height() - 1; y++) {
+                    if(X(x, y) == 0) {
+                        a++;
+                    }
+                }
+            }
+
+            for (int x = 1; x < A.width() - 1; x++) {
+                for (int y = 1; y < A.height() - 1; y++) {
+                    short int k = 0;
+                    for (int i = y - 1; i < y + 2; i++) { 
+                        for (int j = x - 1; j < x + 2; j++) { 
+                            if (copy(j, i) == 0 && matrix[k] == 1) {
+                                X(x, y, 0) = 0;
+                                X(x, y, 1) = 0;
+                                X(x, y, 2) = 0;
+                            }
+                            k++;
+                        }
+                    }
+                }
+            }
+
+            for (int x = 1; x < A.width() - 1; x++) {
+                for (int y = 1; y < A.height() - 1; y++) {
+                    if (complement(x, y) == 0 && X(x, y) == 0) {
+                        X(x, y, 0) = 0;
+                        X(x, y, 1) = 0;
+                        X(x, y, 2) = 0;
+                    }
+                    else {
+                        X(x, y, 0) = 255;
+                        X(x, y, 1) = 255;
+                        X(x, y, 2) = 255;
+                    }
+                }
+            }
+
+            for (int x = 1; x < A.width() - 1; x++) {
+                for (int y = 1; y < A.height() - 1; y++) {
+                    copy(x, y, 0) = X(x, y, 0);
+                    copy(x, y, 1) = X(x, y, 1);
+                    copy(x, y, 2) = X(x, y, 2);
+                }
+            }
+
+            for (int x = 1; x < A.width() - 1; x++) {
+                for (int y = 1; y < A.height() - 1; y++) {
+                    if(X(x, y) == 0) {
+                        b++;
+                    }
+                }
+            }
+
+            if(a==b) {
+                check = true;
+            }
+        }
+
+        for (int x = 0; x < A.width(); x++) {
+			for (int y = 0; y < A.height(); y++) {
+                if (A(x, y) == 0 || X(x, y) == 0) {
+                    Y(x, y, 0) = 0;
+                    Y(x, y, 1) = 0;
+                    Y(x, y, 2) = 0;
+                }
+                else {
+                    Y(x, y, 0) = 255;
+                    Y(x, y, 1) = 255;
+                    Y(x, y, 2) = 255;
+                }
+                }
+            }
+            Y.save_bmp(getOutputPath().c_str());
+        }
+	catch (CImgIOException e) {
 		throw std::exception("Cannot open or save file from path provided. Path is invalid.\n");
 	}
 }
