@@ -43,6 +43,7 @@ set(SOURCE_FILES
         include/M2.h
         include/RegionGrowing.h
         include/FFT.h
+        include/IFFT.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -81,6 +82,8 @@ set(SOURCE_FILES
             src/M2.cpp
             src/RegionGrowing.cpp
             src/FFT.cpp
+            src/IFFT.cpp
+
         )
 
 add_library(Library ${SOURCE_FILES})

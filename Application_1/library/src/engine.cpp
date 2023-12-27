@@ -44,6 +44,7 @@
 #include "M2.h"
 #include "RegionGrowing.h"
 #include "FFT.h"
+#include "IFFT.h"
 #include "CImg.h"
 
 
@@ -345,6 +346,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--fft") {
         std::shared_ptr<FFT> fft = std::make_shared<FFT>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         fft->transform();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--ifft") {
+        std::shared_ptr<IFFT> ifft = std::make_shared<IFFT>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        ifft->transform();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
