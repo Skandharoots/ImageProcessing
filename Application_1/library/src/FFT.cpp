@@ -2,6 +2,7 @@
 #include <cmath>
 #include <complex>
 #include <math.h>
+#include <iostream>
 #include "FFT.h"
 #include "CImg.h"
 
@@ -40,26 +41,52 @@ void FFT::transform() {
         i = -1;
         i = sqrt(i);
 		CImg<unsigned char> image(getInputPath().c_str());
-		CImg<unsigned char> image2(image.width(), image.height(), 1, 3);
-        dcomp sum;
-        dcomp sum2;
-
-        for(int i = 0; i < image.width(); i++) {
-            for(int j = 0; j < image.height(); j++) {
-                image2(i, j, 0) = 0;
-                image2(i, j, 1) = 0;
-                image2(i, j, 2) = 0;
+		CImg<unsigned char> image2(getInputPath().c_str());
+        double real = 0;
+        double imaginary = 0;
+        double result = 0;
+        float avg = 0;
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.height(); y++) {
+                avg = (image(x, y, 0) + image(x, y, 1) + image(x, y, 2)) / 3;
+                image(x, y, 0) = avg;
+                image(x, y, 1) = avg;
+                image(x, y, 2) = avg;
+                avg = 0;
             }
         }
 
-        int k = 0;
-        for(int x = 0; x < image.width(); x++) {
-            for(int y = 0; y < image.height(); y++) {
-                //image2(i, j, 0) = image(i, j, 0) * exp(-i*2*M_PI*image(i, j, 0)*k/image.height())
-                sum += image(x, y, 0) * exp(-i*2*3.1415926*x*k/image.height());
-            }
+        
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.height(); y++) {
+                for (int yy = 0; yy < image.height(); yy++) {
+                    real += image(x, yy, 0) * cos((2.0 * 3.1415926 * y * yy) / image.height());
+                    imaginary += image(x, yy, 0) * -1 * sin((2.0 * 3.1415926 * y * yy) / image.height());
+                }
+                for (int xx = 0; xx < image.width(); xx++) {
+                    real += image(xx, y, 0) * cos((2.0 * 3.1415926 * x * xx) / image.height());
+                    imaginary += image(xx, y, 0) * -1 *sin((2.0 * 3.1415926 * x * xx) / image.height());
+                }
+                result = sqrt(pow(real, 2) + pow(imaginary, 2));
+                if (result > 255) {
+                    image2(x, y, 0) = 255;
+                    image2(x, y, 1) = 255;
+                    image2(x, y, 2) = 255;
+                } else if (result < 0) {
+                    image2(x, y, 0) = 0;
+                    image2(x, y, 1) = 0;
+                    image2(x, y, 2) = 0;
+                } else {
+                    image2(x, y, 0) = result;
+                    image2(x, y, 1) = result;
+                    image2(x, y, 2) = result;
+                }
+                real = 0;
+                imaginary = 0;
+                result = 0;
+            } 
         }
-		image.save_bmp(getOutputPath().c_str());
+		image2.save_bmp(getOutputPath().c_str());
 	}
 	catch (CImgIOException e) {
 		throw std::exception("Cannot load or save from the path. Path invalid.\n");

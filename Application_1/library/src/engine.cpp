@@ -43,6 +43,7 @@
 #include "HitAndMiss.h"
 #include "M2.h"
 #include "RegionGrowing.h"
+#include "FFT.h"
 #include "CImg.h"
 
 
@@ -339,6 +340,11 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--rg") {
         std::shared_ptr<RG> rg = std::make_shared<RG>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         rg->regionGrowing(); 
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--fft") {
+        std::shared_ptr<FFT> fft = std::make_shared<FFT>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        fft->transform();
         std::cout << "Operation successful!" << std::endl;
      }
      else {
