@@ -349,7 +349,7 @@ std::string Engine::convertInputPath(std::string path) {
         std::cout << "Operation successful!" << std::endl;
      }
      else if (command == "--ifft") {
-        std::shared_ptr<IFFT> ifft = std::make_shared<IFFT>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        std::shared_ptr<IFFT> ifft = std::make_shared<IFFT>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()), convertInputPath(getInputPath2()));
         ifft->transform();
         std::cout << "Operation successful!" << std::endl;
      }

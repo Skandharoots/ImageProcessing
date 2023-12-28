@@ -116,14 +116,14 @@ void FFT::transform() {
                 image3(x, y, 2) = (255/log(1 + abs(max))) * log(1 + abs(result));
                 if(real > 0 || imaginary != 0) {
                     phase = 2 * atan(imaginary / (real + sqrt(pow(real, 2) + pow(imaginary, 2))));
-                    phase2(x, y, 0) = phase;
-                    phase2(x, y, 1) = phase;
-                    phase2(x, y, 2) = phase;
+                    phase1(x, y, 0) = phase;
+                    phase1(x, y, 1) = phase;
+                    phase1(x, y, 2) = phase;
                 } else if (real < 0 && imaginary == 0) {
                     phase = M_PI;
-                    phase2(x, y, 0) = phase;
-                    phase2(x, y, 1) = phase;
-                    phase2(x, y, 2) = phase;
+                    phase1(x, y, 0) = phase;
+                    phase1(x, y, 1) = phase;
+                    phase1(x, y, 2) = phase;
                 } else {
                     phase = phase;
                 }
@@ -137,6 +137,9 @@ void FFT::transform() {
                 image2(x + (image.width()/2), y + (image.height()/2), 0) = image3(x, y, 0);
                 image2(x + (image.width()/2), y + (image.height()/2), 1) = image3(x, y, 1);
                 image2(x + (image.width()/2), y + (image.height()/2), 2) = image3(x, y, 2);
+                phase2(x + (image.width()/2), y + (image.height()/2), 0) = phase1(x, y, 0);
+                phase2(x + (image.width()/2), y + (image.height()/2), 1) = phase1(x, y, 1);
+                phase2(x + (image.width()/2), y + (image.height()/2), 2) = phase1(x, y, 2);
             }
         }
         for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
@@ -144,6 +147,9 @@ void FFT::transform() {
                 image2(x - (image.width()/2), y + (image.height()/2), 0) = image3(x, y, 0);
                 image2(x - (image.width()/2), y + (image.height()/2), 1) = image3(x, y, 1);
                 image2(x - (image.width()/2), y + (image.height()/2), 2) = image3(x, y, 2);
+                phase2(x - (image.width()/2), y + (image.height()/2), 0) = phase1(x, y, 0);
+                phase2(x - (image.width()/2), y + (image.height()/2), 1) = phase1(x, y, 1);
+                phase2(x - (image.width()/2), y + (image.height()/2), 2) = phase1(x, y, 2);
             }
         }
         for (int x = 0; x < image.width() / 2; x++) {
@@ -151,6 +157,9 @@ void FFT::transform() {
                 image2(x + (image.width()/2), y - (image.height()/2), 0) = image3(x, y, 0);
                 image2(x + (image.width()/2), y - (image.height()/2), 1) = image3(x, y, 1);
                 image2(x + (image.width()/2), y - (image.height()/2), 2) = image3(x, y, 2);
+                phase2(x + (image.width()/2), y - (image.height()/2), 0) = phase1(x, y, 0);
+                phase2(x + (image.width()/2), y - (image.height()/2), 1) = phase1(x, y, 1);
+                phase2(x + (image.width()/2), y - (image.height()/2), 2) = phase1(x, y, 2);
             }
         }
         for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
@@ -158,6 +167,9 @@ void FFT::transform() {
                 image2(x - (image.width()/2), y - (image.height()/2), 0) = image3(x, y, 0);
                 image2(x - (image.width()/2), y - (image.height()/2), 1) = image3(x, y, 1);
                 image2(x - (image.width()/2), y - (image.height()/2), 2) = image3(x, y, 2);
+                phase2(x - (image.width()/2), y - (image.height()/2), 0) = phase1(x, y, 0);
+                phase2(x - (image.width()/2), y - (image.height()/2), 1) = phase1(x, y, 1);
+                phase2(x - (image.width()/2), y - (image.height()/2), 2) = phase1(x, y, 2);
             }
         }
 		image2.save_bmp(getOutputPath().c_str());

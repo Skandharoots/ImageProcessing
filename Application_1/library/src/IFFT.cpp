@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+
 #include <string>
 #include <cmath>
 #include <complex>
@@ -9,10 +11,11 @@
 using namespace cimg_library;
 typedef std::complex<double> dcomp;
 
-IFFT::IFFT(std::string inputPath, std::string outputPath) {
+IFFT::IFFT(std::string inputPath, std::string outputPath, std::string inputPath2) {
 
 	this->inputPath = inputPath;
 	this->outputPath = outputPath;
+    this->inputPath2 = inputPath2;
 }
 
 IFFT::~IFFT() {
@@ -23,6 +26,13 @@ std::string IFFT::getInputPath() {
 }
 void IFFT::setInputPath(std::string path) {
 	this->inputPath = path;
+}
+
+std::string IFFT::getInputPath2() {
+	return this->inputPath2;
+}
+void IFFT::setInputPath2(std::string path) {
+	this->inputPath2 = path;
 }
 
 std::string IFFT::getOutputPath() {
@@ -37,62 +47,54 @@ void IFFT::transform() {
 
 	cimg::exception_mode(0);
 	try {
-        dcomp i;
-        i = -1;
-        i = sqrt(i);
-		CImg<unsigned char> image(getInputPath().c_str());
-		CImg<unsigned char> image2(getInputPath().c_str());
-        CImg<unsigned char> image3(getInputPath().c_str());
+		CImg<unsigned char> magnitude(getInputPath().c_str());
+		CImg<unsigned char> phase(getInputPath2().c_str());
+        CImg<unsigned char> half(getInputPath().c_str());
+        CImg<unsigned char> resultimage(getInputPath().c_str());
         double real = 0;
         double imaginary = 0;
         double result = 0;
         float avg = 0;
-
-        for (int x = 0; x < image.width(); x++) {
-            for (int y = 0; y < image.height(); y++) {
-                // for (int yy = 0; yy < image.height(); yy++) {
-                //     real += image2(x, yy, 0) * cos((2.0 * 3.1415926 * y * yy) / image2.height());
-                //     imaginary += image2(x, yy, 0) * -1 * sin((2.0 * 3.1415926 * y * yy) / image2.height());
-                // }
-                for (int xx = 0; xx < image.width(); xx++) {
-                    real += image(xx, y, 0) * cos((2.0 * 3.1415926 * x * xx) / image.height());
-                    imaginary += image(xx, y, 0) * sin((2.0 * 3.1415926 * x * xx) / image.height());
+        float max = 0;
+        for (int x = 0; x < magnitude.width(); x++) {
+            for (int y = 0; y < magnitude.height(); y++) {
+                if(magnitude(x, y, 0) > max) {
+                    max = magnitude(x, y, 0); 
                 }
-                result = sqrt(pow(real, 2) + pow(imaginary, 2));
-                image2(x, y, 0) = result;
-                image2(x, y, 1) = result;
-                image2(x, y, 2) = result;
+            }
+        }
+
+        for (int x = 0; x < magnitude.width(); x++) {
+            for (int y = 0; y < magnitude.height(); y++) {
+                for (int xx = 0; xx < magnitude.width(); xx++) {
+                    real += magnitude(xx, y, 0) * cos((2.0 * M_PI * (x - magnitude.width()/2) * xx) / magnitude.width());
+                    imaginary += magnitude(xx, y, 0) * sin((2.0 * M_PI * (x - magnitude.width()/2) * xx) / magnitude.width());
+                }
+                result = (1/(2*M_PI))*sqrt(pow(real / magnitude.width(), 2) + pow(imaginary / magnitude.width(), 2));
+                half(x, y, 0) = (255/log(1 + abs(max))) * log(1 + abs(result));
+                half(x, y, 1) = (255/log(1 + abs(max))) * log(1 + abs(result));
+                half(x, y, 2) = (255/log(1 + abs(max))) * log(1 + abs(result));
                 real = 0;
                 imaginary = 0;
                 result = 0;
             }
         }
-        real = 0;
-        imaginary = 0;
-        result = 0;
-        for (int y = 0; y < image.height(); y++) {
-            for (int x = 0; x < image.width(); x++) {
-                // for (int xx = 0; xx < image.width(); xx++) {
-                //     real += image(xx, y, 0) * cos((2.0 * 3.1415926 * x * xx) / image.height());
-                //     imaginary += image(xx, y, 0) * -1 * sin((2.0 * 3.1415926 * x * xx) / image.height());
-                // }
-                for (int yy = 0; yy < image.height(); yy++) {
-                    real += image2(x, yy, 0) * cos((2.0 * 3.1415926 * y * yy) / image.height());
-                    imaginary += image2(x, yy, 0) * sin((2.0 * 3.1415926 * y * yy) / image.height());
+        for (int y = 0; y < magnitude.height(); y++) {
+            for (int x = 0; x < magnitude.width(); x++) {
+                for (int yy = 0; yy < magnitude.height(); yy++) {
+                    real += magnitude(x, yy, 0) * cos((2.0 * M_PI * (y - magnitude.height()/2) * yy) / magnitude.height());
+                    imaginary += magnitude(x, yy, 0) * -1 * sin((2.0 * M_PI * (y - magnitude.height()/2) * yy) / magnitude.height());
                 }
-                result = sqrt(pow(real, 2) + pow(imaginary, 2));
-                image3(x, y, 0) = result;
-                image3(x, y, 1) = result;
-                image3(x, y, 2) = result;
+                result = sqrt(pow(real / magnitude.height(), 2) + pow(imaginary / magnitude.height(), 2));
+                resultimage(x, y, 0) = (255/log(1 + abs(max))) * log(1 + abs(result));
+                resultimage(x, y, 1) = (255/log(1 + abs(max))) * log(1 + abs(result));
+                resultimage(x, y, 2) = (255/log(1 + abs(max))) * log(1 + abs(result));
                 real = 0;
                 imaginary = 0;
                 result = 0;
-
             }
         }
-        
-        
-		image3.save_bmp(getOutputPath().c_str());
+        resultimage.save_bmp(getOutputPath().c_str());
 	}
 	catch (CImgIOException e) {
 		throw std::exception("Cannot load or save from the path. Path invalid.\n");
