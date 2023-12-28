@@ -344,7 +344,7 @@ std::string Engine::convertInputPath(std::string path) {
         std::cout << "Operation successful!" << std::endl;
      }
      else if (command == "--fft") {
-        std::shared_ptr<FFT> fft = std::make_shared<FFT>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        std::shared_ptr<FFT> fft = std::make_shared<FFT>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()), convertInputPath(getInputPath2()));
         fft->transform();
         std::cout << "Operation successful!" << std::endl;
      }

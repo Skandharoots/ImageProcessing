@@ -80,6 +80,32 @@ int main(int argc, char* argv[])
             engine->openImage();
             
         }
+        else if (argc == 8) {
+            string operation(argv[1]);
+            string arg2(argv[2]);
+            string arg3(argv[4]);
+            string arg4(argv[6]);
+            string in;
+            string out;
+            string in2;
+            if(arg2 == "--input") {
+                in = argv[3];
+            } else {
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+            } 
+            if (arg3 == "--output") {
+                out = argv[5];
+            } else {
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+            } 
+            if (arg4 == "--output2") {
+                in2 = argv[7];
+            } else {
+                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+            }
+            engine = make_shared<Engine>(operation, "", in, out, in2);
+            engine->openImage();
+        }
         else if (argc == 9) {
             string operation(argv[1]);
             string params(argv[2]);
