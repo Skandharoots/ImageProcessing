@@ -56,32 +56,32 @@ void IFFT::transform() {
         double result = 0;
         float avg = 0;
         float max = 0;
-        for (int x = 0; x < magnitude.width(); x++) {
-            for (int y = 0; y < magnitude.height(); y++) {
-                if(magnitude(x, y, 0) > max) {
-                    max = magnitude(x, y, 0); 
-                }
-            }
-        }
+        // for (int x = 0; x < magnitude.width(); x++) {
+        //     for (int y = 0; y < magnitude.height(); y++) {
+        //         magnitude(x, y, 0) = exp(magnitude(x, y, 0)) / 40;
+        //         magnitude(x, y, 1) = exp(magnitude(x, y, 1)) / 40;
+        //         magnitude(x, y, 2) = exp(magnitude(x, y, 2)) / 40;
+        //     }
+        // }
 
         for (int x = 0; x < magnitude.width(); x++) {
             for (int y = 0; y < magnitude.height(); y++) {
                 for (int xx = 0; xx < magnitude.width(); xx++) {
-                    real += magnitude(xx, y, 0) * cos((2.0 * M_PI * (x - magnitude.width()/2) * xx) / magnitude.width());
-                    imaginary += magnitude(xx, y, 0) * sin((2.0 * M_PI * (x - magnitude.width()/2) * xx) / magnitude.width());
+                    real += (exp(magnitude(xx, y, 0)) / 40) * cos((2.0 * M_PI * (x - magnitude.width()/2) * xx) / magnitude.width());
+                    imaginary += (exp(magnitude(xx, y, 0)) / 40) * sin((2.0 * M_PI * (x - magnitude.width()/2) * xx) / magnitude.width());
                 }
-                if(real > 0 || imaginary != 0) {
-                    real *= tan(phase(x, y, 0));
-                    imaginary *= tan(phase(x, y, 0));
-                } else if (real < 0 && imaginary == 0) {
-                    real *= M_PI;
-                } else {
-                    real += 0;
-                }
+                // if(real > 0 || imaginary != 0) {
+                //     real *= tan(phase(x, y, 0));
+                //     imaginary *= tan(phase(x, y, 0));
+                // } else if (real < 0 && imaginary == 0) {
+                //     real *= M_PI;
+                // } else {
+                //     real += 0;
+                // }
                 result = sqrt(pow(real / magnitude.height(), 2) + pow(imaginary / magnitude.height(), 2));
-                half(x, y, 0) = exp(result) / 40;
-                half(x, y, 1) = exp(result) / 40;
-                half(x, y, 2) = exp(result) / 40;
+                half(x, y, 0) = 40 * log(1 + abs(result));
+                half(x, y, 1) = 40 * log(1 + abs(result));
+                half(x, y, 2) = 40 * log(1 + abs(result));
                 real = 0;
                 imaginary = 0;
                 result = 0;
@@ -90,22 +90,23 @@ void IFFT::transform() {
         for (int y = 0; y < magnitude.height(); y++) {
             for (int x = 0; x < magnitude.width(); x++) {
                 for (int yy = 0; yy < magnitude.height(); yy++) {
-                    real += half(x, yy, 0) * cos((2.0 * M_PI * (y - magnitude.height()/2) * yy) / magnitude.height());
-                    imaginary += half(x, yy, 0) * -1 * sin((2.0 * M_PI * (y - magnitude.height()/2) * yy) / magnitude.height());
+                    real += (exp(half(x, yy, 0)) / 40) * cos((2.0 * M_PI * (y - magnitude.height()/2) * yy) / magnitude.height());
+                    imaginary += (exp(half(x, yy, 0)) / 40) * sin((2.0 * M_PI * (y - magnitude.height()/2) * yy) / magnitude.height());
                 }
-                if(real > 0 || imaginary != 0) {
-                    real *= tan(phase(x, y, 0)/imaginary);
-                    imaginary *= tan(phase(x, y, 0) * real);
-                } else if (real < 0 && imaginary == 0) {
-                    real *= M_PI;
-                } else {
-                    real += 0;
-                }
+                // if(real > 0 || imaginary != 0) {
+                //     real *= tan(phase(x, y, 0)/imaginary);
+                //     imaginary *= tan(phase(x, y, 0) * real);
+                // } else if (real < 0 && imaginary == 0) {
+                //     real *= M_PI;
+                // } else {
+                //     real += 0;
+                // }
                 result = sqrt(pow(real / magnitude.height(), 2) + pow(imaginary / magnitude.height(), 2));
-                resultimage(x, y, 0) = exp(result) / 40;
-                resultimage(x, y, 1) = exp(result) / 40;
-                resultimage(x, y, 2) = exp(result) / 40;
+                resultimage(x, y, 0) = 40 * log(1 + abs(result));
+                resultimage(x, y, 1) = 40 * log(1 + abs(result));
+                resultimage(x, y, 2) = 40 * log(1 + abs(result));
                 real = 0;
+
                 imaginary = 0;
                 result = 0;
             }
