@@ -80,11 +80,11 @@ void FFT::transform() {
                     imaginary += image(x, yy, 0) * -1 * sin((2.0 * M_PI * y * yy) / image.height());
                 }
                 result = sqrt(pow(real / image.height(), 2) + pow(imaginary / image.height(), 2));
-                image2(x, y, 0) = (255/log(1 + abs(max))) * log(1 + abs(result));
-                image2(x, y, 1) = (255/log(1 + abs(max))) * log(1 + abs(result));
-                image2(x, y, 2) = (255/log(1 + abs(max))) * log(1 + abs(result));
+                image2(x, y, 0) = 40 * log(1 + abs(result));
+                image2(x, y, 1) = 40 * log(1 + abs(result));
+                image2(x, y, 2) = 40 * log(1 + abs(result));
                 if(real > 0 || imaginary != 0) {
-                    phase = 2 * atan(imaginary / (real + sqrt(pow(real, 2) + pow(imaginary, 2))));
+                    phase = atan(imaginary / real);
                     phase1(x, y, 0) = phase;
                     phase1(x, y, 1) = phase;
                     phase1(x, y, 2) = phase;
@@ -111,11 +111,11 @@ void FFT::transform() {
                     imaginary += image2(xx, y, 0) * -1 * sin((2.0 * M_PI * x * xx) / image2.width());
                 }
                 result = sqrt(pow(real / image2.width(), 2) + pow(imaginary / image2.width(), 2));
-                image3(x, y, 0) = (255/log(1 + abs(max))) * log(1 + abs(result));
-                image3(x, y, 1) = (255/log(1 + abs(max))) * log(1 + abs(result));
-                image3(x, y, 2) = (255/log(1 + abs(max))) * log(1 + abs(result));
+                image3(x, y, 0) = 40 * log(1 + abs(result));
+                image3(x, y, 1) = 40 * log(1 + abs(result));
+                image3(x, y, 2) = 40 * log(1 + abs(result));
                 if(real > 0 || imaginary != 0) {
-                    phase = 2 * atan(imaginary / (real + sqrt(pow(real, 2) + pow(imaginary, 2))));
+                    phase = atan(imaginary / real);
                     phase1(x, y, 0) = phase;
                     phase1(x, y, 1) = phase;
                     phase1(x, y, 2) = phase;
