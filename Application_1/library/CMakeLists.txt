@@ -42,8 +42,10 @@ set(SOURCE_FILES
         include/HitAndMiss.h
         include/M2.h
         include/RegionGrowing.h
+        include/SFT.h
         include/FFT.h
         include/IFFT.h
+        include/DFT.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -81,7 +83,9 @@ set(SOURCE_FILES
             src/HitAndMiss.cpp
             src/M2.cpp
             src/RegionGrowing.cpp
+            src/SFT.cpp
             src/FFT.cpp
+            src/DFT.cpp
             src/IFFT.cpp
 
         )
