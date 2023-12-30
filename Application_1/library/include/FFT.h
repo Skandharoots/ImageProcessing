@@ -19,5 +19,6 @@ public:
 	std::string getOutputPath();
 	void setOutputPath(std::string path);
 	std::vector<std::complex<double>> forward();
+	void inverse(std::vector<std::complex<double>> matrix);
 	void transform();
 };

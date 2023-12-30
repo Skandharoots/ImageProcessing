@@ -107,15 +107,49 @@ std::vector<std::complex<double>> FFT::forward() {
         return matrix2;
 }
 
+void FFT::inverse(std::vector<std::complex<double>> matrix) {
+    CImg<unsigned char> image(getInputPath().c_str());
+    std::complex<double> i;
+    i = -1;
+    i = sqrt(i);
+    std::vector<std::complex<double>> matrix2;
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            std::complex<double> sum = 0;
+            for (int xx = 0; xx < image.width(); xx++) {
+                double angle =  2.0 * M_PI * x * xx / image.width();
+                sum += matrix[(image.width() * xx) + y] * (cos(angle) + i*sin(angle));
+            }
+            sum = sum / (double)image.width();              
+            matrix2.push_back(sum);
+        }
+    }
+    for (int y = 0; y < image.height(); y++) {
+            for (int x = 0; x < image.width(); x++) {
+                std::complex<double> sum = 0;
+                for (int yy = 0; yy < image.height(); yy++) {
+                    double angle =  2.0 * M_PI * y * yy / image.height();
+                    sum += matrix2[(image.width() * x) + yy] * (cos(angle) + i*sin(angle));
+                }
+                sum = sum / (double)image.height();
+                double mag = sqrt(pow(sum.real(), 2) + pow(sum.imag(), 2));
+                image(x, y, 0) = mag;
+                image(x, y, 1) = mag;
+                image(x, y, 2) = mag;
+            }
+        }
+    image.save_bmp("C:/Users/skand/Desktop/finallena.bmp");
+}
 
 
 void FFT::transform() {
 
 	cimg::exception_mode(0);
 	try {
-		
+		CImg<unsigned char> image(getInputPath().c_str());
         std::vector<std::complex<double>> matrix;
         matrix = forward();
+        inverse(matrix);
 	}
 	catch (CImgIOException e) {
 		throw std::exception("Cannot load or save from the path. Path invalid.\n");
