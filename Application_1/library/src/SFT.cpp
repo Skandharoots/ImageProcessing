@@ -89,19 +89,14 @@ void SFT::transform() {
                 for (int ii = 0; ii < image.width(); ii++) {
                     for (int j = 0; j < image.height(); j++) {
                         double angle = 2 * M_PI * ((double)(x * ii) / (double)image.width() + (double)(y * j) / (double)image.height());
-                        sum += matrix[((ii * j) + j)] * (cos(angle) + i*sin(angle));
+                        sum += matrix[((image.width() * ii) + j)] * (cos(angle) + i*sin(angle));
                     }
                 }
                 sum = sum / (double)(image.width() * image.height());
                 float mag = sqrt(pow(sum.real(), 2) + pow(sum.imag(), 2));
-                //std::cout << mag << std::endl;
                 output2(x, y, 0) = mag;
                 output2(x, y, 1) = mag;
                 output2(x, y, 2) = mag;
-                // output(x, y, 0) = abs(sum);
-                // output(x, y, 1) = abs(sum);
-                // output(x, y, 2) = abs(sum);
-                sum = 0;
             }
         }
 
@@ -133,14 +128,11 @@ void SFT::transform() {
                 output(x - (image.width()/2), y - (image.height()/2), 2) = magnitude(x, y, 2);
             }
         }
-        // CImgDisplay main_disp(output2,"Magnitude DFT");
-        // while (!main_disp.is_closed()) {
-        //     main_disp.wait();
-        // }
         CImgDisplay main_displ(output,"Magnitude DFT");
-        while (!main_displ.is_closed()) {
-                main_displ.wait();
-            }
+        while(!main_displ.is_closed()) {
+            main_displ.wait();            
+        }
+        output2.save_bmp(getOutputPath().c_str());
 	}
 	catch (CImgIOException e) {
 		throw std::exception("Cannot load or save from the path. Path invalid.\n");
