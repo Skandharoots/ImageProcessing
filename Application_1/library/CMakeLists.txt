@@ -45,7 +45,6 @@ set(SOURCE_FILES
         include/SFT.h
         include/FFT.h
         include/IFFT.h
-        include/DFT.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -85,7 +84,6 @@ set(SOURCE_FILES
             src/RegionGrowing.cpp
             src/SFT.cpp
             src/FFT.cpp
-            src/DFT.cpp
             src/IFFT.cpp
 
         )

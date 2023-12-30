@@ -51,18 +51,22 @@ void SFT::transform() {
 
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
-                std::complex<double> sum;
-                for (int i = 0; i < image.width(); i++) {
+                std::complex<double> sum = 0;
+                for (int ii = 0; ii < image.width(); ii++) {
                     for (int j = 0; j < image.height(); j++) {
-                        double angle = 2 * M_PI * ((x * i) / image.width() + (y * j) / image.height());
-                        sum += image(i, j, 0) * (cos(angle) - i*sin(angle));
+                        double angle = 2 * M_PI * (double)(x * ii) / (double)image.width();
+                        double angle2 = 2 * M_PI * (double)(y * j) / (double)image.height();
+                        sum += (double)image(ii, j, 0) * (cos(angle) - i*sin(angle)) * (cos(angle2) - i*sin(angle2));
                     }
                 }
-                sum = sum / (double)(image.width() * image.height());
+                sum = sum / (double)sqrt(image.width() * image.height());
+                //std::cout << sum << std::endl;
                 matrix.push_back(sum);
+                //std::cout << sqrt(pow(matrix[(x * y) + y].real(), 2) + pow(matrix[(x * y) + y].imag(), 2)) << std::endl;
                 magnitude(x, y, 0) = sqrt(pow(matrix[(x * y) + y].real(), 2) + pow(matrix[(x * y) + y].imag(), 2));
                 magnitude(x, y, 1) = sqrt(pow(matrix[(x * y) + y].real(), 2) + pow(matrix[(x * y) + y].imag(), 2));
                 magnitude(x, y, 2) = sqrt(pow(matrix[(x * y) + y].real(), 2) + pow(matrix[(x * y) + y].imag(), 2));
+                sum = 0;
             }
         }
         CImgDisplay main_disp(magnitude,"Magnitude DFT");
