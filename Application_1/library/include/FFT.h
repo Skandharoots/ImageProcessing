@@ -1,4 +1,9 @@
 #include <string>
+#include <complex>
+#include <vector>
+#include "CImg.h"
+
+using namespace cimg_library;
 
 class FFT {
 
@@ -13,5 +18,6 @@ public:
 	void setInputPath(std::string path);
 	std::string getOutputPath();
 	void setOutputPath(std::string path);
+	std::vector<std::complex<double>> forward();
 	void transform();
 };

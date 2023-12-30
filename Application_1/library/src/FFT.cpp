@@ -37,38 +37,17 @@ void FFT::setOutputPath(std::string path) {
 	this->outputPath = path;
 }
 
+std::vector<std::complex<double>> FFT::forward() {
+    CImg<unsigned char> image(getInputPath().c_str());
+    CImg<unsigned char> magnitude(getInputPath().c_str());
+    CImg<unsigned char> output(image.width(), image.height(), 1, 3);
 
-void FFT::transform() {
-
-	cimg::exception_mode(0);
-	try {
-		CImg<unsigned char> image(getInputPath().c_str());
-        CImg<unsigned char> magnitude(getInputPath().c_str());
-        CImg<unsigned char> output(image.width(), image.height(), 1, 3);
-        CImg<unsigned char> output2(image.width(), image.height(), 1, 3);
-
-        std::complex<double> i;
-        i = -1;
-        i = sqrt(i);
-        std::vector<std::complex<double>> matrix;
-        std::vector<std::complex<double>> matrix2;
-        std::vector<std::complex<double>> matrixfin;
-
-
-
-
-        for (int x = 0; x < image.width(); x++) {
-            for (int y = 0; y < image.height(); y++) {
-                output(x, y, 0) = 0;
-                output(x, y, 1) = 0;
-                output(x, y, 2) = 0;
-                output2(x, y, 0) = 0;
-                output2(x, y, 1) = 0;
-                output2(x, y, 2) = 0;
-            }
-        }
-
-        for (int y = 0; y < image.height(); y++) {
+    std::complex<double> i;
+    i = -1;
+    i = sqrt(i);
+    std::vector<std::complex<double>> matrix;
+    std::vector<std::complex<double>> matrix2;
+    for (int y = 0; y < image.height(); y++) {
             for (int x = 0; x < image.width(); x++) {
                 std::complex<double> sum = 0;
                 for (int yy = 0; yy < image.height(); yy++) {
@@ -96,16 +75,6 @@ void FFT::transform() {
                 magnitude(x, y, 2) = 20 * log(1 + mag);
             }
         }
-        // for (int x = 0; x < image.width(); x++) {
-        //     for (int y = 0; y < image.height(); y++) {
-        //         std::complex<double> result = matrix[(x * y) + y] + matrix2[(x * y) + y];
-        //         double mag = sqrt(pow(result.real(), 2) + pow(result.imag(), 2));
-        //         matrixfin.push_back(result);
-        //         magnitude(x, y, 0) = 20 * log(1 + mag);
-        //         magnitude(x, y, 1) = 20 * log(1 + mag);
-        //         magnitude(x, y, 2) = 20 * log(1 + mag);
-        //     }
-        // }
         for (int x = 0; x < image.width() / 2; x++) {
             for (int y = 0; y < image.height() / 2; y++) {
                 output(x + (image.width()/2), y + (image.height()/2), 0) = magnitude(x, y, 0);
@@ -135,6 +104,18 @@ void FFT::transform() {
             }
         }
 		output.save_bmp(getOutputPath().c_str());
+        return matrix2;
+}
+
+
+
+void FFT::transform() {
+
+	cimg::exception_mode(0);
+	try {
+		
+        std::vector<std::complex<double>> matrix;
+        matrix = forward();
 	}
 	catch (CImgIOException e) {
 		throw std::exception("Cannot load or save from the path. Path invalid.\n");
