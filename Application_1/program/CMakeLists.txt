@@ -10,7 +10,7 @@ set(SOURCE_FILES
 add_executable(Program ${SOURCE_FILES})
 
 #add libraries from 'Library' project
-target_link_libraries(Program Library)
+target_link_libraries(Program Library -static)
 
 #add header files from 'include' directory of main project
 target_include_directories(Program PUBLIC include)

@@ -210,6 +210,6 @@ void M2::operate() {
             Y.save_bmp(getOutputPath().c_str());
         }
 	catch (CImgIOException e) {
-		throw std::exception("Cannot open or save file from path provided. Path is invalid.\n");
+		throw std::logic_error("Cannot open or save file from path provided. Path is invalid.\n");
 	}
 }

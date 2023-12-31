@@ -88,6 +88,6 @@ void LinearFilterOptimized::linearFilter() {
         image.save_bmp(getOutputPath().c_str());
     
     } catch (CImgIOException e) {
-		throw std::exception("There was a problem with opening or saving a file. Path not valid.");
+		throw std::logic_error("There was a problem with opening or saving a file. Path not valid.");
 	}
 }

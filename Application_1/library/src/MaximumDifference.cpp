@@ -59,6 +59,6 @@ void MaximumDifference::calculate() {
         }
         std::cout << "Maximum difference is: " << std::fixed << max << std::setprecision(5) << std::endl;
     } catch (CImgIOException e) {
-        throw std::exception("Input paths are invalid.\n");
+        throw std::logic_error("Input paths are invalid.\n");
     }
 }

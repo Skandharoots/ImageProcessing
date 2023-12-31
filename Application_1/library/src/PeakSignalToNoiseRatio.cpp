@@ -59,6 +59,6 @@ void PeakSignalToNoiseRatio::calculate() {
         snr = 10 * log10(((max * max)*(oryginal.width() * oryginal.height())) / (sum * sum));
         std::cout << "Peak signal to noise ratio is: " << std::fixed << snr << std::setprecision(5) << " [dB]" << std::endl;
     } catch (CImgIOException e) {
-        throw std::exception("Input paths are invalid.\n");
+        throw std::logic_error("Input paths are invalid.\n");
     }
 }

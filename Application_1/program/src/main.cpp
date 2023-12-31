@@ -8,6 +8,7 @@
 #include <iostream>
 #include <iomanip>
 #include <chrono>
+#include <memory>
 #include "CImg.h"
 #include "engine.h"
 #include "help.h"
@@ -27,7 +28,7 @@ int main(int argc, char* argv[])
                 help->printHelp();
             }
             else {
-                throw std::exception("Type --help to see possible commands.");
+                throw std::logic_error("Type --help to see possible commands.");
             }
         }
         else if (argc == 6) {
@@ -45,7 +46,7 @@ int main(int argc, char* argv[])
                 out = argv[5];
             }
             else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+                throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             engine = make_shared<Engine>(operation, "", in, out, "");
             engine->openImage();
@@ -65,7 +66,7 @@ int main(int argc, char* argv[])
                 out = argv[4];
             }
             else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+                throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             if (arg3 == "--output") {
                 out = argv[6];
@@ -74,7 +75,7 @@ int main(int argc, char* argv[])
                 in = argv[6];
             }
             else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+                throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             engine = make_shared<Engine>(operation, params, in, out, "");
             engine->openImage();
@@ -91,17 +92,17 @@ int main(int argc, char* argv[])
             if(arg2 == "--input") {
                 in = argv[3];
             } else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+                throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             } 
             if (arg3 == "--output") {
                 out = argv[5];
             } else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+                throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             } 
             if (arg4 == "--output2") {
                 in2 = argv[7];
             } else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+                throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             engine = make_shared<Engine>(operation, "", in, out, in2);
             engine->openImage();
@@ -122,7 +123,7 @@ int main(int argc, char* argv[])
                 out = argv[4];
             }
             else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+                throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             if (arg3 == "--output") {
                 out = argv[6];
@@ -131,19 +132,19 @@ int main(int argc, char* argv[])
                 in = argv[6];
             }
             else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+                throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             if (arg4 == "--hist") {
                 in2 = argv[8];
             }
             else {
-                throw std::exception("Wrong formula for command. Type --help to see the correct phrase.\n");
+                throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
             engine = make_shared<Engine>(operation, params, in, out, in2);
             engine->openImage();
         }
         else {
-            throw std::exception("Type --help for information.\n");
+            throw std::logic_error("Type --help for information.\n");
         }
         const auto endTimepoint = std::chrono::steady_clock::now();
         const auto elapsedTime = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint)
@@ -151,7 +152,7 @@ int main(int argc, char* argv[])
         std::cout << "Execution time = " << fixed << elapsedTime.count() / 1000 << std::setprecision(20);
         std::cout << " ms" << std::endl;
     }
-    catch (std::exception& e) {
+    catch (std::logic_error& e) {
         std::cout << "There was an error. " << e.what() << endl;
     }
     return 0;

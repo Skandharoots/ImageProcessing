@@ -95,7 +95,7 @@ void Variance::calculateVariance() {
             std::cout << "Variance for channel(" << channelS << ") = " << std::fixed << D2 << std::setprecision(10) << std::endl;
 
     } catch (CImgIOException e) {
-		throw std::exception("There was a problem with opening or saving a file. Path not valid.");
+		throw std::logic_error("There was a problem with opening or saving a file. Path not valid.");
 	}
 
 

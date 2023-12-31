@@ -69,11 +69,11 @@ void Contrast::convertArguments() {
 			std::cout << getSlope() << "\n";
 		}
 		else {
-			throw std::exception("Cannot convert argument value.\n");
+			throw std::logic_error("Cannot convert argument value.\n");
 		}
 	}
 	else {
-		throw std::exception("Wrong arguments! See --help for more info.");
+		throw std::logic_error("Wrong arguments! See --help for more info.");
 	}
 
 }
@@ -119,10 +119,10 @@ void Contrast::changeContrast() {
 		image.save_bmp(getOutputPath().c_str()); // save the modified image to a file
 	}
 	catch (CImgIOException e) {
-		throw std::exception("Cannot load or save from the path. Path invalid.\n");
+		throw std::logic_error("Cannot load or save from the path. Path invalid.\n");
 	}
-	catch (std::exception& e) {
-		throw std::exception(e.what());
+	catch (std::logic_error& e) {
+		throw std::logic_error(e.what());
 	}
 	
 }

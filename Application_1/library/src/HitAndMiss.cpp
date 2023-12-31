@@ -166,7 +166,7 @@ void HitAndMiss::setMatrix(int matrix[]) {
             matrix[7] = 1;
             matrix[8] = 1;
         } else {
-            throw std::exception("Wrong arguments. Type --help for options");
+            throw std::logic_error("Wrong arguments. Type --help for options");
         }
 }
 
@@ -210,8 +210,8 @@ void HitAndMiss::ham() {
 		}
 		copy.save_bmp(getOutputPath().c_str());
 	} catch (CImgIOException e) {
-		throw std::exception("Cannot open or save file from path provided. Path is invalid.\n");
-	} catch (std::exception& e) {
-		throw std::exception(e.what());
+		throw std::logic_error("Cannot open or save file from path provided. Path is invalid.\n");
+	} catch (std::logic_error& e) {
+		throw std::logic_error(e.what());
 	}
 }

@@ -125,6 +125,6 @@ void SFT::transform() {
         inverse(matrix);
 	}
 	catch (CImgIOException e) {
-		throw std::exception("Cannot load or save from the path. Path invalid.\n");
+		throw std::logic_error("Cannot load or save from the path. Path invalid.\n");
 	}
 }

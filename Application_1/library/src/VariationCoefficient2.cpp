@@ -91,7 +91,7 @@ void VariationCoefficient2::calculateVariationCoefficient2() {
         std::cout << "Variation Coefficient II for channel (" << channelS << ") = " << std::fixed << vc2 << std::setprecision(10) << std::endl;
 
     } catch (CImgIOException e) {
-		throw std::exception("There was a problem with opening or saving a file. Path not valid.");
+		throw std::logic_error("There was a problem with opening or saving a file. Path not valid.");
 	}
 
 

@@ -67,11 +67,11 @@ void AlphaTrimmedMeanFilter::parseValues() {
 			setD(temp);
 		}
 		else {
-			throw std::exception("Cannot convert argument value.\n");
+			throw std::logic_error("Cannot convert argument value.\n");
 		}
 	}
 	else {
-		throw std::exception("Wrong arguments! See --help for more info.");
+		throw std::logic_error("Wrong arguments! See --help for more info.");
 	}
 
 }
@@ -129,9 +129,9 @@ void AlphaTrimmedMeanFilter::filter() {
 		image.save_bmp(getOutputPath().c_str());
 
 	} catch (CImgIOException e) {
-		throw std::exception("There was a problem with opening or saving a file. Path not valid.");
-	} catch (std::exception &e) {
-		throw std::exception(e.what());
+		throw std::logic_error("There was a problem with opening or saving a file. Path not valid.");
+	} catch (std::logic_error &e) {
+		throw std::logic_error(e.what());
 	}
 
 }

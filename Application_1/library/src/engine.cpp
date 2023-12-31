@@ -44,7 +44,6 @@
 #include "M2.h"
 #include "RegionGrowing.h"
 #include "FFT.h"
-#include "IFFT.h"
 #include "SFT.h"
 #include "CImg.h"
 
@@ -114,7 +113,7 @@ std::string Engine::convertInputPath(std::string path) {
         del2 = vec[1];
     }
     else {
-        throw std::exception("Cannot convert path value. Type --help for more information\n");
+        throw std::logic_error("Cannot convert path value. Type --help for more information\n");
     }
     return del2;
 }
@@ -131,7 +130,7 @@ std::string Engine::convertInputPath(std::string path) {
              brightness->changeBrightness();
              std::cout << "Operation successful!" << std::endl;
          }
-         catch (std::exception& e) {
+         catch (std::logic_error& e) {
              std::cout << "There was an error. " << e.what() << std::endl;
          }
      }
@@ -141,7 +140,7 @@ std::string Engine::convertInputPath(std::string path) {
              contrast->changeContrast();
              std::cout << "Operation successful!" << std::endl;
          }
-         catch (std::exception& e) {
+         catch (std::logic_error& e) {
              std::cout << "There was an error. " << e.what() << std::endl;
          }
      }
@@ -151,7 +150,7 @@ std::string Engine::convertInputPath(std::string path) {
             negative->negate();
             std::cout << "Operation successful!" << std::endl;
         }
-        catch (std::exception& e) {
+        catch (std::logic_error& e) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
      }
@@ -161,7 +160,7 @@ std::string Engine::convertInputPath(std::string path) {
             vflip->flip();
             std::cout << "Operation successful!" << std::endl;
         }
-        catch (std::exception& e) {
+        catch (std::logic_error& e) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
      }
@@ -171,7 +170,7 @@ std::string Engine::convertInputPath(std::string path) {
             hflip->flip();
             std::cout << "Operation successful!" << std::endl;
         }
-        catch (std::exception& e) {
+        catch (std::logic_error& e) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
      }
@@ -181,7 +180,7 @@ std::string Engine::convertInputPath(std::string path) {
             flipDiagonal->flip();
             std::cout << "Operation successful!" << std::endl;
         }
-        catch (std::exception& e) {
+        catch (std::logic_error& e) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
      }
@@ -191,7 +190,7 @@ std::string Engine::convertInputPath(std::string path) {
             enlarge->enlarge();
             std::cout << "Operation successful!" << std::endl;
         }
-        catch (std::exception& e) {
+        catch (std::logic_error& e) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
      }
@@ -201,7 +200,7 @@ std::string Engine::convertInputPath(std::string path) {
             shrink->shrink();
             std::cout << "Operation successful!" << std::endl;
         }
-        catch (std::exception& e) {
+        catch (std::logic_error& e) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
      }
@@ -211,7 +210,7 @@ std::string Engine::convertInputPath(std::string path) {
             gmean->filter();
             std::cout << "Operation successful!" << std::endl;
         }
-        catch (std::exception& e) {
+        catch (std::logic_error& e) {
             std::cout << "There was an error. " << e.what() << std::endl;
         }
      }
@@ -355,7 +354,7 @@ std::string Engine::convertInputPath(std::string path) {
         std::cout << "Operation successful!" << std::endl;
      }
      else {
-         throw std::exception("Wrong operation specified. Type --help for more information\n");
+         throw std::logic_error("Wrong operation specified. Type --help for more information\n");
      }
 
  }

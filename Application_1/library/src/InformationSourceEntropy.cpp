@@ -93,7 +93,7 @@ void InfSourceEntropy::calculateInfSourceEntropy() {
         std::cout << "Information Source Entropy for channel (" << channelS << ") = " << std::fixed << ise << std::setprecision(10) << std::endl;
 
     } catch (CImgIOException e) {
-		throw std::exception("There was a problem with opening or saving a file. Path not valid.");
+		throw std::logic_error("There was a problem with opening or saving a file. Path not valid.");
 	}
 
 

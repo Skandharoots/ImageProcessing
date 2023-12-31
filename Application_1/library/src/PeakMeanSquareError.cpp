@@ -60,6 +60,6 @@ void PeakMeanSquareError::calculate() {
         mse = sum_sq / ((oryginal.height() * oryginal.width()) * (max * max));
         std::cout << "Peak Mean square error is: " << std::fixed << mse << std::setprecision(2) << std::endl;
     } catch (CImgIOException e) {
-        throw std::exception("Input paths are invalid.\n");
+        throw std::logic_error("Input paths are invalid.\n");
     }
 }

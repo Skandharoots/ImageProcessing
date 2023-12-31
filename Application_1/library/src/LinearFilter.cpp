@@ -72,7 +72,7 @@ void LinearFilter::setMask(int mask[]) {
             mask[7] = -2;
             mask[8] = 1;
         } else {
-            throw std::exception("Wrong arguments. Type --help for options");
+            throw std::logic_error("Wrong arguments. Type --help for options");
         }
 }
 
@@ -142,8 +142,8 @@ void LinearFilter::linearFilter() {
         image.save_bmp(getOutputPath().c_str());
     
     } catch (CImgIOException e) {
-		throw std::exception("There was a problem with opening or saving a file. Path not valid.");
-	} catch (std::exception &e) {
-        throw std::exception(e.what());
+		throw std::logic_error("There was a problem with opening or saving a file. Path not valid.");
+	} catch (std::logic_error &e) {
+        throw std::logic_error(e.what());
     }
 }

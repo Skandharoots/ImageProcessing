@@ -1,4 +1,5 @@
 #include <string>
+#include <stdexcept>
 #include "flipvertical.h"
 #include "CImg.h"
 
@@ -64,6 +65,6 @@ void FlipVertical::flip() {
 		image.save_bmp(getOutputPath().c_str());
 	}
 	catch (CImgIOException e) {
-		throw std::exception("Cannot load or save from the path. Path invalid.\n");
+		throw std::logic_error("Cannot load or save from the path. Path invalid.\n");
 	}
 }
