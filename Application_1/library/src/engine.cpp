@@ -45,6 +45,10 @@
 #include "RegionGrowing.h"
 #include "FFT.h"
 #include "SFT.h"
+#include "LowPassFilter.h"
+#include "HighPassFilter.h"
+#include "BandPassFilter.h"
+#include "BandCutFilter.h"
 #include "CImg.h"
 
 
@@ -351,6 +355,26 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--sft") {
         std::shared_ptr<SFT> sft = std::make_shared<SFT>(convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         sft->transform();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--lpf") {
+        std::shared_ptr<LowPassFilter> lpf = std::make_shared<LowPassFilter>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        lpf->pass();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--hpf") {
+        std::shared_ptr<HighPassFilter> hpf = std::make_shared<HighPassFilter>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        hpf->pass();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--bpf") {
+        std::shared_ptr<BandPassFilter> bpf = std::make_shared<BandPassFilter>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        bpf->pass();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--bcf") {
+        std::shared_ptr<BandCutFilter> bcf = std::make_shared<BandCutFilter>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        bcf->pass();
         std::cout << "Operation successful!" << std::endl;
      }
      else {

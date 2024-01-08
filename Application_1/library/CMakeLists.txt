@@ -44,7 +44,11 @@ set(SOURCE_FILES
         include/RegionGrowing.h
         include/SFT.h
         include/FFT.h
-        src/Brightness.cpp
+        include/LowPassFilter.h
+        include/HighPassFilter.h
+        include/BandPassFilter.h
+        include/BandCutFilter.h
+            src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
             src/Enlarge.cpp
@@ -83,6 +87,10 @@ set(SOURCE_FILES
             src/RegionGrowing.cpp
             src/SFT.cpp
             src/FFT.cpp
+            src/LowPassFilter.cpp
+            src/HighPassFilter.cpp
+            src/BandPassFilter.cpp
+            src/BandCutFilter.cpp
 
 )
 
