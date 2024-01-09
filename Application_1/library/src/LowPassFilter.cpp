@@ -47,6 +47,8 @@ void LowPassFilter::pass() {
 	cimg::exception_mode(0);
 	try {
         CImg<unsigned char> image(getInputPath().c_str());
+        CImg<unsigned char> magnitude(getInputPath().c_str());
+
 
         FFT fft(getInputPath().c_str(), getOutputPath().c_str());
 
@@ -67,6 +69,40 @@ void LowPassFilter::pass() {
         for (int i = 0; i < transformOutput.size(); i++) {
             transformOutput[i] *= filter[i];
         }
+
+        for (int x = 0; x < image.width() / 2; x++) {
+            for (int y = 0; y < image.height() / 2; y++) {
+                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
+                magnitude(x + (image.width()/2), y + (image.height()/2), 0) = 20 * log(1 + mag);
+                magnitude(x + (image.width()/2), y + (image.height()/2), 1) = 20 * log(1 + mag);
+                magnitude(x + (image.width()/2), y + (image.height()/2), 2) = 20 * log(1 + mag);
+            }
+        }
+        for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+            for (int y = 0; y < image.height() / 2; y++) {
+                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
+                magnitude(x - (image.width()/2), y + (image.height()/2), 0) = 20 * log(1 + mag);
+                magnitude(x - (image.width()/2), y + (image.height()/2), 1) = 20 * log(1 + mag);
+                magnitude(x - (image.width()/2), y + (image.height()/2), 2) = 20 * log(1 + mag);
+            }
+        }
+        for (int x = 0; x < image.width() / 2; x++) {
+            for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
+                magnitude(x + (image.width()/2), y - (image.height()/2), 0) = 20 * log(1 + mag);
+                magnitude(x + (image.width()/2), y - (image.height()/2), 1) = 20 * log(1 + mag);
+                magnitude(x + (image.width()/2), y - (image.height()/2), 2) = 20 * log(1 + mag);
+            }
+        }
+        for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+            for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
+                magnitude(x - (image.width()/2), y - (image.height()/2), 0) = 20 * log(1 + mag);
+                magnitude(x - (image.width()/2), y - (image.height()/2), 1) = 20 * log(1 + mag);
+                magnitude(x - (image.width()/2), y - (image.height()/2), 2) = 20 * log(1 + mag);
+            }
+        }
+        magnitude.save_bmp("../../../../images/lpfmag.bmp");
 
         fft.inverse(transformOutput);
 	}
