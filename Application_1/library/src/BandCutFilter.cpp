@@ -53,6 +53,7 @@ void BandCutFilter::pass() {
         FFT fft(getInputPath().c_str(), getOutputPath().c_str());
 
         std::vector<std::complex<double>> transformOutput;
+        std::vector<std::complex<double>> transformCentered(image.width() * image.height(), 0.0);
         std::vector<std::complex<double>> filterBandCut(image.width() * image.height(), 0.0);
 
         std::string cutoffFrequencies = getArguments();
@@ -66,8 +67,10 @@ void BandCutFilter::pass() {
         for (int y = 0; y < image.height(); y++) {
             for (int x = 0; x < image.width(); x++) {
                 int index = y * image.width() + x;
-                if(sqrt(x * x + y * y) <= (radialCenter - (bandWidth / 2))
-                || sqrt(x * x + y * y) >= (radialCenter + (bandWidth / 2))) {
+                int xx = abs(image.width()/2 - x);
+                int yy = abs(image.height()/2 - y);
+                if(sqrt(xx * xx + yy * yy) <= (radialCenter - (bandWidth / 2))
+                || sqrt(xx * xx + yy * yy) >= (radialCenter + (bandWidth / 2))) {
                     filterBandCut[index] = 1;
                 }
             }
@@ -75,43 +78,60 @@ void BandCutFilter::pass() {
 
         transformOutput = fft.forward();
 
-        for (int i = 0; i < transformOutput.size(); i++) {
-            transformOutput[i] *= filterBandCut[i];
+        for (int x = 0; x < image.width() / 2; x++) {
+            for (int y = 0; y < image.height() / 2; y++) {
+                transformCentered[(x + (image.width()/2)) + (y + image.height()/2) * image.width()] = transformOutput[image.width() * y + x];
+            }
         }
+        for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+            for (int y = 0; y < image.height() / 2; y++) {
+                transformCentered[(x - (image.width()/2)) + (y + image.height()/2) * image.width()] = transformOutput[image.width() * y + x];
+            }
+        }
+        for (int x = 0; x < image.width() / 2; x++) {
+            for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+                transformCentered[(x + (image.width()/2)) + (y - image.height()/2) * image.width()] = transformOutput[image.width() * y + x];
+            }
+        }
+        for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+            for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+                transformCentered[(x - (image.width()/2)) + (y - image.height()/2) * image.width()] = transformOutput[image.width() * y + x];
+            }
+        }
+        for (int i = 0; i < transformOutput.size(); i++) {
+            transformCentered[i] *= filterBandCut[i];
+        }
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.height(); y++) {
+                double mag = sqrt(pow(transformCentered[image.width() * y + x].real(), 2) + pow(transformCentered[image.width() * y + x].imag(), 2));
+                magnitude(x, y, 0) = 20 * log(1 + mag);
+                magnitude(x, y, 1) = 20 * log(1 + mag);
+                magnitude(x, y, 2) = 20 * log(1 + mag);
+            }
+        }
+
+        magnitude.save_bmp("../../../../images/bcfmag.bmp");
 
         for (int x = 0; x < image.width() / 2; x++) {
             for (int y = 0; y < image.height() / 2; y++) {
-                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
-                magnitude(x + (image.width()/2), y + (image.height()/2), 0) = 20 * log(1 + mag);
-                magnitude(x + (image.width()/2), y + (image.height()/2), 1) = 20 * log(1 + mag);;
-                magnitude(x + (image.width()/2), y + (image.height()/2), 2) = 20 * log(1 + mag);;
+                transformOutput[(x + (image.width()/2)) + (y + image.height()/2) * image.width()] = transformCentered[image.width() * y + x];
             }
         }
         for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
             for (int y = 0; y < image.height() / 2; y++) {
-                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
-                magnitude(x - (image.width()/2), y + (image.height()/2), 0) = 20 * log(1 + mag);
-                magnitude(x - (image.width()/2), y + (image.height()/2), 1) = 20 * log(1 + mag);
-                magnitude(x - (image.width()/2), y + (image.height()/2), 2) = 20 * log(1 + mag);
+                transformOutput[(x - (image.width()/2)) + (y + image.height()/2) * image.width()] = transformCentered[image.width() * y + x];
             }
         }
         for (int x = 0; x < image.width() / 2; x++) {
             for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
-                magnitude(x + (image.width()/2), y - (image.height()/2), 0) = 20 * log(1 + mag);
-                magnitude(x + (image.width()/2), y - (image.height()/2), 1) = 20 * log(1 + mag);
-                magnitude(x + (image.width()/2), y - (image.height()/2), 2) = 20 * log(1 + mag);
+                transformOutput[(x + (image.width()/2)) + (y - image.height()/2) * image.width()] = transformCentered[image.width() * y + x];
             }
         }
         for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
             for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
-                magnitude(x - (image.width()/2), y - (image.height()/2), 0) = 20 * log(1 + mag);
-                magnitude(x - (image.width()/2), y - (image.height()/2), 1) = 20 * log(1 + mag);
-                magnitude(x - (image.width()/2), y - (image.height()/2), 2) = 20 * log(1 + mag);
+                transformOutput[(x - (image.width()/2)) + (y - image.height()/2) * image.width()] = transformCentered[image.width() * y + x];
             }
         }
-        magnitude.save_bmp("../../../../images/bcfmag.bmp");
         fft.inverse(transformOutput);
 	}
 	catch (CImgIOException e) {
