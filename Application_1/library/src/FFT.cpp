@@ -45,6 +45,15 @@ std::vector<std::complex<double>> FFT::forward() {
     i = sqrt(i);
     std::vector<std::complex<double>> matrix;
     std::vector<std::complex<double>> matrix2;
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            float avg = (image(x, y, 0) + image(x, y, 1) + image(x, y, 2)) / 3;
+            image(x, y, 0) = avg;
+            image(x, y, 1) = avg;
+            image(x, y, 2) = avg;
+
+        }
+    }
     for (int y = 0; y < image.height(); y++) {
         for (int x = 0; x < image.width(); x++) {
             std::complex<double> sum = 0;
