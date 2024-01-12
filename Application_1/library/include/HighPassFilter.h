@@ -21,5 +21,6 @@ public:
 	void setInputPath(std::string path);
 	std::string getOutputPath();
 	void setOutputPath(std::string path);
+	void inverse(std::vector<std::complex<double>> matrix);
 	void pass();
 };
