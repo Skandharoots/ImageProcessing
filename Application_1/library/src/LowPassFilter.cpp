@@ -74,7 +74,6 @@ void LowPassFilter::pass() {
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
-                std::cout << transformOutput[image.width() * y + x] << std::endl;
                 magnitude(x, y, 0) = 20 * log(1 + mag);
                 magnitude(x, y, 1) = 20 * log(1 + mag);
                 magnitude(x, y, 2) = 20 * log(1 + mag);

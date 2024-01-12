@@ -55,6 +55,76 @@ void HPFEdgeDetection::setOutputPath(std::string path) {
 	this->outputPath = path;
 }
 
+void HPFEdgeDetection::inverse(std::vector<std::complex<double>> matrix) {
+    CImg<unsigned char> image(getInputPath().c_str());
+    std::complex<double> i;
+    i = -1;
+    i = sqrt(i);
+    std::vector<std::complex<double>> matrix2;
+    std::vector<std::complex<double>> transformOutput(image.width() * image.height(), 0.0);
+
+    for (int x = 0; x < image.width() / 2; x++) {
+        for (int y = 0; y < image.height() / 2; y++) {
+            transformOutput[(x + (image.width()/2)) + (y + image.height()/2) * image.width()] = matrix[image.width() * y + x];
+        }
+    }
+    for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+        for (int y = 0; y < image.height() / 2; y++) {
+            transformOutput[(x - (image.width()/2)) + (y + image.height()/2) * image.width()] = matrix[image.width() * y + x];
+        }
+    }
+    for (int x = 0; x < image.width() / 2; x++) {
+        for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+            transformOutput[(x + (image.width()/2)) + (y - image.height()/2) * image.width()] = matrix[image.width() * y + x];
+        }
+    }
+    for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+        for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+            transformOutput[(x - (image.width()/2)) + (y - image.height()/2) * image.width()] = matrix[image.width() * y + x];
+        }
+    }
+
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            std::complex<double> sum = 0;
+            for (int xx = 0; xx < image.width(); xx++) {
+                double angle =  2.0 * M_PI * x * xx / image.width();
+                sum += transformOutput[(image.width() * xx) + y] * (cos(angle) + i*sin(angle));
+            }
+            sum = sum / (double)image.width();
+            matrix2.push_back(sum);
+        }
+    }
+    for (int y = 0; y < image.height(); y++) {
+        for (int x = 0; x < image.width(); x++) {
+            std::complex<double> sum = 0;
+            for (int yy = 0; yy < image.height(); yy++) {
+                double angle =  2.0 * M_PI * y * yy / image.height();
+                sum += matrix2[(image.width() * x) + yy] * (cos(angle) + i*sin(angle));
+            }
+            sum = sum / (double)image.height();
+            double pls = sum.real();
+            if ((pls + 128) > 255) {
+                image(x, y, 0) = 255;
+                image(x, y, 1) = 255;
+                image(x, y, 2) = 255;
+            }
+            else if ((pls + 128) < 0) {
+                image(x, y, 0) = 0;
+                image(x, y, 1) = 0;
+                image(x, y, 2) = 0;
+            }
+            else {
+                image(x, y, 0) = pls + 128;
+                image(x, y, 1) = pls + 128;
+                image(x, y, 2) = pls + 128;
+            }
+        }
+    }
+    image.save_bmp(getOutputPath().c_str());
+
+}
+
 void HPFEdgeDetection::pass() {
 	cimg::exception_mode(0);
 	try {
@@ -65,7 +135,6 @@ void HPFEdgeDetection::pass() {
         FFT fft(getInputPath().c_str(), getOutputPath().c_str());
 
         std::vector<std::complex<double>> transformOutput;
-        std::vector<std::complex<double>> transformMask;
         std::vector<std::complex<double>> filter(image.width() * image.height(), 0.0);
 
         double cutoffFrequency = stod(getArguments());
@@ -75,10 +144,14 @@ void HPFEdgeDetection::pass() {
                 int index = y * image.width() + x;
                 int xx = abs(image.width()/2 - x);
                 int yy = abs(image.height()/2 - y);
-                filter[index] = 1 - exp(-(xx * xx + yy * yy) / (2 * cutoffFrequency * cutoffFrequency));
+                if(sqrt((xx * xx) + (yy * yy)) > cutoffFrequency) {
+                    filter[index] = 1.0;
+                }
 
             }
         }
+
+        transformOutput = fft.forward();
 
         for (int i = 0; i < transformOutput.size(); i++) {
             transformOutput[i] *= filter[i];
@@ -105,7 +178,7 @@ void HPFEdgeDetection::pass() {
 
         magnitude.save_bmp("../../../../images/hpfedmag.bmp");
 
-        fft.inverse(transformOutput);
+        inverse(transformOutput);
 	}
 	catch (CImgIOException e) {
 		throw std::logic_error("Cannot load or save from the path. Path invalid.\n");
