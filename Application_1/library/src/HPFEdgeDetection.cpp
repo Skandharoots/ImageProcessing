@@ -65,7 +65,6 @@ void HPFEdgeDetection::pass() {
         FFT fft(getInputPath().c_str(), getOutputPath().c_str());
 
         std::vector<std::complex<double>> transformOutput;
-        std::vector<std::complex<double>> transformCentered(image.width() * image.height(), 0.0);
         std::vector<std::complex<double>> filter(image.width() * image.height(), 0.0);
 
         std::string cutoffFrequencies = getArguments();
@@ -96,32 +95,12 @@ void HPFEdgeDetection::pass() {
 
         transformOutput = fft.forward();
 
-        for (int x = 0; x < image.width() / 2; x++) {
-            for (int y = 0; y < image.height() / 2; y++) {
-                transformCentered[(x + (image.width()/2)) + (y + image.height()/2) * image.width()] = transformOutput[image.width() * y + x];
-            }
-        }
-        for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
-            for (int y = 0; y < image.height() / 2; y++) {
-                transformCentered[(x - (image.width()/2)) + (y + image.height()/2) * image.width()] = transformOutput[image.width() * y + x];
-            }
-        }
-        for (int x = 0; x < image.width() / 2; x++) {
-            for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-                transformCentered[(x + (image.width()/2)) + (y - image.height()/2) * image.width()] = transformOutput[image.width() * y + x];
-            }
-        }
-        for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
-            for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-                transformCentered[(x - (image.width()/2)) + (y - image.height()/2) * image.width()] = transformOutput[image.width() * y + x];
-            }
-        }
         for (int i = 0; i < transformOutput.size(); i++) {
-            transformCentered[i] *= filter[i];
+            transformOutput[i] *= filter[i];
         }
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
-                double mag = sqrt(pow(transformCentered[image.width() * y + x].real(), 2) + pow(transformCentered[image.width() * y + x].imag(), 2));
+                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
                 magnitude(x, y, 0) = 20 * log(1 + mag);
                 magnitude(x, y, 1) = 20 * log(1 + mag);
                 magnitude(x, y, 2) = 20 * log(1 + mag);
@@ -129,27 +108,6 @@ void HPFEdgeDetection::pass() {
         }
 
         magnitude.save_bmp("../../../../images/hpfedmag.bmp");
-
-        for (int x = 0; x < image.width() / 2; x++) {
-            for (int y = 0; y < image.height() / 2; y++) {
-                transformOutput[(x + (image.width()/2)) + (y + image.height()/2) * image.width()] = transformCentered[image.width() * y + x];
-            }
-        }
-        for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
-            for (int y = 0; y < image.height() / 2; y++) {
-                transformOutput[(x - (image.width()/2)) + (y + image.height()/2) * image.width()] = transformCentered[image.width() * y + x];
-            }
-        }
-        for (int x = 0; x < image.width() / 2; x++) {
-            for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-                transformOutput[(x + (image.width()/2)) + (y - image.height()/2) * image.width()] = transformCentered[image.width() * y + x];
-            }
-        }
-        for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
-            for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-                transformOutput[(x - (image.width()/2)) + (y - image.height()/2) * image.width()] = transformCentered[image.width() * y + x];
-            }
-        }
 
         fft.inverse(transformOutput);
 	}

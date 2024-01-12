@@ -39,12 +39,12 @@ void FFT::setOutputPath(std::string path) {
 std::vector<std::complex<double>> FFT::forward() {
     CImg<unsigned char> image(getInputPath().c_str());
     CImg<unsigned char> magnitude(getInputPath().c_str());
-    CImg<unsigned char> output(image.width(), image.height(), 1, 3);
     std::complex<double> i;
     i = -1;
     i = sqrt(i);
     std::vector<std::complex<double>> matrix;
     std::vector<std::complex<double>> matrix2;
+    std::vector<std::complex<double>> transformCentered(image.width() * image.height(), 0.0);
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
             float avg = (image(x, y, 0) + image(x, y, 1) + image(x, y, 2)) / 3;
@@ -72,42 +72,40 @@ std::vector<std::complex<double>> FFT::forward() {
                 sum += matrix[(image.width() * y) + xx] * (cos(angle) -i*sin(angle));
             }                
             matrix2.push_back(sum);
-            double mag = sqrt(pow(sum.real(), 2) + pow(sum.imag(), 2));
+        }
+    }
+
+    for (int x = 0; x < image.width() / 2; x++) {
+        for (int y = 0; y < image.height() / 2; y++) {
+            transformCentered[(x + (image.width()/2)) + (y + image.height()/2) * image.width()] = matrix2[image.width() * y + x];
+        }
+    }
+    for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+        for (int y = 0; y < image.height() / 2; y++) {
+            transformCentered[(x - (image.width()/2)) + (y + image.height()/2) * image.width()] = matrix2[image.width() * y + x];
+        }
+    }
+    for (int x = 0; x < image.width() / 2; x++) {
+        for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+            transformCentered[(x + (image.width()/2)) + (y - image.height()/2) * image.width()] = matrix2[image.width() * y + x];
+        }
+    }
+    for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+        for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+            transformCentered[(x - (image.width()/2)) + (y - image.height()/2) * image.width()] = matrix2[image.width() * y + x];
+        }
+    }
+
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            double mag = sqrt(pow(transformCentered[image.width() * y + x].real(), 2) + pow(transformCentered[image.width() * y + x].imag(), 2));
             magnitude(x, y, 0) = 20 * log(1 + mag);
             magnitude(x, y, 1) = 20 * log(1 + mag);
             magnitude(x, y, 2) = 20 * log(1 + mag);
         }
     }
-    for (int x = 0; x < image.width() / 2; x++) {
-        for (int y = 0; y < image.height() / 2; y++) {
-            output(x + (image.width()/2), y + (image.height()/2), 0) = magnitude(x, y, 0);
-            output(x + (image.width()/2), y + (image.height()/2), 1) = magnitude(x, y, 1);
-            output(x + (image.width()/2), y + (image.height()/2), 2) = magnitude(x, y, 2);
-        }
-    }
-    for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
-        for (int y = 0; y < image.height() / 2; y++) {
-            output(x - (image.width()/2), y + (image.height()/2), 0) = magnitude(x, y, 0);
-            output(x - (image.width()/2), y + (image.height()/2), 1) = magnitude(x, y, 1);
-            output(x - (image.width()/2), y + (image.height()/2), 2) = magnitude(x, y, 2);
-        }
-    }
-    for (int x = 0; x < image.width() / 2; x++) {
-        for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-            output(x + (image.width()/2), y - (image.height()/2), 0) = magnitude(x, y, 0);
-            output(x + (image.width()/2), y - (image.height()/2), 1) = magnitude(x, y, 1);
-            output(x + (image.width()/2), y - (image.height()/2), 2) = magnitude(x, y, 2);
-        }
-    }
-    for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
-        for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-            output(x - (image.width()/2), y - (image.height()/2), 0) = magnitude(x, y, 0);
-            output(x - (image.width()/2), y - (image.height()/2), 1) = magnitude(x, y, 1);
-            output(x - (image.width()/2), y - (image.height()/2), 2) = magnitude(x, y, 2);
-        }
-    }
-	output.save_bmp("../../../../images/fftmag.bmp");
-    return matrix2;
+	magnitude.save_bmp("../../../../images/fftmag.bmp");
+    return transformCentered;
 }
 
 void FFT::inverse(std::vector<std::complex<double>> matrix) {
@@ -116,12 +114,35 @@ void FFT::inverse(std::vector<std::complex<double>> matrix) {
     i = -1;
     i = sqrt(i);
     std::vector<std::complex<double>> matrix2;
+    std::vector<std::complex<double>> transformOutput(image.width() * image.height(), 0.0);
+
+    for (int x = 0; x < image.width() / 2; x++) {
+        for (int y = 0; y < image.height() / 2; y++) {
+            transformOutput[(x + (image.width()/2)) + (y + image.height()/2) * image.width()] = matrix[image.width() * y + x];
+        }
+    }
+    for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+        for (int y = 0; y < image.height() / 2; y++) {
+            transformOutput[(x - (image.width()/2)) + (y + image.height()/2) * image.width()] = matrix[image.width() * y + x];
+        }
+    }
+    for (int x = 0; x < image.width() / 2; x++) {
+        for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+            transformOutput[(x + (image.width()/2)) + (y - image.height()/2) * image.width()] = matrix[image.width() * y + x];
+        }
+    }
+    for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
+        for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
+            transformOutput[(x - (image.width()/2)) + (y - image.height()/2) * image.width()] = matrix[image.width() * y + x];
+        }
+    }
+
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
             std::complex<double> sum = 0;
             for (int xx = 0; xx < image.width(); xx++) {
                 double angle =  2.0 * M_PI * x * xx / image.width();
-                sum += matrix[(image.width() * xx) + y] * (cos(angle) + i*sin(angle));
+                sum += transformOutput[(image.width() * xx) + y] * (cos(angle) + i*sin(angle));
             }
             sum = sum / (double)image.width();              
             matrix2.push_back(sum);
