@@ -65,39 +65,35 @@ void HPFEdgeDetection::pass() {
         FFT fft(getInputPath().c_str(), getOutputPath().c_str());
 
         std::vector<std::complex<double>> transformOutput;
+        std::vector<std::complex<double>> transformMask;
         std::vector<std::complex<double>> filter(image.width() * image.height(), 0.0);
 
-        std::string cutoffFrequencies = getArguments();
-        auto space = cutoffFrequencies.find(' ');
-        double sigma = stod(cutoffFrequencies.substr(0, space));
-        double angle = stod(cutoffFrequencies.substr(space + 1));
-
-        double angleRad = angle * (M_PI / 180.0);
+        double cutoffFrequency = stod(getArguments());
 
         for (int y = 0; y < image.height(); y++) {
             for (int x = 0; x < image.width(); x++) {
                 int index = y * image.width() + x;
-
                 int xx = abs(image.width()/2 - x);
                 int yy = abs(image.height()/2 - y);
+                filter[index] = 1 - exp(-(xx * xx + yy * yy) / (2 * cutoffFrequency * cutoffFrequency));
 
-                double gradientDirection = atan2(y - image.height() / 2, x - image.width() / 2);
-                double angleDifference = abs(angleRad - gradientDirection);
-
-                if (mask(x, y, 0) == 0) {
-                    filter[index] = 0.0;
-                }
-                else {
-                    filter[index] = 1 - exp(-(xx * xx + yy * yy) / (2 * sigma * sigma * cos(angleDifference) * cos(angleDifference)));
-                }
             }
         }
-
-        transformOutput = fft.forward();
 
         for (int i = 0; i < transformOutput.size(); i++) {
             transformOutput[i] *= filter[i];
         }
+
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.height(); y++) {
+                if (mask(x, y, 0) == 0) {
+                    transformOutput[image.width() * y + x] *= 0.0;
+                } else {
+                    transformOutput[image.width() * y + x] *= 1.0;
+                }
+            }
+        }
+
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));

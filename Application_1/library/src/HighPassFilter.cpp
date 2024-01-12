@@ -49,7 +49,6 @@ void HighPassFilter::pass() {
         CImg<unsigned char> image(getInputPath().c_str());
         CImg<unsigned char> magnitude(getInputPath().c_str());
 
-
         FFT fft(getInputPath().c_str(), getOutputPath().c_str());
 
         std::vector<std::complex<double>> transformOutput;
@@ -63,6 +62,7 @@ void HighPassFilter::pass() {
                 int xx = abs(image.width()/2 - x);
                 int yy = abs(image.height()/2 - y);
                 filter[index] = 1 - exp(-(xx * xx + yy * yy) / (2 * cutoffFrequency * cutoffFrequency));
+
             }
         }
 
@@ -71,6 +71,9 @@ void HighPassFilter::pass() {
         for (int i = 0; i < transformOutput.size(); i++) {
             transformOutput[i] *= filter[i];
         }
+
+
+
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
