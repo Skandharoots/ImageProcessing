@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
             else {
                 throw std::logic_error("Wrong formula for command. Type --help to see the correct phrase.\n");
             }
-            if (arg4 == "--hist") {
+            if (arg4 == "--hist" || arg4 == "--input2") {
                 in2 = argv[8];
             }
             else {

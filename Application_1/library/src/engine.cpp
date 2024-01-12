@@ -49,6 +49,8 @@
 #include "HighPassFilter.h"
 #include "BandPassFilter.h"
 #include "BandCutFilter.h"
+#include "HPFEdgeDetection.h"
+#include "PhaseModification.h"
 #include "CImg.h"
 
 
@@ -375,6 +377,16 @@ std::string Engine::convertInputPath(std::string path) {
      else if (command == "--bcf") {
         std::shared_ptr<BandCutFilter> bcf = std::make_shared<BandCutFilter>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
         bcf->pass();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--hpfed") {
+        std::shared_ptr<HPFEdgeDetection> hpfed = std::make_shared<HPFEdgeDetection>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()), convertInputPath(getInputPath2()));
+        hpfed->pass();
+        std::cout << "Operation successful!" << std::endl;
+     }
+     else if (command == "--pmf") {
+        std::shared_ptr<PhaseModification> pmf = std::make_shared<PhaseModification>(getValue(), convertInputPath(getInputPath()), convertInputPath(getOutputPath()));
+        pmf->pass();
         std::cout << "Operation successful!" << std::endl;
      }
      else {

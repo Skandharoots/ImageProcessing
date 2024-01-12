@@ -48,6 +48,8 @@ set(SOURCE_FILES
         include/HighPassFilter.h
         include/BandPassFilter.h
         include/BandCutFilter.h
+        include/HPFEdgeDetection.h
+        include/PhaseModification.h
             src/Brightness.cpp
             src/Contrast.cpp
             src/Negative.cpp
@@ -91,6 +93,8 @@ set(SOURCE_FILES
             src/HighPassFilter.cpp
             src/BandPassFilter.cpp
             src/BandCutFilter.cpp
+            src/HPFEdgeDetection.cpp
+            src/PhaseModification.cpp
 
 )
 
