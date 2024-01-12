@@ -71,7 +71,7 @@ void PhaseModification::pass() {
                 int index = y * image.width() + x;
                 int xx = abs(image.width()/2 - x);
                 int yy = abs(image.height()/2 - y);
-                filter[index] = exp(i * (((-xx * k * 2 * M_PI) / image.width()) + ((-yy * l * 2 * M_PI) / image.height()) + ((k + l) * M_PI)));
+                filter[index] = exp(-i * 2.0 * M_PI * (((x * k) / image.width()) + ((y * l) / image.height())));
             }
         }
 
