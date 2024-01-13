@@ -53,6 +53,7 @@ void BandCutFilter::pass() {
         FFT fft(getInputPath().c_str(), getOutputPath().c_str());
 
         std::vector<std::complex<double>> transformOutput;
+        std::vector<std::complex<double>> result;
         std::vector<std::complex<double>> filterBandCut(image.width() * image.height(), 0.0);
 
         std::string cutoffFrequencies = getArguments();
@@ -92,7 +93,17 @@ void BandCutFilter::pass() {
 
         magnitude.save_bmp("../../../../images/bcfmag.bmp");
 
-        fft.inverse(transformOutput);
+        result = fft.inverse(transformOutput);
+
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.height(); y++) {
+                double mag = sqrt(pow(result[image.width() * y + x].real(), 2) + pow(result[image.width() * y + x].imag(), 2));
+                image(x, y, 0) = mag;
+                image(x, y, 1) = mag;
+                image(x, y, 2) = mag;
+            }
+        }
+        image.save_bmp(getOutputPath().c_str());
 	}
 	catch (CImgIOException e) {
 		throw std::logic_error("Cannot load or save from the path. Path invalid.\n");

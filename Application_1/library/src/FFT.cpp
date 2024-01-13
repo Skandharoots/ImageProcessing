@@ -108,12 +108,13 @@ std::vector<std::complex<double>> FFT::forward() {
     return transformCentered;
 }
 
-void FFT::inverse(std::vector<std::complex<double>> matrix) {
+std::vector<std::complex<double>> FFT::inverse(std::vector<std::complex<double>> matrix) {
     CImg<unsigned char> image(getInputPath().c_str());
     std::complex<double> i;
     i = -1;
     i = sqrt(i);
     std::vector<std::complex<double>> matrix2;
+    std::vector<std::complex<double>> matrix3;
     std::vector<std::complex<double>> transformOutput(image.width() * image.height(), 0.0);
 
     for (int x = 0; x < image.width() / 2; x++) {
@@ -156,23 +157,31 @@ void FFT::inverse(std::vector<std::complex<double>> matrix) {
                     sum += matrix2[(image.width() * x) + yy] * (cos(angle) + i*sin(angle));
                 }
                 sum = sum / (double)image.height();
-                double mag = sqrt(pow(sum.real(), 2) + pow(sum.imag(), 2));
-                image(x, y, 0) = mag;
-                image(x, y, 1) = mag;
-                image(x, y, 2) = mag;
+                matrix3.push_back(sum);
+
             }
         }
-    image.save_bmp(getOutputPath().c_str());
-
+    //image.save_bmp(getOutputPath().c_str());
+    return matrix3;
 }
 
 
 void FFT::transform() {
 	cimg::exception_mode(0);
+    CImg<unsigned char> image(getInputPath().c_str());
 	try {
         std::vector<std::complex<double>> matrix;
+        std::vector<std::complex<double>> matrix2;
         matrix = forward();
-        inverse(matrix);
+        matrix2 = inverse(matrix);
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.height(); y++) {
+                double mag = sqrt(pow(matrix2[image.width() * y + x].real(), 2) + pow(matrix2[image.width() * y + x].imag(), 2));
+                image(x, y, 0) = mag;
+                image(x, y, 1) = mag;
+                image(x, y, 2) = mag;
+            }
+        }
 	}
 	catch (CImgIOException e) {
 		throw std::logic_error("Cannot load or save from the path. Path invalid.\n");
