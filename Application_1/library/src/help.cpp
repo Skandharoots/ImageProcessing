@@ -61,4 +61,18 @@ void Help::printHelp() {
     cout << "\"11a\" or \"11b\" or \"11c\" or \"11d\" or \"12a\" or \"12b\" or \"12c\" or \"12d\": For matrix choice for dilation, erosion, opening, closing operations"<< endl << endl;
     cout << "--M2: This operation performs M2 operation on an input image"<< endl << endl;
     cout << "--rg: This operation performs region growing on an input image"<< endl << endl;
+    cout << "--fft: This operation performs Fast Fourier Transform on an input image"<< endl << endl;
+    cout << "--sft: This operation performs Slow Fourier Transform on an input image"<< endl << endl;
+    cout << "--lpf: This operation performs a Gaussian low pass filter on an input image, according to the chosen cutoff frequency"<< endl;
+    cout << "\"0\" - \"200\": For sigma parameter of Gaussian filter"<< endl << endl;
+    cout << "--hpf: This operation performs an Ideal low pass filter on an input image, according to the chosen cutoff frequency"<< endl;
+    cout << "\"0\" - \"300\": For frequency parameter of Ideal filter"<< endl << endl;
+    cout << "--bpf: This operation performs an Band pass filter on an input image, according to the chosen cutoff frequencies"<< endl;
+    cout << "For example \"20 60\": For low cutoff frequency parameter and high cutoff frequency of Band pass filter"<< endl << endl;
+    cout << "--bcf: This operation performs an Band cut filter on an input image, according to the chosen cutoff frequencies"<< endl;
+    cout << "For example \"20 60\": For low cutoff frequency parameter and high cutoff frequency of Band pass filter"<< endl << endl;
+    cout << "--hpfed: This operation performs an high pass filter with edge detection on an input image, according to the chosen mask and cutoff frequency"<< endl;
+    cout << "\"0\" - \"300\": For frequency parameter of Ideal filter"<< endl << endl;
+    cout << "--pmf: This operation performs an phase modification filter on an input image, according to the chosen cutoff k and l parameters"<< endl;
+    cout << "For example \"20 60\": For width and height shifting parameter"<< endl << endl;
 }
