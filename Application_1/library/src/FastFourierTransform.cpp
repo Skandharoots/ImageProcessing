@@ -180,9 +180,19 @@ void FastFourierTransform::transform() {
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 double magnitude = sqrt(pow(matrix3[image.width() * x + y].real(), 2) + pow(matrix3[image.width() * x + y].imag(), 2));
-                mag(x, y, 0) = 20 * log(1 + magnitude);
-                mag(x, y, 1) = 20 * log(1 + magnitude);
-                mag(x, y, 2) = 20 * log(1 + magnitude);
+                if (20 * log(1 + magnitude) < 0) {
+                    mag(x, y, 0) = 0;
+                    mag(x, y, 1) = 0;
+                    mag(x, y, 2) = 0;
+                } else if (20 * log(1 + magnitude) > 255) {
+                    mag(x, y, 0) = 255;
+                    mag(x, y, 1) = 255;
+                    mag(x, y, 2) = 255;
+                } else {
+                    mag(x, y, 0) = 20 * log(1 + magnitude);
+                    mag(x, y, 1) = 20 * log(1 + magnitude);
+                    mag(x, y, 2) = 20 * log(1 + magnitude);
+                }
             }
         }
         mag.save_bmp("../../../../images/fftmag.bmp");

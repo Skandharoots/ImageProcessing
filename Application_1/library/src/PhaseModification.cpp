@@ -70,10 +70,10 @@ void PhaseModification::pass() {
         double k = stod(cutoffFrequencies.substr(0, space));
         double l = stod(cutoffFrequencies.substr(space + 1));
 
-        for (int y = 0; y < image.height(); y++) {
-            for (int x = 0; x < image.width(); x++) {
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.height(); y++) {
                 int index = x * image.width() + y;
-                filter[index] = exp(-i * 2.0 * M_PI * (((x * k) / image.width()) + ((y * l) / image.height())));
+                filter[index] = exp(i * ((-x * l * 2.0 * M_PI) / image.width() + (-y * k * 2.0 * M_PI) / image.height() + (k + l) * M_PI));
             }
         }
 
@@ -84,9 +84,19 @@ void PhaseModification::pass() {
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 double magnitude = sqrt(pow(transformCentered[image.width() * x + y].real(), 2) + pow(transformCentered[image.width() * x + y].imag(), 2));
-                mag(x, y, 0) = 20 * log(1 + magnitude);
-                mag(x, y, 1) = 20 * log(1 + magnitude);
-                mag(x, y, 2) = 20 * log(1 + magnitude);
+                if (20 * log(1 + magnitude) < 0) {
+                    mag(x, y, 0) = 0;
+                    mag(x, y, 1) = 0;
+                    mag(x, y, 2) = 0;
+                } else if (20 * log(1 + magnitude) > 255) {
+                    mag(x, y, 0) = 255;
+                    mag(x, y, 1) = 255;
+                    mag(x, y, 2) = 255;
+                } else {
+                    mag(x, y, 0) = 20 * log(1 + magnitude);
+                    mag(x, y, 1) = 20 * log(1 + magnitude);
+                    mag(x, y, 2) = 20 * log(1 + magnitude);
+                }
             }
         }
         mag.save_bmp("../../../../images/fftmag.bmp");
@@ -98,9 +108,19 @@ void PhaseModification::pass() {
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 double mag = sqrt(pow(transformCentered[image.width() * x + y].real(), 2) + pow(transformCentered[image.width() * x + y].imag(), 2));
-                magnitude(x, y, 0) = 20 * log(1 + mag);
-                magnitude(x, y, 1) = 20 * log(1 + mag);
-                magnitude(x, y, 2) = 20 * log(1 + mag);
+                if (20 * log(1 + mag) < 0) {
+                    magnitude(x, y, 0) = 0;
+                    magnitude(x, y, 1) = 0;
+                    magnitude(x, y, 2) = 0;
+                } else if (20 * log(1 + mag) > 255) {
+                    magnitude(x, y, 0) = 255;
+                    magnitude(x, y, 1) = 255;
+                    magnitude(x, y, 2) = 255;
+                } else {
+                    magnitude(x, y, 0) = 20 * log(1 + mag);
+                    magnitude(x, y, 1) = 20 * log(1 + mag);
+                    magnitude(x, y, 2) = 20 * log(1 + mag);
+                }
             }
         }
         magnitude.save_bmp("../../../../images/pmfmag.bmp");
@@ -111,19 +131,21 @@ void PhaseModification::pass() {
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 result[image.width() * x + y] = result[image.width() * x + y] / ((double) result.size());
-                double mag = sqrt(pow(result[image.width() * x + y].real(), 2) + pow(result[image.width() * x + y].imag(), 2));
-                if (mag < 0) {
-                    image(x, y, 0) = 0;
-                    image(x, y, 1) = 0;
-                    image(x, y, 2) = 0;
-                } else if (mag > 255) {
+                double pls = result[image.width() * x + y].real();
+                if ((pls) > 255) {
                     image(x, y, 0) = 255;
                     image(x, y, 1) = 255;
                     image(x, y, 2) = 255;
-                } else {
-                    image(x, y, 0) = mag;
-                    image(x, y, 1) = mag;
-                    image(x, y, 2) = mag;
+                }
+                else if ((pls) < 0) {
+                    image(x, y, 0) = 0;
+                    image(x, y, 1) = 0;
+                    image(x, y, 2) = 0;
+                }
+                else {
+                    image(x, y, 0) = pls ;
+                    image(x, y, 1) = pls ;
+                    image(x, y, 2) = pls ;
                 }
 
             }
