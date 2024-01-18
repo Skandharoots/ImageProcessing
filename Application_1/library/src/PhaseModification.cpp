@@ -73,8 +73,7 @@ void PhaseModification::pass() {
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 int index = x * image.width() + y;
-                filter[index] = exp(i * ((-x * l * 2.0 * M_PI) / image.width() + (-y * k * 2.0 * M_PI) / image.height() + (k + l) * M_PI));
-            }
+                filter[index] = exp(-i * 2.0 * M_PI * (((x * k) / image.width()) + ((y * l) / image.height())));            }
         }
 
         matrix = fft.forward();
@@ -131,21 +130,21 @@ void PhaseModification::pass() {
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 result[image.width() * x + y] = result[image.width() * x + y] / ((double) result.size());
-                double pls = result[image.width() * x + y].real();
-                if ((pls) > 255) {
+                double mag = sqrt(pow(result[image.width() * x + y].real(), 2) + pow(result[image.width() * x + y].imag(), 2));
+                if (mag > 255) {
                     image(x, y, 0) = 255;
                     image(x, y, 1) = 255;
                     image(x, y, 2) = 255;
                 }
-                else if ((pls) < 0) {
+                else if (mag < 0) {
                     image(x, y, 0) = 0;
                     image(x, y, 1) = 0;
                     image(x, y, 2) = 0;
                 }
                 else {
-                    image(x, y, 0) = pls ;
-                    image(x, y, 1) = pls ;
-                    image(x, y, 2) = pls ;
+                    image(x, y, 0) = mag;
+                    image(x, y, 1) = mag;
+                    image(x, y, 2) = mag;
                 }
 
             }
