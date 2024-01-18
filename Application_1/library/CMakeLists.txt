@@ -44,6 +44,7 @@ set(SOURCE_FILES
         include/RegionGrowing.h
         include/SFT.h
         include/FFT.h
+        include/FastFourierTransform.h
         include/LowPassFilter.h
         include/HighPassFilter.h
         include/BandPassFilter.h
@@ -89,12 +90,15 @@ set(SOURCE_FILES
             src/RegionGrowing.cpp
             src/SFT.cpp
             src/FFT.cpp
+            src/FastFourierTransform.cpp
             src/LowPassFilter.cpp
             src/HighPassFilter.cpp
             src/BandPassFilter.cpp
             src/BandCutFilter.cpp
             src/HPFEdgeDetection.cpp
             src/PhaseModification.cpp
+        include/FastFourierTransform.h
+        src/FastFourierTransform.cpp
 
 )
 

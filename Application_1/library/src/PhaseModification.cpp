@@ -8,7 +8,7 @@
 #include <iostream>
 #include "PhaseModification.h"
 #include "CImg.h"
-#include "FFT.h"
+#include "FastFourierTransform.h"
 
 using namespace cimg_library;
 
@@ -50,10 +50,14 @@ void PhaseModification::pass() {
 	try {
         CImg<unsigned char> image(getInputPath().c_str());
         CImg<unsigned char> magnitude(getInputPath().c_str());
+        CImg<unsigned char> mag(getInputPath().c_str());
 
-        FFT fft(getInputPath().c_str(), getOutputPath().c_str());
+        FastFourierTransform fft(getInputPath().c_str(), getOutputPath().c_str());
 
+        std::vector<double> matrix;
         std::vector<std::complex<double>> transformOutput;
+        std::vector<std::complex<double>> transformCentered;
+        std::vector<std::complex<double>> resultDecentered;
         std::vector<std::complex<double>> result;
         std::vector<std::complex<double>> filter(image.width() * image.height(), 0.0);
 
@@ -68,21 +72,32 @@ void PhaseModification::pass() {
 
         for (int y = 0; y < image.height(); y++) {
             for (int x = 0; x < image.width(); x++) {
-                int index = y * image.width() + x;
-                int xx = abs(image.width()/2 - x);
-                int yy = abs(image.height()/2 - y);
+                int index = x * image.width() + y;
                 filter[index] = exp(-i * 2.0 * M_PI * (((x * k) / image.width()) + ((y * l) / image.height())));
             }
         }
 
-        transformOutput = fft.forward();
+        matrix = fft.forward();
+        transformOutput = fft.fft(matrix);
+        transformCentered = fft.center(transformOutput);
 
-        for (int i = 0; i < transformOutput.size(); i++) {
-            transformOutput[i] *= filter[i];
-        }
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
-                double mag = sqrt(pow(transformOutput[image.width() * y + x].real(), 2) + pow(transformOutput[image.width() * y + x].imag(), 2));
+                double magnitude = sqrt(pow(transformCentered[image.width() * x + y].real(), 2) + pow(transformCentered[image.width() * x + y].imag(), 2));
+                mag(x, y, 0) = 20 * log(1 + magnitude);
+                mag(x, y, 1) = 20 * log(1 + magnitude);
+                mag(x, y, 2) = 20 * log(1 + magnitude);
+            }
+        }
+        mag.save_bmp("../../../../images/fftmag.bmp");
+
+        for (int i = 0; i < transformCentered.size(); i++) {
+            transformCentered[i] *= filter[i];
+        }
+
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.height(); y++) {
+                double mag = sqrt(pow(transformCentered[image.width() * x + y].real(), 2) + pow(transformCentered[image.width() * x + y].imag(), 2));
                 magnitude(x, y, 0) = 20 * log(1 + mag);
                 magnitude(x, y, 1) = 20 * log(1 + mag);
                 magnitude(x, y, 2) = 20 * log(1 + mag);
@@ -90,14 +105,27 @@ void PhaseModification::pass() {
         }
         magnitude.save_bmp("../../../../images/pmfmag.bmp");
 
-        result = fft.inverse(transformOutput);
+        resultDecentered = fft.center(transformCentered);
+        result = fft.ifft(resultDecentered);
 
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
-                double mag = sqrt(pow(result[image.width() * y + x].real(), 2) + pow(result[image.width() * y + x].imag(), 2));
-                image(x, y, 0) = mag;
-                image(x, y, 1) = mag;
-                image(x, y, 2) = mag;
+                result[image.width() * x + y] = result[image.width() * x + y] / ((double) result.size());
+                double mag = sqrt(pow(result[image.width() * x + y].real(), 2) + pow(result[image.width() * x + y].imag(), 2));
+                if (mag < 0) {
+                    image(x, y, 0) = 0;
+                    image(x, y, 1) = 0;
+                    image(x, y, 2) = 0;
+                } else if (mag > 255) {
+                    image(x, y, 0) = 255;
+                    image(x, y, 1) = 255;
+                    image(x, y, 2) = 255;
+                } else {
+                    image(x, y, 0) = mag;
+                    image(x, y, 1) = mag;
+                    image(x, y, 2) = mag;
+                }
+
             }
         }
         image.save_bmp(getOutputPath().c_str());
