@@ -65,7 +65,7 @@ void HPFEdgeDetection::pass() {
 
         FastFourierTransform fft(getInputPath().c_str(), getOutputPath().c_str());
 
-        std::vector<double> matrix;
+        std::vector<std::complex<double>> matrix;
         std::vector<std::complex<double>> transformOutput;
         std::vector<std::complex<double>> transformCentered;
         std::vector<std::complex<double>> resultDecentered;
@@ -76,7 +76,7 @@ void HPFEdgeDetection::pass() {
 
         for (int y = 0; y < image.height(); y++) {
             for (int x = 0; x < image.width(); x++) {
-                int index = x * image.width() + y;
+                int index = y * image.width() + x;
                 int xx = abs(image.width()/2 - x);
                 int yy = abs(image.height()/2 - y);
                 if(sqrt((xx * xx) + (yy * yy)) > cutoffFrequency) {

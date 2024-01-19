@@ -36,7 +36,7 @@ void FastFourierTransform::setOutputPath(std::string path) {
     this->outputPath = path;
 }
 
-std::vector<std::complex<double>> FastFourierTransform::fft(std::vector<double> a) {
+std::vector<std::complex<double>> FastFourierTransform::fft(std::vector<std::complex<double>> a) {
     int n = a.size();
     std::complex<double> ii;
     ii = -1;
@@ -47,13 +47,13 @@ std::vector<std::complex<double>> FastFourierTransform::fft(std::vector<double> 
         return std::vector<std::complex<double>>(1, a[0]);
 
     // For storing n complex nth roots of unity
-    std::vector<double> w(n);
-    for (int i = 0; i < n; i++) {
-        double alpha = 2 * M_PI * i / n;
-        w[i] = alpha;
-    }
+//    std::vector<double> w(n);
+//    for (int i = 0; i < n; i++) {
+//        double alpha = 2 * M_PI * i / n;
+//        w[i] = alpha;
+//    }
 
-    std::vector<double> A0(n / 2), A1(n / 2);
+    std::vector<std::complex<double>> A0(n / 2), A1(n / 2);
     for (int i = 0; i < n / 2; i++) {
 
         // even indexed coefficients
@@ -73,18 +73,18 @@ std::vector<std::complex<double>> FastFourierTransform::fft(std::vector<double> 
     std::vector<std::complex<double>> y(n);
 
     for (int k = 0; k < n / 2; k++) {
-        y[k] = y0[k] + (cos(w[k]) - ii*sin(w[k])) * y1[k];
-        y[k + n / 2] = y0[k] - (cos(w[k]) - ii*sin(w[k])) * y1[k];
+        y[k] = y0[k] + (cos(2.0 * M_PI * k / n) - ii*sin(2.0 * M_PI * k / n)) * y1[k];
+        y[k + n / 2] = y0[k] - (cos(2.0 * M_PI * k / n) - ii*sin(2.0 * M_PI * k / n)) * y1[k];
     }
     return y;
 }
 
-std::vector<double> FastFourierTransform::forward() {
+std::vector<std::complex<double>> FastFourierTransform::forward() {
     CImg<unsigned char> image(getInputPath().c_str());
-    std::vector<double> matrix;
+    std::vector<std::complex<double>> matrix;
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
-            double avg = (image(x, y, 0) + image(x, y, 1) + image(x, y, 2)) / 3;
+            std::complex<double> avg = (image(x, y, 0) + image(x, y, 1) + image(x, y, 2)) / 3.0;
             matrix.push_back(avg);
         }
     }
@@ -130,11 +130,11 @@ std::vector<std::complex<double>> FastFourierTransform::ifft(std::vector<std::co
         return std::vector<std::complex<double>>(1, a[0]);
 
     // For storing n complex nth roots of unity
-    std::vector<std::complex<double>> w(n);
-    for (int i = 0; i < n; i++) {
-        double alpha = 2 * M_PI * i / n;
-        w[i] = alpha;
-    }
+//    std::vector<std::complex<double>> w(n);
+//    for (int i = 0; i < n; i++) {
+//        double alpha = 2 * M_PI * i / n;
+//        w[i] = alpha;
+//    }
 
     std::vector<std::complex<double>> A0(n / 2), A1(n / 2);
     for (int i = 0; i < n / 2; i++) {
@@ -156,8 +156,8 @@ std::vector<std::complex<double>> FastFourierTransform::ifft(std::vector<std::co
     std::vector<std::complex<double>> y(n);
 
     for (int k = 0; k < n / 2; k++) {
-        y[k] = (y0[k] + (cos(w[k]) + ii*sin(w[k])) * y1[k]);
-        y[k + n / 2] = (y0[k] - (cos(w[k]) + ii*sin(w[k])) * y1[k]);
+        y[k] = (y0[k] + (cos(2.0 * M_PI * k / n) + ii*sin(2.0 * M_PI * k / n)) * y1[k]);
+        y[k + n / 2] = (y0[k] - (cos(2.0 * M_PI * k / n) + ii*sin(2.0 * M_PI * k / n)) * y1[k]);
     }
     return y;
 }
@@ -168,7 +168,7 @@ void FastFourierTransform::transform() {
     CImg<unsigned char> image(getInputPath().c_str());
     CImg<unsigned char> mag(getInputPath().c_str());
     try {
-        std::vector<double> matrix;
+        std::vector<std::complex<double>> matrix;
         std::vector<std::complex<double>> matrix2;
         std::vector<std::complex<double>> matrix3;
         std::vector<std::complex<double>> matrix4;

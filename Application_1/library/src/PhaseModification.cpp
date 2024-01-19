@@ -54,7 +54,7 @@ void PhaseModification::pass() {
 
         FastFourierTransform fft(getInputPath().c_str(), getOutputPath().c_str());
 
-        std::vector<double> matrix;
+        std::vector<std::complex<double>> matrix;
         std::vector<std::complex<double>> transformOutput;
         std::vector<std::complex<double>> transformCentered;
         std::vector<std::complex<double>> resultDecentered;
@@ -70,62 +70,64 @@ void PhaseModification::pass() {
         double k = stod(cutoffFrequencies.substr(0, space));
         double l = stod(cutoffFrequencies.substr(space + 1));
 
-        for (int x = 0; x < image.width(); x++) {
-            for (int y = 0; y < image.height(); y++) {
-                int index = x * image.width() + y;
-                filter[index] = exp(-i * 2.0 * M_PI * (((x * k) / image.width()) + ((y * l) / image.height())));            }
-        }
-
         matrix = fft.forward();
         transformOutput = fft.fft(matrix);
-        transformCentered = fft.center(transformOutput);
 
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
-                double magnitude = sqrt(pow(transformCentered[image.width() * x + y].real(), 2) + pow(transformCentered[image.width() * x + y].imag(), 2));
-                if (20 * log(1 + magnitude) < 0) {
-                    mag(x, y, 0) = 0;
-                    mag(x, y, 1) = 0;
-                    mag(x, y, 2) = 0;
-                } else if (20 * log(1 + magnitude) > 255) {
-                    mag(x, y, 0) = 255;
-                    mag(x, y, 1) = 255;
-                    mag(x, y, 2) = 255;
-                } else {
-                    mag(x, y, 0) = 20 * log(1 + magnitude);
-                    mag(x, y, 1) = 20 * log(1 + magnitude);
-                    mag(x, y, 2) = 20 * log(1 + magnitude);
-                }
+                transformOutput[image.width() * x + y] *= exp(i * (((-x * l * 2.0 * M_PI) / image.width()) + ((-y * k * 2.0 * M_PI) / image.height()) + (k + l) * M_PI));
             }
         }
-        mag.save_bmp("../../../../images/fftmag.bmp");
 
-        for (int i = 0; i < transformCentered.size(); i++) {
-            transformCentered[i] *= filter[i];
-        }
 
-        for (int x = 0; x < image.width(); x++) {
-            for (int y = 0; y < image.height(); y++) {
-                double mag = sqrt(pow(transformCentered[image.width() * x + y].real(), 2) + pow(transformCentered[image.width() * x + y].imag(), 2));
-                if (20 * log(1 + mag) < 0) {
-                    magnitude(x, y, 0) = 0;
-                    magnitude(x, y, 1) = 0;
-                    magnitude(x, y, 2) = 0;
-                } else if (20 * log(1 + mag) > 255) {
-                    magnitude(x, y, 0) = 255;
-                    magnitude(x, y, 1) = 255;
-                    magnitude(x, y, 2) = 255;
-                } else {
-                    magnitude(x, y, 0) = 20 * log(1 + mag);
-                    magnitude(x, y, 1) = 20 * log(1 + mag);
-                    magnitude(x, y, 2) = 20 * log(1 + mag);
-                }
-            }
-        }
-        magnitude.save_bmp("../../../../images/pmfmag.bmp");
+//        transformCentered = fft.center(transformOutput);
 
-        resultDecentered = fft.center(transformCentered);
-        result = fft.ifft(resultDecentered);
+//        for (int x = 0; x < image.width(); x++) {
+//            for (int y = 0; y < image.height(); y++) {
+//                double magnitude = sqrt(pow(transformCentered[image.width() * x + y].real(), 2) + pow(transformCentered[image.width() * x + y].imag(), 2));
+//                if (20 * log(1 + magnitude) < 0) {
+//                    mag(x, y, 0) = 0;
+//                    mag(x, y, 1) = 0;
+//                    mag(x, y, 2) = 0;
+//                } else if (20 * log(1 + magnitude) > 255) {
+//                    mag(x, y, 0) = 255;
+//                    mag(x, y, 1) = 255;
+//                    mag(x, y, 2) = 255;
+//                } else {
+//                    mag(x, y, 0) = 20 * log(1 + magnitude);
+//                    mag(x, y, 1) = 20 * log(1 + magnitude);
+//                    mag(x, y, 2) = 20 * log(1 + magnitude);
+//                }
+//            }
+//        }
+//        mag.save_bmp("../../../../images/fftmag.bmp");
+//
+//        for (int i = 0; i < transformCentered.size(); i++) {
+//            transformCentered[i] *= filter[i];
+//        }
+//
+//        for (int x = 0; x < image.width(); x++) {
+//            for (int y = 0; y < image.height(); y++) {
+//                double mag = sqrt(pow(transformCentered[image.width() * x + y].real(), 2) + pow(transformCentered[image.width() * x + y].imag(), 2));
+//                if (20 * log(1 + mag) < 0) {
+//                    magnitude(x, y, 0) = 0;
+//                    magnitude(x, y, 1) = 0;
+//                    magnitude(x, y, 2) = 0;
+//                } else if (20 * log(1 + mag) > 255) {
+//                    magnitude(x, y, 0) = 255;
+//                    magnitude(x, y, 1) = 255;
+//                    magnitude(x, y, 2) = 255;
+//                } else {
+//                    magnitude(x, y, 0) = 20 * log(1 + mag);
+//                    magnitude(x, y, 1) = 20 * log(1 + mag);
+//                    magnitude(x, y, 2) = 20 * log(1 + mag);
+//                }
+//            }
+//        }
+//        magnitude.save_bmp("../../../../images/pmfmag.bmp");
+//
+//        resultDecentered = fft.center(transformCentered);
+        result = fft.ifft(transformOutput);
 
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
