@@ -233,21 +233,31 @@ void FastFourierTransform::transform() {
         std::vector<std::vector<std::complex<double>>> result;
 
         matrix = forward();
+        double max = 0.0;
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 double magnitude = sqrt(pow(matrix[x][y].real(), 2) + pow(matrix[x][y].imag(), 2));
-                if (20 * log(1 + magnitude) < 0) {
+                if (magnitude > max) {
+                    max = magnitude;
+                }
+            }
+        }
+        double c = 255 / log(1 + abs(max));
+        for (int x = 0; x < image.width(); x++) {
+            for (int y = 0; y < image.height(); y++) {
+                double magnitude = sqrt(pow(matrix[x][y].real(), 2) + pow(matrix[x][y].imag(), 2));
+                if (c * log(1 + magnitude) < 0) {
                     mag(x, y, 0) = 0;
                     mag(x, y, 1) = 0;
                     mag(x, y, 2) = 0;
-                } else if (20 * log(1 + magnitude) > 255) {
+                } else if (c * log(1 + magnitude) > 255) {
                     mag(x, y, 0) = 255;
                     mag(x, y, 1) = 255;
                     mag(x, y, 2) = 255;
                 } else {
-                    mag(x, y, 0) = 20 * log(1 + magnitude);
-                    mag(x, y, 1) = 20 * log(1 + magnitude);
-                    mag(x, y, 2) = 20 * log(1 + magnitude);
+                    mag(x, y, 0) = c * log(1 + magnitude);
+                    mag(x, y, 1) = c * log(1 + magnitude);
+                    mag(x, y, 2) = c * log(1 + magnitude);
                 }
             }
         }
