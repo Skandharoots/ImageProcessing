@@ -106,13 +106,13 @@ std::vector<std::vector<std::complex<double>>> FastFourierTransform::forward() {
             columns[x][k] = col[k];
         }
     }
-    std::vector<std::vector<std::complex<double>>> trsp1(image.width(), std::vector<std::complex<double>>(image.height(), 0.0));
-    for (int y = 0; y < image.height(); y++) {
-        for (int x = 0; x < image.width(); x++) {
-            trsp1[x][y] = columns[y][x];
-        }
-    }
-    centered = center(trsp1);
+//    std::vector<std::vector<std::complex<double>>> trsp1(image.width(), std::vector<std::complex<double>>(image.height(), 0.0));
+//    for (int y = 0; y < image.height(); y++) {
+//        for (int x = 0; x < image.width(); x++) {
+//            trsp1[x][y] = columns[y][x];
+//        }
+//    }
+    centered = center(columns);
     return centered;
 }
 
@@ -124,18 +124,18 @@ std::vector<std::vector<std::complex<double>>> FastFourierTransform::inverse(std
 
     centered = center(a);
 
-    std::vector<std::vector<std::complex<double>>> trsp1(image.width(), std::vector<std::complex<double>>(image.height(), 0.0));
-    for (int y = 0; y < image.height(); y++) {
-        for (int x = 0; x < image.width(); x++) {
-            trsp1[x][y] = centered[y][x];
-        }
-    }
+//    std::vector<std::vector<std::complex<double>>> trsp1(image.width(), std::vector<std::complex<double>>(image.height(), 0.0));
+//    for (int y = 0; y < image.height(); y++) {
+//        for (int x = 0; x < image.width(); x++) {
+//            trsp1[x][y] = centered[y][x];
+//        }
+//    }
 
     for (int x = 0; x < image.width(); x++) {
         std::vector<std::complex<double>> helper;
         std::vector<std::complex<double>> col;
         for (int y = 0; y < image.height(); y++) {
-            helper.push_back(trsp1[x][y]);
+            helper.push_back(centered[x][y]);
         }
         col = ifft(helper);
         for (int k = 0; k < image.height(); k++) {
