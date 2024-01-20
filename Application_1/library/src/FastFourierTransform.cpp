@@ -79,6 +79,19 @@ std::vector<std::complex<double>> FastFourierTransform::fft(std::vector<std::com
     return y;
 }
 
+void FastFourierTransform::transpose(std::vector<std::complex<double>> A) {
+    std::vector<std::complex<double>> B = A;
+    for (int y = 0; y < A.size() / 2; y++) {
+        for (int x = 0; x < A.size() / 2; x++) {
+            std::swap(A[(A.size() / 2) * x + y], A[(A.size() / 2) * y + x]);
+        }
+    }
+    if (A == B) {
+        std::cout << "error" <<std::endl;
+    }
+
+}
+
 std::vector<std::complex<double>> FastFourierTransform::forward() {
     CImg<unsigned char> image(getInputPath().c_str());
     std::vector<std::complex<double>> imag;
@@ -102,7 +115,6 @@ std::vector<std::complex<double>> FastFourierTransform::forward() {
             rows.push_back(row[k]);
         }
     }
-
     for (int x = 0; x < image.width(); x++) {
         std::vector<std::complex<double>> helper;
         std::vector<std::complex<double>> col;
@@ -114,7 +126,13 @@ std::vector<std::complex<double>> FastFourierTransform::forward() {
             columns.push_back(col[k]);
         }
     }
-    centered = center(columns);
+    std::vector<std::complex<double>> trsp1(imag.size(), 0.0);
+    for (int y = 0; y < image.height(); y++) {
+        for (int x = 0; x < image.width(); x++) {
+            trsp1[(image.width()) * x + y] = columns[(image.width()) * y + x];
+        }
+    }
+    centered = center(trsp1);
     return centered;
 }
 
@@ -126,28 +144,42 @@ std::vector<std::complex<double>> FastFourierTransform::inverse(std::vector<std:
 
     centered = center(a);
 
+    std::vector<std::complex<double>> trsp1(centered.size(), 0.0);
+    for (int y = 0; y < image.height(); y++) {
+        for (int x = 0; x < image.width(); x++) {
+            trsp1[(image.width()) * x + y] = centered[(image.width()) * y + x];
+        }
+    }
+
     for (int x = 0; x < image.width(); x++) {
         std::vector<std::complex<double>> helper;
         std::vector<std::complex<double>> col;
         for (int y = 0; y < image.height(); y++) {
-            helper.push_back(centered[image.width() * x + y]);
+            helper.push_back(trsp1[image.width() * x + y]);
         }
         col = ifft(helper);
         for (int k = 0; k < image.height(); k++) {
             columns.push_back(col[k]);
         }
     }
+    std::vector<std::complex<double>> trsp2(a.size(), 0.0);
+    for (int y = 0; y < image.height(); y++) {
+        for (int x = 0; x < image.width(); x++) {
+            trsp2[(image.width()) * x + y] = columns[(image.width()) * y + x];
+        }
+    }
     for (int y = 0; y < image.height(); y++) {
         std::vector<std::complex<double>> helper;
         std::vector<std::complex<double>> row;
         for (int x = 0; x < image.width(); x++) {
-            helper.push_back(columns[image.width() * x + y]);
+            helper.push_back(trsp2[image.width() * x + y]);
         }
         row = ifft(helper);
         for (int k = 0; k < image.width(); k++) {
             rows.push_back(row[k]);
         }
     }
+
     return rows;
 
 }
