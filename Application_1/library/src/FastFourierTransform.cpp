@@ -46,13 +46,6 @@ std::vector<std::complex<double>> FastFourierTransform::fft(std::vector<std::com
     if (n == 1)
         return std::vector<std::complex<double>>(1, a[0]);
 
-    // For storing n complex nth roots of unity
-//    std::vector<double> w(n);
-//    for (int i = 0; i < n; i++) {
-//        double alpha = 2 * M_PI * i / n;
-//        w[i] = alpha;
-//    }
-
     std::vector<std::complex<double>> A0(n / 2), A1(n / 2);
     for (int i = 0; i < n / 2; i++) {
 
@@ -161,13 +154,6 @@ std::vector<std::vector<std::complex<double>>> FastFourierTransform::inverse(std
             rows[k][y] = row[k] / (double) image.width();
         }
     }
-//    std::vector<std::complex<double>> trsp2(a.size(), 0.0);
-//    for (int y = 0; y < image.height(); y++) {
-//        for (int x = 0; x < image.width(); x++) {
-//            trsp2[(image.width()) * x + y] = columns[(image.width()) * y + x];
-//        }
-//    }
-
 
     return rows;
 
@@ -210,13 +196,6 @@ std::vector<std::complex<double>> FastFourierTransform::ifft(std::vector<std::co
     // if input contains just one element
     if (n == 1)
         return std::vector<std::complex<double>>(1, a[0]);
-
-    // For storing n complex nth roots of unity
-//    std::vector<std::complex<double>> w(n);
-//    for (int i = 0; i < n; i++) {
-//        double alpha = 2 * M_PI * i / n;
-//        w[i] = alpha;
-//    }
 
     std::vector<std::complex<double>> A0(n / 2), A1(n / 2);
     for (int i = 0; i < n / 2; i++) {
