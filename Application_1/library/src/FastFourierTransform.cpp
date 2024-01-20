@@ -81,14 +81,75 @@ std::vector<std::complex<double>> FastFourierTransform::fft(std::vector<std::com
 
 std::vector<std::complex<double>> FastFourierTransform::forward() {
     CImg<unsigned char> image(getInputPath().c_str());
-    std::vector<std::complex<double>> matrix;
+    std::vector<std::complex<double>> imag;
+    std::vector<std::complex<double>> columns;
+    std::vector<std::complex<double>> rows;
+    std::vector<std::complex<double>> centered;
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
             std::complex<double> avg = (image(x, y, 0) + image(x, y, 1) + image(x, y, 2)) / 3.0;
-            matrix.push_back(avg);
+            imag.push_back(avg);
         }
     }
-    return matrix;
+    for (int y = 0; y < image.height(); y++) {
+        std::vector<std::complex<double>> helper;
+        std::vector<std::complex<double>> row;
+        for (int x = 0; x < image.width(); x++) {
+            helper.push_back(imag[image.width() * x + y]);
+        }
+        row = fft(helper);
+        for (int k = 0; k < image.width(); k++) {
+            rows.push_back(row[k]);
+        }
+    }
+
+    for (int x = 0; x < image.width(); x++) {
+        std::vector<std::complex<double>> helper;
+        std::vector<std::complex<double>> col;
+        for (int y = 0; y < image.height(); y++) {
+            helper.push_back(rows[image.width() * y + x]);
+        }
+        col = fft(helper);
+        for (int k = 0; k < image.height(); k++) {
+            columns.push_back(col[k]);
+        }
+    }
+    centered = center(columns);
+    return centered;
+}
+
+std::vector<std::complex<double>> FastFourierTransform::inverse(std::vector<std::complex<double>> a) {
+    CImg<unsigned char> image(getInputPath().c_str());
+    std::vector<std::complex<double>> columns;
+    std::vector<std::complex<double>> rows;
+    std::vector<std::complex<double>> centered;
+
+    centered = center(a);
+
+    for (int x = 0; x < image.width(); x++) {
+        std::vector<std::complex<double>> helper;
+        std::vector<std::complex<double>> col;
+        for (int y = 0; y < image.height(); y++) {
+            helper.push_back(centered[image.width() * x + y]);
+        }
+        col = ifft(helper);
+        for (int k = 0; k < image.height(); k++) {
+            columns.push_back(col[k]);
+        }
+    }
+    for (int y = 0; y < image.height(); y++) {
+        std::vector<std::complex<double>> helper;
+        std::vector<std::complex<double>> row;
+        for (int x = 0; x < image.width(); x++) {
+            helper.push_back(columns[image.width() * x + y]);
+        }
+        row = ifft(helper);
+        for (int k = 0; k < image.width(); k++) {
+            rows.push_back(row[k]);
+        }
+    }
+    return rows;
+
 }
 
 std::vector<std::complex<double>> FastFourierTransform::center(std::vector<std::complex<double>> a) {
@@ -98,22 +159,22 @@ std::vector<std::complex<double>> FastFourierTransform::center(std::vector<std::
 
     for (int x = 0; x < image.width() / 2; x++) {
         for (int y = 0; y < image.height() / 2; y++) {
-            transformCentered[(x + (image.width()/2))  * image.width() + (y + image.height()/2)] = a[image.width() * x + y];
+            transformCentered[(x + (image.width()/2))  + image.width() * (y + image.height()/2)] = a[image.width() * y + x];
         }
     }
     for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
         for (int y = 0; y < image.height() / 2; y++) {
-            transformCentered[(x - (image.width()/2)) * image.width() + (y + image.height()/2)] = a[image.width() * x + y];
+            transformCentered[(x - (image.width()/2)) + image.width() * (y + image.height()/2)] = a[image.width() * y + x];
         }
     }
     for (int x = 0; x < image.width() / 2; x++) {
         for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-            transformCentered[(x + (image.width()/2)) * image.width() + (y - image.height()/2)] = a[image.width() * x + y];
+            transformCentered[(x + (image.width()/2)) + image.width() * (y - image.height()/2)] = a[image.width() * y + x];
         }
     }
     for (int x = image.width() - 1; x > image.width() / 2 - 1; x--) {
         for (int y = image.height() - 1; y > image.height() / 2 - 1; y--) {
-            transformCentered[(x - (image.width()/2)) * image.width() + (y - image.height()/2)] = a[image.width() * x + y];
+            transformCentered[(x - (image.width()/2)) + image.width() * (y - image.height()/2)] = a[image.width() * y + x];
         }
     }
     return transformCentered;
@@ -170,16 +231,15 @@ void FastFourierTransform::transform() {
     try {
         std::vector<std::complex<double>> matrix;
         std::vector<std::complex<double>> matrix2;
+        std::vector<std::complex<double>> matrix22;
         std::vector<std::complex<double>> matrix3;
         std::vector<std::complex<double>> matrix4;
         std::vector<std::complex<double>> result;
 
         matrix = forward();
-        matrix2 = fft(matrix);
-        matrix3 = center(matrix2);
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
-                double magnitude = sqrt(pow(matrix3[image.width() * x + y].real(), 2) + pow(matrix3[image.width() * x + y].imag(), 2));
+                double magnitude = sqrt(pow(matrix[image.width() * x + y].real(), 2) + pow(matrix[image.width() * x + y].imag(), 2));
                 if (20 * log(1 + magnitude) < 0) {
                     mag(x, y, 0) = 0;
                     mag(x, y, 1) = 0;
@@ -196,8 +256,7 @@ void FastFourierTransform::transform() {
             }
         }
         mag.save_bmp("../../../../images/fftmag.bmp");
-        matrix4 = center(matrix3);
-        result = ifft(matrix4);
+        result = inverse(matrix);
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
                 result[image.width() * x + y] = result[image.width() * x + y] / ((double) result.size());
@@ -209,15 +268,6 @@ void FastFourierTransform::transform() {
         }
         image.save_bmp(getOutputPath().c_str());
 
-//        matrix2 = inverse(matrix);
-//        for (int x = 0; x < image.width(); x++) {
-//            for (int y = 0; y < image.height(); y++) {
-//                double mag = sqrt(pow(matrix2[image.width() * y + x].real(), 2) + pow(matrix2[image.width() * y + x].imag(), 2));
-//                image(x, y, 0) = mag;
-//                image(x, y, 1) = mag;
-//                image(x, y, 2) = mag;
-//            }
-//        }
     }
     catch (CImgIOException e) {
         throw std::logic_error("Cannot load or save from the path. Path invalid.\n");

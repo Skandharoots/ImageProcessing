@@ -99,12 +99,22 @@ std::vector<std::complex<double>> FFT::forward() {
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
             double mag = sqrt(pow(transformCentered[image.width() * y + x].real(), 2) + pow(transformCentered[image.width() * y + x].imag(), 2));
-            magnitude(x, y, 0) = 20 * log(1 + mag);
-            magnitude(x, y, 1) = 20 * log(1 + mag);
-            magnitude(x, y, 2) = 20 * log(1 + mag);
+            if (20 * log(1 + mag) < 0) {
+                magnitude(x, y, 0) = 0;
+                magnitude(x, y, 1) = 0;
+                magnitude(x, y, 2) = 0;
+            } else if (20 * log(1 + mag) > 255) {
+                magnitude(x, y, 0) = 255;
+                magnitude(x, y, 1) = 255;
+                magnitude(x, y, 2) = 255;
+            } else {
+                magnitude(x, y, 0) = 20 * log(1 + mag);
+                magnitude(x, y, 1) = 20 * log(1 + mag);
+                magnitude(x, y, 2) = 20 * log(1 + mag);
+            }
         }
     }
-	magnitude.save_bmp("../../../../images/fftmag.bmp");
+	magnitude.save_bmp("../../../../images/ffftmag.bmp");
     return transformCentered;
 }
 
