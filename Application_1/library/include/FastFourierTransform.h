@@ -18,6 +18,7 @@ public:
     void setInputPath(std::string path);
     std::string getOutputPath();
     void setOutputPath(std::string path);
+    void drawSpectrum(std::vector<std::vector<std::complex<double>>> matrix, std::string path, double c);
     std::vector<std::vector<std::complex<double>>> forward();
     std::vector<std::vector<std::complex<double>>> inverse(std::vector<std::vector<std::complex<double>>> a);
     std::vector<std::complex<double>> fft(std::vector<std::complex<double>> a);

@@ -36,6 +36,31 @@ void FastFourierTransform::setOutputPath(std::string path) {
     this->outputPath = path;
 }
 
+void FastFourierTransform::drawSpectrum(std::vector<std::vector<std::complex<double>>> matrix, std::string path, double c) {
+
+    CImg<unsigned char> mag(getInputPath().c_str());
+    for (int x = 0; x < mag.width(); x++) {
+        for (int y = 0; y < mag.height(); y++) {
+            double magnitude = sqrt(pow(matrix[x][y].real(), 2) + pow(matrix[x][y].imag(), 2));
+            if (c * log(1 + magnitude) < 0) {
+                mag(x, y, 0) = 0;
+                mag(x, y, 1) = 0;
+                mag(x, y, 2) = 0;
+            } else if (c * log(1 + magnitude) > 255) {
+                mag(x, y, 0) = 255;
+                mag(x, y, 1) = 255;
+                mag(x, y, 2) = 255;
+            } else {
+                mag(x, y, 0) = c * log(1 + magnitude);
+                mag(x, y, 1) = c * log(1 + magnitude);
+                mag(x, y, 2) = c * log(1 + magnitude);
+            }
+        }
+    }
+    mag.save_bmp(path.c_str());
+}
+
+
 std::vector<std::complex<double>> FastFourierTransform::fft(std::vector<std::complex<double>> a) {
     int n = a.size();
     std::complex<double> ii;
@@ -227,7 +252,6 @@ std::vector<std::complex<double>> FastFourierTransform::ifft(std::vector<std::co
 void FastFourierTransform::transform() {
     cimg::exception_mode(0);
     CImg<unsigned char> image(getInputPath().c_str());
-    CImg<unsigned char> mag(getInputPath().c_str());
     try {
         std::vector<std::vector<std::complex<double>>> matrix;
         std::vector<std::vector<std::complex<double>>> result;
@@ -243,25 +267,7 @@ void FastFourierTransform::transform() {
             }
         }
         double c = 255 / log(1 + abs(max));
-        for (int x = 0; x < image.width(); x++) {
-            for (int y = 0; y < image.height(); y++) {
-                double magnitude = sqrt(pow(matrix[x][y].real(), 2) + pow(matrix[x][y].imag(), 2));
-                if (c * log(1 + magnitude) < 0) {
-                    mag(x, y, 0) = 0;
-                    mag(x, y, 1) = 0;
-                    mag(x, y, 2) = 0;
-                } else if (c * log(1 + magnitude) > 255) {
-                    mag(x, y, 0) = 255;
-                    mag(x, y, 1) = 255;
-                    mag(x, y, 2) = 255;
-                } else {
-                    mag(x, y, 0) = c * log(1 + magnitude);
-                    mag(x, y, 1) = c * log(1 + magnitude);
-                    mag(x, y, 2) = c * log(1 + magnitude);
-                }
-            }
-        }
-        mag.save_bmp("../../../../images/fftmag.bmp");
+        drawSpectrum(matrix, "../../../../images/fftmag.bmp", c);
         result = inverse(matrix);
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {

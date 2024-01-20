@@ -50,8 +50,6 @@ void HighPassFilter::pass() {
 	cimg::exception_mode(0);
 	try {
         CImg<unsigned char> image(getInputPath().c_str());
-        CImg<unsigned char> magnitude(getInputPath().c_str());
-        CImg<unsigned char> mag(getInputPath().c_str());
 
         std::shared_ptr<FastFourierTransform> fft = std::make_shared<FastFourierTransform>(getInputPath().c_str(), getOutputPath().c_str());
 
@@ -84,25 +82,7 @@ void HighPassFilter::pass() {
         }
         double c = 255 / log(1 + abs(max));
 
-        for (int x = 0; x < image.width(); x++) {
-            for (int y = 0; y < image.height(); y++) {
-                double magnitude = sqrt(pow(matrix[x][y].real(), 2) + pow(matrix[x][y].imag(), 2));
-                if (c * log(1 + magnitude) < 0) {
-                    mag(x, y, 0) = 0;
-                    mag(x, y, 1) = 0;
-                    mag(x, y, 2) = 0;
-                } else if (c * log(1 + magnitude) > 255) {
-                    mag(x, y, 0) = 255;
-                    mag(x, y, 1) = 255;
-                    mag(x, y, 2) = 255;
-                } else {
-                    mag(x, y, 0) = c * log(1 + magnitude);
-                    mag(x, y, 1) = c * log(1 + magnitude);
-                    mag(x, y, 2) = c * log(1 + magnitude);
-                }
-            }
-        }
-        mag.save_bmp("../../../../images/fftmag.bmp");
+        fft->drawSpectrum(matrix, "../../../../images/fftmag.bmp", c);
 
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
@@ -110,27 +90,7 @@ void HighPassFilter::pass() {
             }
         }
 
-
-        for (int x = 0; x < image.width(); x++) {
-            for (int y = 0; y < image.height(); y++) {
-                double mag = sqrt(pow(matrix[x][y].real(), 2) + pow(matrix[x][y].imag(), 2));
-                if (c * log(1 + mag) < 0) {
-                    magnitude(x, y, 0) = 0;
-                    magnitude(x, y, 1) = 0;
-                    magnitude(x, y, 2) = 0;
-                } else if (c * log(1 + mag) > 255) {
-                    magnitude(x, y, 0) = 255;
-                    magnitude(x, y, 1) = 255;
-                    magnitude(x, y, 2) = 255;
-                } else {
-                    magnitude(x, y, 0) = c * log(1 + mag);
-                    magnitude(x, y, 1) = c * log(1 + mag);
-                    magnitude(x, y, 2) = c * log(1 + mag);
-                }
-            }
-        }
-
-        magnitude.save_bmp("../../../../images/hpfmag.bmp");
+        fft->drawSpectrum(matrix, "../../../../images/hpfmag.bmp", c);
 
         result = fft->inverse(matrix);
 
