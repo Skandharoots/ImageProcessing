@@ -63,7 +63,9 @@ void LowPassFilter::pass() {
             for (int x = 0; x < image.width(); x++) {
                 int xx = abs(image.width()/2 - x);
                 int yy = abs(image.height()/2 - y);
-                filter[x][y] = exp(-(xx * xx + yy * yy) / (2 * cutoffFrequency * cutoffFrequency));
+                if(sqrt((xx * xx) + (yy * yy)) <= cutoffFrequency) {
+                    filter[x][y] = 1.0;
+                }
             }
         }
 

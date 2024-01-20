@@ -68,7 +68,6 @@ void HighPassFilter::pass() {
                 if(sqrt((xx * xx) + (yy * yy)) > cutoffFrequency) {
                     filter[x][y] = 1.0;
                 }
-
             }
         }
 
