@@ -17,7 +17,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    
+    // setenv("DISPLAY", "127.0.0.1:0", true);
     auto startTime = std::chrono::steady_clock::now();
     std::shared_ptr<Engine> engine;
     try {

@@ -107,7 +107,7 @@ std::vector<std::vector<std::complex<double>>> SFT::forward() {
             }
         }
     }
-    output.save_bmp("../../../../images/sftmag.bmp");
+    output.save_bmp("../../../images/sftmag.bmp");
     return matrix;
 
 }

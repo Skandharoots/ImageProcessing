@@ -114,7 +114,7 @@ std::vector<std::complex<double>> FFT::forward() {
             }
         }
     }
-	magnitude.save_bmp("../../../../images/ffftmag.bmp");
+	magnitude.save_bmp("../../../images/ffftmag.bmp");
     return transformCentered;
 }
 

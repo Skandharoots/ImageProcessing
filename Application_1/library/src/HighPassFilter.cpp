@@ -82,7 +82,7 @@ void HighPassFilter::pass() {
         }
         double c = 255 / log(1 + abs(max));
 
-        fft->drawSpectrum(matrix, "../../../../images/fftmag.bmp", c);
+        fft->drawSpectrum(matrix, "../../../images/fftmag.bmp", c);
 
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
@@ -90,7 +90,7 @@ void HighPassFilter::pass() {
             }
         }
 
-        fft->drawSpectrum(matrix, "../../../../images/hpfmag.bmp", c);
+        fft->drawSpectrum(matrix, "../../../images/hpfmag.bmp", c);
 
         result = fft->inverse(matrix);
 

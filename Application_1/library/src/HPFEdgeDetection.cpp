@@ -94,7 +94,7 @@ void HPFEdgeDetection::pass() {
         }
         double c = 255 / log(1 + abs(max));
 
-        fft->drawSpectrum(matrix, "../../../../images/fftmag.bmp", c);
+        fft->drawSpectrum(matrix, "../../../images/fftmag.bmp", c);
 
 
         for (int x = 0; x < image.width(); x++) {
@@ -113,7 +113,7 @@ void HPFEdgeDetection::pass() {
             }
         }
 
-        fft->drawSpectrum(matrix, "../../../../images/hpfedmag.bmp", c);
+        fft->drawSpectrum(matrix, "../../../images/hpfedmag.bmp", c);
 
         result = fft->inverse(matrix);
 

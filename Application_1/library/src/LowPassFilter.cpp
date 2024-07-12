@@ -80,7 +80,7 @@ void LowPassFilter::pass() {
         }
         double c = 255 / log(1 + abs(max));
 
-        fft->drawSpectrum(matrix, "../../../../images/fftmag.bmp", c);
+        fft->drawSpectrum(matrix, "../../../images/fftmag.bmp", c);
 
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {
@@ -88,7 +88,7 @@ void LowPassFilter::pass() {
             }
         }
 
-        fft->drawSpectrum(matrix, "../../../../images/lpfmag.bmp", c);
+        fft->drawSpectrum(matrix, "../../../images/lpfmag.bmp", c);
 
         result = fft->inverse(matrix);
 

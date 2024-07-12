@@ -267,7 +267,7 @@ void FastFourierTransform::transform() {
             }
         }
         double c = 255 / log(1 + abs(max));
-        drawSpectrum(matrix, "../../../../images/fftmag.bmp", c);
+        drawSpectrum(matrix, "../../../images/fftmag.bmp", c);
         result = inverse(matrix);
         for (int x = 0; x < image.width(); x++) {
             for (int y = 0; y < image.height(); y++) {

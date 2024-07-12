@@ -107,7 +107,12 @@ add_library(Library ${SOURCE_FILES})
 #add 'include' directory with header files from 'Library' project to paths
 target_include_directories(Library PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-
+if(APPLE)
+        message(STATUS "Looking for X11...")
+        find_package(X11 REQUIRED)
+        include_directories(${X11_INCLUDE_DIR})
+        target_link_libraries(Library ${X11_LIBRARIES})
+endif()
 
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/include
